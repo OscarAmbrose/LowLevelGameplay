@@ -18,6 +18,11 @@ project "LowLevelGameplay"
     includedirs
     {
         "src",
+        "%{prj.location}/vendor/SFML-2.6.0/include"
+    }
+
+    libdirs
+    {
         "%{prj.location}/vendor/SFML-2.6.0/lib"
     }
 
