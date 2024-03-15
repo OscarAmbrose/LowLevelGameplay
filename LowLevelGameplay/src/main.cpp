@@ -1,6 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include <arithmetic.h>
+#include <Vector2.h>
 
 int main()
 {
