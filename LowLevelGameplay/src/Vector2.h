@@ -70,7 +70,7 @@ namespace LLGP
 	}
 
 	template<typename T> requires arithmetic<T>
-	inline bool operator==(Vector2<T>& lhs, const Vector2<T>& rhs) { return !(lhs == rhs); }
+	inline bool operator!=(Vector2<T>& lhs, const Vector2<T>& rhs) { return !(lhs == rhs); }
 
 	//static const values
 
