@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <arithmetic.h>
 
 int main()
 {
@@ -7,6 +8,9 @@ int main()
 	sf::CircleShape shape(100.f);
 	shape.setFillColor(sf::Color::Green);
 	shape.setScale(0.5f, 0.5f);
+
+	float x = 0.1;
+	bool c = true;
 
 	while (window.isOpen())
 	{
@@ -27,6 +31,8 @@ int main()
 			shape.setFillColor(sf::Color::Green);
 			//sf::Vector2f shapeTransform(shape.getTransform().transformPoint);
 		}
+
+
 
 		window.clear();
 		window.draw(shape);
