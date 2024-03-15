@@ -32,7 +32,7 @@ int main()
 			//sf::Vector2f shapeTransform(shape.getTransform().transformPoint);
 		}
 
-
+		
 
 		window.clear();
 		window.draw(shape);
