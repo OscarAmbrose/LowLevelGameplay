@@ -1,5 +1,6 @@
 #pragma once
 #include <arithmetic.h>
+#include <SFML/Graphics.hpp>
 
 namespace LLGP
 {
@@ -16,12 +17,19 @@ namespace LLGP
 		Vector2(T _x, T _y) : x(_x), y(_y) {}
 
 		template<typename U> requires arithmetic<U>
-		explicit Vector2(const Vector2<U>& in) :
+		explicit Vector2(const sf::Vector2<U>& in) :
 			x(static_cast<T>(in.x)), y(static_cast<T>(in.y)) {}
+
+		template<typename U> requires arithmetic<U>
+		operator sf::Vector2<U>() { return sf::Vector2<U>(static_cast<U>(x), static_cast<U>(y)); }
+
+		template<typename U> requires arithmetic<U>
+		explicit Vector2(const Vector2<U>& in) :
+			x(static_cast<T>(in.x)), y(static_cast<T>(in.y)) {};
 #pragma endregion
 
-		float GetSquareMagnitude() { return x*x + y*y}
-		float GetMagnitude() {return sqrt(GetSquareMagnitude()) }
+		float GetSquareMagnitude() { return x * x + y * y; }
+		float GetMagnitude() { return sqrt(GetSquareMagnitude()); }
 		Vector2<T>& Normalise() { *this /= GetMagnitude(); return *this; }
 		Vector2<T> Normalised() { return *this / GetMagnitude(); }
 
@@ -43,7 +51,7 @@ namespace LLGP
 	Vector2<T> operator-(const Vector2<T>& rhs) { return Vector2<T>(-rhs.x, -rhs.y); }
 
 	template<typename T> requires arithmetic<T>
-	Vector2<T>& operator+=(Vector2<T>& lhs, const Vector2<T>& rhs) { lhs.x += rhs.x; lhs.y += rhs.y; return lhs }
+	Vector2<T>& operator+=(Vector2<T>& lhs, const Vector2<T>& rhs) { lhs.x += rhs.x; lhs.y += rhs.y; return lhs; }
 
 	template<typename T> requires arithmetic<T>
 	Vector2<T> operator+(Vector2<T> lhs, const Vector2<T>& rhs) { return lhs += rhs; }
@@ -54,11 +62,19 @@ namespace LLGP
 	Vector2<T>& operator*=(Vector2<T>& v, const U a) { v.x *= a; v.y *= a; return v; }
 
 	template<typename T, typename U> requires arithmetic<T> and arithmetic<U>
-	Vector2<T> operator*(Vector2<T> v, const U a) { return.v *= a; }
+	Vector2<T> operator*(Vector2<T> v, const U a) { return v *= a; }
 
 	template<typename T, typename U> requires arithmetic<T> and arithmetic<U>
-	Vector2<T> operator*(const U a, Vector2<T> v) { return.v *= a; }
+	Vector2<T> operator*(const U a, Vector2<T> v) { return a *= v; }
 
+	template<typename T, typename U> requires arithmetic<T> and arithmetic<U>
+	Vector2<T>& operator/=(Vector2<T>& v, const U a) { v.x /= a; v.y /= a; return v; }
+
+	template<typename T, typename U> requires arithmetic<T> and arithmetic<U>
+	Vector2<T> operator/(Vector2<T> v, const U a) { return v /= a; }
+
+	template<typename T, typename U> requires arithmetic<T> and arithmetic<U>
+	Vector2<T> operator/(const U a, Vector2<T> v) { return a /= v; }
 	//TODO: Make /= and / versions
 
 	template<typename T> requires arithmetic<T>
