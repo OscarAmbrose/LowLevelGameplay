@@ -5,7 +5,7 @@
 class Player {
 public:
 
-	Player(sf::Texture texture/*, LLGP::Vector2<float> worldLocation, LLGP::Vector2<float> worldScale*/);
+	Player(sf::Texture& texture/*, LLGP::Vector2<float> worldLocation, LLGP::Vector2<float> worldScale*/);
 
 	void Update(float dT);
 

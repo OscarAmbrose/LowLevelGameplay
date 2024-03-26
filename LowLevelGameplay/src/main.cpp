@@ -19,10 +19,10 @@ int main()
 	int numberOfFixedUpdates = 0;
 	int numberOfUpdates = 0;
 
-	sf::RenderWindow window(sf::VideoMode(900, 1080), "SFML works!");
-	sf::CircleShape shape(100.f);
+	sf::RenderWindow window(sf::VideoMode(1800, 1080), "SFML works!");
+	sf::CircleShape shape(10.f);
 	shape.setFillColor(sf::Color::Green);
-	shape.setScale(0.5f, 0.5f);
+	shape.setScale(1, 1);
 
 	/*Vector2<float> rectSize = Vector2<float>::one * 100;
 	Vector2<float> rectPos = Vector2<float>(450, 450);*/
@@ -85,9 +85,12 @@ int main()
 		}
 
 		window.clear();
-		//window.draw(shape);
+		window.draw(shape);
 		//window.draw(player->returnShape());
 		window.draw(player->playerSprite);
+
+		//List renderers
+
 		window.display();
 	}
 

@@ -1,7 +1,7 @@
 #include "Player.h"
 #include <iostream>
 
-Player::Player(sf::Texture texture/*, LLGP::Vector2<float> worldLocation, LLGP::Vector2<float> worldScale*/)
+Player::Player(sf::Texture& texture/*, LLGP::Vector2<float> worldLocation, LLGP::Vector2<float> worldScale*/)
 {
 	/*playerTexture = texture;
 	worldPosition = worldLocation;
@@ -13,7 +13,7 @@ Player::Player(sf::Texture texture/*, LLGP::Vector2<float> worldLocation, LLGP::
 	//playerSprite.setTexture(playerTexture);
 	//std::cout << "PlayerCreated" << std::endl;
 	
-	LLGP::Vector2<float> rectSize = LLGP::Vector2<float>::one * 100;
+	LLGP::Vector2<float> rectSize = LLGP::Vector2<float>::one * 5;
 
 	playerSprite.setScale(rectSize);
 	playerSprite.setTexture(texture);
