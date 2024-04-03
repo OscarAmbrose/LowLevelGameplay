@@ -6,7 +6,6 @@ class Component
 public:
 	std::list<Component> componentList;
 
-
 	void AddComponent() {};
 	void removeComponent() {};
 	template<typename t>

@@ -18,8 +18,8 @@ void SR::SpriteRenderer::Start()
 
 }
 
-SR::SpriteRenderer::~SpriteRenderer()
-{
-	
-}
+//SR::SpriteRenderer::~SpriteRenderer()
+//{
+//	
+//}
 
