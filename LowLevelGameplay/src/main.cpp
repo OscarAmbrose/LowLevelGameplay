@@ -4,6 +4,7 @@
 #include<chrono>
 #include<iostream>
 #include<Player.h>
+#include<Component.h>
 
 using namespace LLGP;
 
@@ -27,6 +28,9 @@ int main()
 	/*Vector2<float> rectSize = Vector2<float>::one * 100;
 	Vector2<float> rectPos = Vector2<float>(450, 450);*/
 	sf::Texture rectTex;
+
+	Component* testComponent = new Component();
+	testComponent->getComponentInChildren(Component);
 
 	if (!rectTex.loadFromFile("Textures/Test.png"))
 	{
