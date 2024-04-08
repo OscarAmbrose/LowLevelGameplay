@@ -4,14 +4,13 @@
 
 Component::Component()
 {
-
-}
-
-void Component::AddComponent()
-{
-	
+	testClass meow = testClass();
+	Component* now = &meow;
+	componentList.push_back(now);
 }
 
 void Component::removeComponent()
 {
+
 }
+

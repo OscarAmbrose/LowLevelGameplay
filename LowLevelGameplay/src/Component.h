@@ -1,32 +1,47 @@
 #pragma once
 #include <list>
 #include <SameClassConcept.h>
+#include<iostream>
 
 class Component
 {
 public:
 	Component();
 
-	std::list<Component&> componentList;
-
-	void AddComponent();
 	void removeComponent();
 
+	std::list<Component*> componentList;
+
+	template<class T> 
+	void AddComponent(T ComponentType);
+
 	template<class T> requires SameClassConcept<T>
-	T getComponentInChildren(T type);
+	T* getComponentInChildren(T type);
 };
 
-template<class T> requires SameClassConcept<T>
-inline T Component::getComponentInChildren(T Class)
+template<class T> 
+inline void Component::AddComponent(T ComponentType)
 {
-	T& value = null;
+	//T *newComponentAddress = ComponentType;
+	//componentList.insert(0, newComponentAddress);
+}
+
+template<class T> requires SameClassConcept<T>
+T* Component::getComponentInChildren(T type)
+{
 	for (int i = 0; i < componentList.size(); i++) 
 	{
-		if (componentList[i].class == Class) 
+		if (dynamic_cast<T*>(componentList[i]) != nullptr)
 		{
-			value = componentList[i].value;
-			break;
+			return componentList[i];
 		}
 	}
-	return value;
+	return nullptr;
 }
+
+class testClass : public Component
+{
+public:
+	testClass();
+
+};

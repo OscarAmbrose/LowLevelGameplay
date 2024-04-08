@@ -29,8 +29,12 @@ int main()
 	Vector2<float> rectPos = Vector2<float>(450, 450);*/
 	sf::Texture rectTex;
 
-	Component* testComponent = new Component();
-	testComponent->getComponentInChildren(Component);
+	
+
+	Component testComponent = Component();
+	testClass test2Component = testClass();
+	
+	testComponent.AddComponent(test2Component);
 
 	if (!rectTex.loadFromFile("Textures/Test.png"))
 	{
