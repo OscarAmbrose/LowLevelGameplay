@@ -2,8 +2,9 @@
 #include <list>
 #include <SameClassConcept.h>
 #include<iostream>
+#include <Updatable.h>
 
-class Component
+class Component : public Updatable
 {
 public:
 	Component();
