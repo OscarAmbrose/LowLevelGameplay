@@ -2,5 +2,5 @@
 
 testClass::testClass()
 {
-	std::cout << "meow" << std::endl;
+	
 }

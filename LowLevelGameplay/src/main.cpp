@@ -30,11 +30,25 @@ int main()
 	sf::Texture rectTex;
 
 	
+	//Component Testing
+	Component test1Component = Component();
+	testClass test2Component = testClass();
+	testClass test3Component = testClass();
+	testClass test4Component = testClass();
+	testClass test5Component = testClass();
+	Component* pointer1 = &test2Component;
+	Component* pointer2 = &test3Component;
+	Component* pointer3 = &test4Component;
+	Component* pointer4 = &test5Component;
+	test1Component.AddComponent(pointer1);
+	test1Component.AddComponent(pointer2);
+	test1Component.AddComponent(pointer3);
+	test1Component.AddComponent(pointer4);
 
-	Component testComponent = Component();
-	//testClass test2Component = testClass();
-	
-	testComponent.removeComponent();
+	test1Component.removeComponent(pointer3);
+
+	test1Component.removeAllComponents();
+	//End Component Testing
 
 	if (!rectTex.loadFromFile("Textures/Test.png"))
 	{
@@ -57,30 +71,6 @@ int main()
 			if (event.type == sf::Event::Closed)
 				window.close();
 		}
-		
-		/*if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-		{
-			shape.setFillColor(sf::Color::Red);
-			rectPos += (Vector2<float>::left * 0.01f);
-		}
-
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-		{
-			shape.setFillColor(sf::Color::White);
-			rectPos += (Vector2<float>::right * 0.01f);
-		}
-
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-		{
-			shape.setFillColor(sf::Color::Green);
-			rectPos += (Vector2<float>::up * -0.01f);
-		}
-
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-		{
-			shape.setFillColor(sf::Color::Blue);
-			rectPos += (Vector2<float>::down * -0.01f);
-		}*/
 
 		timeSincePhysicsStep += deltaTime;
 		while (timeSincePhysicsStep > FIXEDFRAMERATE) 
