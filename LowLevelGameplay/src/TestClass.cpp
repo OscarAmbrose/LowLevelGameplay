@@ -2,7 +2,5 @@
 
 testClass::testClass()
 {
-	std::cout << "meow";
-
-	
+	std::cout << "meow" << std::endl;
 }

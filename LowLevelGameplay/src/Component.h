@@ -10,7 +10,10 @@ public:
 
 	void removeComponent();
 
+	void debugPrint();
+
 	std::list<Component*> componentList;
+	std::list<Component*>::iterator it;
 
 	template<class T> 
 	void AddComponent(T ComponentType);
@@ -22,8 +25,7 @@ public:
 template<class T> 
 inline void Component::AddComponent(T ComponentType)
 {
-	//T *newComponentAddress = ComponentType;
-	//componentList.insert(0, newComponentAddress);
+
 }
 
 template<class T> requires SameClassConcept<T>

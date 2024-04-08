@@ -32,9 +32,9 @@ int main()
 	
 
 	Component testComponent = Component();
-	testClass test2Component = testClass();
+	//testClass test2Component = testClass();
 	
-	testComponent.AddComponent(test2Component);
+	testComponent.removeComponent();
 
 	if (!rectTex.loadFromFile("Textures/Test.png"))
 	{
