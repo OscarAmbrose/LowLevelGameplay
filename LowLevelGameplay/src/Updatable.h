@@ -4,6 +4,6 @@ class Updatable
 {
 public:
 	Updatable();
-	void update();
-	void fixedUpdate();
+	virtual void update();
+	virtual void fixedUpdate();
 };
