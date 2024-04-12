@@ -4,7 +4,7 @@
 #include<chrono>
 #include<iostream>
 #include<Player.h>
-#include<Component.h>
+//#include<Component.h>
 
 using namespace LLGP;
 
@@ -31,7 +31,7 @@ int main()
 
 	
 	//Component Testing
-	Component test1Component = Component();
+	/*Component test1Component = Component();
 	testClass test2Component = testClass();
 	testClass test3Component = testClass();
 	testClass test4Component = testClass();
@@ -47,7 +47,7 @@ int main()
 
 	test1Component.removeComponent(pointer3);
 
-	test1Component.removeAllComponents();
+	test1Component.removeAllComponents();*/
 	//End Component Testing
 
 	if (!rectTex.loadFromFile("Textures/Test.png"))
