@@ -8,6 +8,7 @@ class Component : Object
 {
 public:
 	Component(GameObject* owner) : _GameObject(owner) {}
+	Component();
 	virtual ~Component() {}
 
 	GameObject* GetGameObject() { return _GameObject; }

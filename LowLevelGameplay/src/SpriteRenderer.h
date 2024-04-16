@@ -1,21 +1,19 @@
 #pragma once
 #include <Vector2.h>
 #include <SFML/Graphics.hpp>
+#include <Component.h>
+#include <Vector2.h>
+#include<Transform.h>
+#include <iostream>
 
-namespace SR
+class SpriteRenderer : public Component
 {
-	class SpriteRenderer 
-	{
-		LLGP::Vector2<float> worldPosition;
-		LLGP::Vector2<float> scale;
-		sf::RectangleShape shape;
+public:
+	SpriteRenderer(GameObject* m_Parent) : Component(m_Parent) { std::cout << GetGameObject(); }
+	//SpriteRenderer();
+	//Transform2D* m_SpriteTransform;
 
-		SpriteRenderer(LLGP::Vector2<float> worldLocation, LLGP::Vector2<float> worldScale, sf::Texture& texture);
+	void Start();
 
-		void Update(float dT);
 
-		void Start();
-		void Deconstructor();
-	};
-}
-
+};
