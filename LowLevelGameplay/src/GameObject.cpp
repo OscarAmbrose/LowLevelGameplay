@@ -31,3 +31,9 @@ T* GameObject::AddComponent()
 	m_Components.push_back(std::move(newComp));
 	return static_cast<T*>(m_Components[m_Components.size()].get());
 }
+
+template<class T> requires isComponent<T>
+bool GameObject::RemoveComponent(T* comp)
+{
+	return false;
+}

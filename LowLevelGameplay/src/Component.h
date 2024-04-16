@@ -1,6 +1,8 @@
 #pragma once
 #include <Object.h>
-#include <GameObject.h>
+//#include <GameObject.h>
+
+class GameObject;
 
 class Component : Object
 {
