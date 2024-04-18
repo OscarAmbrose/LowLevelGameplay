@@ -7,6 +7,8 @@
 #include <Player.h>
 #include <GameObject.h>
 #include <Component.h>
+#include <DispatcherTest1.h>
+#include <ListenerTest.h>
 
 using namespace LLGP;
 
@@ -33,21 +35,26 @@ int main()
 
 	GameObject* beep = new GameObject();
 	beep->AddComponent<SpriteRenderer>();
-	beep->GetComponent<SpriteRenderer>()->Start();
+	//beep->GetComponent<SpriteRenderer>()->Start();
 
 	if (!rectTex.loadFromFile("Textures/Test.png"))
 	{
 		std::cout << "Cannot load texture" << std::endl;
 	}
-	
+
 	player = new Player(rectTex/* LLGP::Vector2f(0,0), rectSize*/);
+
+	DispatcherTest* dispatcher = new DispatcherTest();
+	ListenerTest* listener = new ListenerTest(dispatcher);
+
+	dispatcher->BroadcastOnMeowEvent(10);
 
 	while (window.isOpen())
 	{
 		std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
 		deltaTime = std::chrono::duration_cast<std::chrono::microseconds>(now - lastTime).count() / 1000000.f;
 		lastTime = now;
-		
+
 
 		sf::Event event;
 		while (window.pollEvent(event))
@@ -57,12 +64,12 @@ int main()
 		}
 
 		timeSincePhysicsStep += deltaTime;
-		while (timeSincePhysicsStep > FIXEDFRAMERATE) 
+		while (timeSincePhysicsStep > FIXEDFRAMERATE)
 		{
 			//step physics
 			//collect collision info
 			//dispatch collisions
-			
+
 			timeSincePhysicsStep -= FIXEDFRAMERATE;
 		}
 

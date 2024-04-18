@@ -10,10 +10,6 @@ class SpriteRenderer : public Component
 {
 public:
 	SpriteRenderer(GameObject* m_Parent) : Component(m_Parent) { std::cout << GetGameObject(); }
-	//SpriteRenderer();
-	//Transform2D* m_SpriteTransform;
 
-	void Start();
-
-
+	void Initialise();
 };

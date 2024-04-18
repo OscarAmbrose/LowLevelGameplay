@@ -13,6 +13,12 @@ project "LowLevelGameplay"
         "src/**.cpp"
     }
 
+    vpaths
+    {
+        ["Headers/*"] = {"src/**.h", "src/**.hpp"},
+        ["Sources/*"] = {"src/**.c", "src/**.cpp"},
+    }
+
     defines { "SFML_STATIC", "_CONSOLE"}
 
     includedirs
