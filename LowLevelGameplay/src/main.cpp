@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <Vector2.h>
 #include <chrono>
+#include <memory>
 #include <iostream>
 #include <SpriteRenderer.h>
 #include <Player.h>
@@ -16,7 +17,6 @@ using namespace LLGP;
 
 int main()
 {
-	Player* player = nullptr;
 
 	std::chrono::steady_clock::time_point lastTime = std::chrono::steady_clock::now();
 	float deltaTime = 0.f;
@@ -29,25 +29,42 @@ int main()
 	shape.setFillColor(sf::Color::Green);
 	shape.setScale(1, 1);
 
-	/*Vector2<float> rectSize = Vector2<float>::one * 100;
-	Vector2<float> rectPos = Vector2<float>(450, 450);*/
+	
 	sf::Texture rectTex;
-
-	GameObject* beep = new GameObject();
-	beep->AddComponent<SpriteRenderer>();
-	//beep->GetComponent<SpriteRenderer>()->Start();
-
+	//Try to load textures
 	if (!rectTex.loadFromFile("Textures/Test.png"))
 	{
 		std::cout << "Cannot load texture" << std::endl;
 	}
 
-	player = new Player(rectTex/* LLGP::Vector2f(0,0), rectSize*/);
+	std::unique_ptr<GameObject> testGameObject = std::make_unique<GameObject>();
+	testGameObject->AddComponent<SpriteRenderer>();
+	Object* object = testGameObject.get();
+	object->Start();
 
-	DispatcherTest* dispatcher = new DispatcherTest();
-	ListenerTest* listener = new ListenerTest(dispatcher);
+	Object* srObj = testGameObject.get()->GetComponent<SpriteRenderer>();
+	srObj->Start();
+	//testGameObject.get()->GetComponent<SpriteRenderer>()->SetTexture("Textures/Test.png");
+
+	//delete(object);
+	//delete(srObj);
+
+	//Loading textures works
+
+	//Player Creation Testing (WORKING)
+	std::unique_ptr<Player> player = NULL;
+	player = std::make_unique<Player>(rectTex);
+	//End of Player Creation Testing (WORKING)
+
+
+	//Event Dispatcher Testing (Working)
+	std::unique_ptr<DispatcherTest> dispatcher = std::make_unique<DispatcherTest>();
+	std::unique_ptr<ListenerTest> listener = std::make_unique<ListenerTest>(dispatcher.get());
 
 	dispatcher->BroadcastOnMeowEvent(10);
+	dispatcher->BroadcastOnMeowEvent(10);
+	//End of Event Dispatcher Testing (Working)
+
 
 	while (window.isOpen())
 	{
@@ -55,6 +72,7 @@ int main()
 		deltaTime = std::chrono::duration_cast<std::chrono::microseconds>(now - lastTime).count() / 1000000.f;
 		lastTime = now;
 
+		//object->Update();
 
 		sf::Event event;
 		while (window.pollEvent(event))
@@ -70,13 +88,16 @@ int main()
 			//collect collision info
 			//dispatch collisions
 
+			object->FixedUpdate();
+
 			timeSincePhysicsStep -= FIXEDFRAMERATE;
 		}
 
 		window.clear();
 		window.draw(shape);
-		//window.draw(player->returnShape());
-		window.draw(player->playerSprite);
+		window.draw(player->returnShape());
+		//window.draw(player->playerSprite);
+		window.draw(testGameObject.get()->GetComponent<SpriteRenderer>()->returnShape());
 
 		//List renderers
 

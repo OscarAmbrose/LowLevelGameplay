@@ -12,7 +12,7 @@ public:
 
 	void Handle_MeowEvent(int in)
 	{
-		std::cout << in << std::endl;
+		//std::cout << in << std::endl;
 		other->meowEvent -= std::bind(&ListenerTest::Handle_MeowEvent, this, std::placeholders::_1);
 	}
 };

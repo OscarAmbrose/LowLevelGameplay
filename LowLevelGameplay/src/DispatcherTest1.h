@@ -1,11 +1,14 @@
 #pragma once
 #include <Event.h>
+#include <iostream>
 
 class DispatcherTest 
 {
 public:
 	LLGP::Event<int> meowEvent;
-	DispatcherTest() {};
+	DispatcherTest() {
+		meowEvent = LLGP::Event<int>();
+	};
 
 	void BroadcastOnMeowEvent(int arg1)
 	{

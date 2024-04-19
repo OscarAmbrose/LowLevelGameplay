@@ -62,10 +62,16 @@ namespace LLGP
 	Vector2<T>& operator*=(Vector2<T>& v, const U a) { v.x *= a; v.y *= a; return v; }
 
 	template<typename T, typename U> requires arithmetic<T> and arithmetic<U>
+	Vector2<T>& operator*=(U a, Vector2<T>& v) { a *= v.x; a *= v.y; return v; }
+
+	template<typename T, typename U> requires arithmetic<T> and arithmetic<U>
 	Vector2<T> operator*(Vector2<T> v, const U a) { return v *= a; }
 
 	template<typename T, typename U> requires arithmetic<T> and arithmetic<U>
-	Vector2<T> operator*(const U a, Vector2<T> v) { return a *= v; }
+	Vector2<T> operator*(const U a, Vector2<T> v) { return  a *= v; }
+
+	template<typename T, typename U> requires arithmetic<T> and arithmetic<U>
+	Vector2<T> operator*(const Vector2<U> a, Vector2<T> v) { return  a *= v; }
 
 	template<typename T, typename U> requires arithmetic<T> and arithmetic<U>
 	Vector2<T>& operator/=(Vector2<T>& v, const U a) { v.x /= a; v.y /= a; return v; }
@@ -76,6 +82,7 @@ namespace LLGP
 	template<typename T, typename U> requires arithmetic<T> and arithmetic<U>
 	Vector2<T> operator/(const U a, Vector2<T> v) { return a /= v; }
 	//TODO: Make /= and / versions
+
 
 	template<typename T> requires arithmetic<T>
 	inline bool operator==(Vector2<T>& lhs, const Vector2<T>& rhs) 
