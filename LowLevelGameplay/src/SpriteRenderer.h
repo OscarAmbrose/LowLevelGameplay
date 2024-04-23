@@ -2,15 +2,15 @@
 #include <Vector2.h>
 #include <SFML/Graphics.hpp>
 #include <Component.h>
-#include <Vector2.h>
-#include<Transform.h>
-#include <iostream>
+#include <memory>
 
+//class Transform2D;
 class GameObject;
 
 class SpriteRenderer : public Component
 {
 public:
+
 	SpriteRenderer(GameObject* owner, Transform2D* pTransform) : Component(owner, pTransform) 
 	{ 
 		//std::cout << parentTransform << std::endl;
@@ -38,11 +38,13 @@ public:
 		LLGP::Vector2<float> rectSize = 100 * (parentTransform->returnScale());
 		shape.setSize(rectSize);
 		shape.setOrigin(rectSize / 2);
+		shape.setRotation(parentTransform->returnRotation());
 
 		shape.setPosition(LLGP::Vector2(450, 450)/*parentTransform->returnPosition()*/);
 
 		return shape;
 	}
+
 
 private:
 	sf::RectangleShape shape;

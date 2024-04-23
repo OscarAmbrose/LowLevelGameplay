@@ -4,10 +4,10 @@
 #include <vector>
 #include <memory>
 #include <isComponenet.h>
-#include <Transform.h>
+//#include <Transform.h>
 #include <iostream>
 
-class GameObject : virtual public Object
+class GameObject : public Object
 {
 public:
 	GameObject();
@@ -79,9 +79,10 @@ public:
 	template<class T> requires isComponent<T> bool RemoveComponent(T* comp)
 	{
 		bool returnBool;
+		//GetComponent<T>
 		for (int i = 0; i < m_Components.size(); i++)
 		{
-			T* returnComp = static_cast<T*>(m_Components[i].get());
+			T* returnComp = dynamic_cast<T*>(m_Components[i].get());
 			if (returnComp != nullptr)
 			{
 				returnBool = true;

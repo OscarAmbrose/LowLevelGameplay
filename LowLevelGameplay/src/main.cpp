@@ -8,8 +8,9 @@
 #include <Player.h>
 #include <GameObject.h>
 #include <Component.h>
-#include <DispatcherTest1.h>
-#include <ListenerTest.h>
+//#include <DispatcherTest1.h>
+//#include <ListenerTest.h>
+//#include <Transform.h>
 
 using namespace LLGP;
 
@@ -17,17 +18,21 @@ using namespace LLGP;
 
 int main()
 {
-
+	//Update Stuff
 	std::chrono::steady_clock::time_point lastTime = std::chrono::steady_clock::now();
 	float deltaTime = 0.f;
 	float timeSincePhysicsStep = 0.f;
 	int numberOfFixedUpdates = 0;
 	int numberOfUpdates = 0;
+	//Update Stuff
 
+	//Creates the window
 	sf::RenderWindow window(sf::VideoMode(1800, 1080), "SFML works!");
-	sf::CircleShape shape(10.f);
-	shape.setFillColor(sf::Color::Green);
-	shape.setScale(1, 1);
+	
+	//Circle shape for testing
+	//sf::CircleShape shape(10.f);
+	//shape.setFillColor(sf::Color::Green);
+	//shape.setScale(1, 1);
 
 	
 	sf::Texture rectTex;
@@ -58,11 +63,11 @@ int main()
 
 
 	//Event Dispatcher Testing (Working)
-	std::unique_ptr<DispatcherTest> dispatcher = std::make_unique<DispatcherTest>();
-	std::unique_ptr<ListenerTest> listener = std::make_unique<ListenerTest>(dispatcher.get());
+	//std::unique_ptr<DispatcherTest> dispatcher = std::make_unique<DispatcherTest>();
+	//std::unique_ptr<ListenerTest> listener = std::make_unique<ListenerTest>(dispatcher.get());
 
-	dispatcher->BroadcastOnMeowEvent(10);
-	dispatcher->BroadcastOnMeowEvent(10);
+	//dispatcher->BroadcastOnMeowEvent(10);
+	//dispatcher->BroadcastOnMeowEvent(10);
 	//End of Event Dispatcher Testing (Working)
 
 
@@ -81,6 +86,8 @@ int main()
 				window.close();
 		}
 
+
+
 		timeSincePhysicsStep += deltaTime;
 		while (timeSincePhysicsStep > FIXEDFRAMERATE)
 		{
@@ -88,13 +95,24 @@ int main()
 			//collect collision info
 			//dispatch collisions
 
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+			{
+				GameObject* test = testGameObject.get();
+				test->getTransform()->setRotation(test->getTransform()->returnRotation() - 5);
+			}
+
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+			{
+				GameObject* test = testGameObject.get();
+				test->getTransform()->setRotation(test->getTransform()->returnRotation() + 5);
+			}
 			object->FixedUpdate();
 
 			timeSincePhysicsStep -= FIXEDFRAMERATE;
 		}
 
 		window.clear();
-		window.draw(shape);
+		//window.draw(shape);
 		window.draw(player->returnShape());
 		//window.draw(player->playerSprite);
 		window.draw(testGameObject.get()->GetComponent<SpriteRenderer>()->returnShape());
