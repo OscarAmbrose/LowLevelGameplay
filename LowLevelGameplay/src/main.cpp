@@ -5,11 +5,10 @@
 #include <memory>
 #include <iostream>
 #include <SpriteRenderer.h>
-#include <Player.h>
 #include <GameObject.h>
 #include <Component.h>
-//#include <DispatcherTest1.h>
-//#include <ListenerTest.h>
+#include <DispatcherTest1.h>
+#include <ListenerTest.h>
 //#include <Transform.h>
 
 using namespace LLGP;
@@ -35,38 +34,26 @@ int main()
 	//shape.setScale(1, 1);
 
 	
-	sf::Texture rectTex;
+	//sf::Texture rectTex;
 	//Try to load textures
-	if (!rectTex.loadFromFile("Textures/Test.png"))
-	{
-		std::cout << "Cannot load texture" << std::endl;
-	}
+	//if (!rectTex.loadFromFile("Textures/Test.png"))
+	//{
+	//	std::cout << "Cannot load texture" << std::endl;
+	//}
 
 	std::unique_ptr<GameObject> testGameObject = std::make_unique<GameObject>();
 	testGameObject->AddComponent<SpriteRenderer>();
 	Object* object = testGameObject.get();
 	object->Start();
 
-	Object* srObj = testGameObject.get()->GetComponent<SpriteRenderer>();
-	srObj->Start();
-	//testGameObject.get()->GetComponent<SpriteRenderer>()->SetTexture("Textures/Test.png");
-
-	//delete(object);
-	//delete(srObj);
-
-	//Loading textures works
-
-	//Player Creation Testing (WORKING)
-	std::unique_ptr<Player> player = NULL;
-	player = std::make_unique<Player>(rectTex);
-	//End of Player Creation Testing (WORKING)
-
+	Object* srObj1 = testGameObject.get()->GetComponent<SpriteRenderer>();
+	srObj1->Start();
 
 	//Event Dispatcher Testing (Working)
-	//std::unique_ptr<DispatcherTest> dispatcher = std::make_unique<DispatcherTest>();
-	//std::unique_ptr<ListenerTest> listener = std::make_unique<ListenerTest>(dispatcher.get());
+	std::unique_ptr<DispatcherTest> dispatcher = std::make_unique<DispatcherTest>();
+	std::unique_ptr<ListenerTest> listener = std::make_unique<ListenerTest>(dispatcher.get());
 
-	//dispatcher->BroadcastOnMeowEvent(10);
+	dispatcher->BroadcastOnMeowEvent(10);
 	//dispatcher->BroadcastOnMeowEvent(10);
 	//End of Event Dispatcher Testing (Working)
 
@@ -113,10 +100,8 @@ int main()
 
 		window.clear();
 		//window.draw(shape);
-		window.draw(player->returnShape());
 		//window.draw(player->playerSprite);
 		window.draw(testGameObject.get()->GetComponent<SpriteRenderer>()->returnShape());
-
 		//List renderers
 
 		window.display();

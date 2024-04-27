@@ -41,4 +41,5 @@ namespace LLGP
 		float m_Rotation;
 
 	};
+
 }
