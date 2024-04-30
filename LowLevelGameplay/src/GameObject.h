@@ -13,9 +13,7 @@ public:
 	GameObject();
 	GameObject(const GameObject&) = default;
 
-	void Start() override { /*std::cout << "Start in Game Obj" << std::endl;*/ };
-	void Update() override { UpdateComponents(); };
-	void FixedUpdate() override { FixedUpdateComponents(); };
+
 	
 	inline void SetName(std::string newName) { m_Name = newName; }
 	inline std::string GetName() { return m_Name; }
@@ -26,32 +24,10 @@ public:
 	inline void SetTag(std::string newTag) { m_Tag = newTag; }
 	inline bool CompareTag(std::string comp) { return m_Tag == comp; }
 
-	void UpdateComponents()
-	{
-		Object* objectToBeUpdated;
-		for (int i = 0; i < m_Components.size(); i++)
-		{
-			objectToBeUpdated = m_Components[i].get();
-			objectToBeUpdated->Update();
-		}
-		objectToBeUpdated = NULL;
-		delete(objectToBeUpdated);
-	}
-
-	void FixedUpdateComponents()
-	{
-		Object* objectToBeUpdated;
-		for (int i = 0; i < m_Components.size(); i++)
-		{
-			objectToBeUpdated = m_Components[i].get();
-			objectToBeUpdated->FixedUpdate();
-		}
-		objectToBeUpdated = NULL;
-		delete(objectToBeUpdated);
-	}
-
 	inline Transform2D* getTransform() { return transform.get(); }
 
+
+#pragma region ComponentManagement
 	template<class T> requires isComponent<T> T* GetComponent()
 	{
 		T* returnComp = nullptr;
@@ -68,10 +44,8 @@ public:
 		return returnComp;
 	};
 
-	
-
 	template<class T> requires isComponent<T> T* AddComponent() {
-		std::unique_ptr<Component> newComp = std::make_unique<T>(this, transform.get());
+		std::unique_ptr<Component> newComp = std::make_unique<T>(this);
 		m_Components.push_back(std::move(newComp));
 		return static_cast<T*>(m_Components[m_Components.size()-1].get());
 	};
@@ -79,7 +53,7 @@ public:
 	template<class T> requires isComponent<T> bool RemoveComponent(T* comp)
 	{
 		bool returnBool;
-		//GetComponent<T>
+
 		for (int i = 0; i < m_Components.size(); i++)
 		{
 			T* returnComp = dynamic_cast<T*>(m_Components[i].get());
@@ -92,6 +66,8 @@ public:
 			returnBool = false;
 		}
 	};
+#pragma endregion
+
 
 private:
 	std::string m_Name;

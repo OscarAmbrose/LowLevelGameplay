@@ -7,11 +7,13 @@
 #include <SpriteRenderer.h>
 #include <GameObject.h>
 #include <Component.h>
+#include <GlobalEvents.h>
 #include <DispatcherTest1.h>
 #include <ListenerTest.h>
 //#include <Transform.h>
 
 using namespace LLGP;
+
 
 #define FIXEDFRAMERATE 0.016f
 
@@ -27,35 +29,20 @@ int main()
 
 	//Creates the window
 	sf::RenderWindow window(sf::VideoMode(1800, 1080), "SFML works!");
-	
-	//Circle shape for testing
-	//sf::CircleShape shape(10.f);
-	//shape.setFillColor(sf::Color::Green);
-	//shape.setScale(1, 1);
-
-	
-	//sf::Texture rectTex;
-	//Try to load textures
-	//if (!rectTex.loadFromFile("Textures/Test.png"))
-	//{
-	//	std::cout << "Cannot load texture" << std::endl;
-	//}
 
 	std::unique_ptr<GameObject> testGameObject = std::make_unique<GameObject>();
 	testGameObject->AddComponent<SpriteRenderer>();
 	Object* object = testGameObject.get();
-	object->Start();
+	//object->Start();
 
 	Object* srObj1 = testGameObject.get()->GetComponent<SpriteRenderer>();
-	srObj1->Start();
+	//srObj1->Start();
 
 	//Event Dispatcher Testing (Working)
 	std::unique_ptr<DispatcherTest> dispatcher = std::make_unique<DispatcherTest>();
 	std::unique_ptr<ListenerTest> listener = std::make_unique<ListenerTest>(dispatcher.get());
 
 	dispatcher->BroadcastOnMeowEvent(10);
-	//dispatcher->BroadcastOnMeowEvent(10);
-	//End of Event Dispatcher Testing (Working)
 
 
 	while (window.isOpen())
@@ -64,47 +51,38 @@ int main()
 		deltaTime = std::chrono::duration_cast<std::chrono::microseconds>(now - lastTime).count() / 1000000.f;
 		lastTime = now;
 
-		//object->Update();
-
+		#pragma region CloseWindow
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
 			if (event.type == sf::Event::Closed)
 				window.close();
 		}
+#pragma endregion
 
+		//Input Handling
 
-
+		#pragma region Physics
 		timeSincePhysicsStep += deltaTime;
 		while (timeSincePhysicsStep > FIXEDFRAMERATE)
 		{
 			//step physics
 			//collect collision info
 			//dispatch collisions
-
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-			{
-				GameObject* test = testGameObject.get();
-				test->getTransform()->setRotation(test->getTransform()->returnRotation() - 5);
-			}
-
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-			{
-				GameObject* test = testGameObject.get();
-				test->getTransform()->setRotation(test->getTransform()->returnRotation() + 5);
-			}
-			object->FixedUpdate();
-
 			timeSincePhysicsStep -= FIXEDFRAMERATE;
 		}
+		#pragma endregion
 
+		//Update
+		g_OnUpdate(deltaTime);
+
+		#pragma region Render
 		window.clear();
-		//window.draw(shape);
-		//window.draw(player->playerSprite);
+
 		window.draw(testGameObject.get()->GetComponent<SpriteRenderer>()->returnShape());
-		//List renderers
 
 		window.display();
+#pragma endregion
 	}
 
 	return 0;

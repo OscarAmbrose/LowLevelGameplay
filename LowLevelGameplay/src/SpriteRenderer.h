@@ -11,7 +11,7 @@ class SpriteRenderer : public Component
 {
 public:
 
-	SpriteRenderer(GameObject* owner, Transform2D* pTransform) : Component(owner, pTransform) 
+	SpriteRenderer(GameObject* owner) : Component(owner) 
 	{ 
 		//std::cout << parentTransform << std::endl;
 		SetTexture("Textures/Test.png");
