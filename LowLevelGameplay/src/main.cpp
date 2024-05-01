@@ -10,6 +10,7 @@
 #include <GlobalEvents.h>
 #include <DispatcherTest1.h>
 #include <ListenerTest.h>
+#include <TestComponent.h>
 //#include <Transform.h>
 
 using namespace LLGP;
@@ -31,18 +32,12 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(1800, 1080), "SFML works!");
 
 	std::unique_ptr<GameObject> testGameObject = std::make_unique<GameObject>();
+	testGameObject->AddComponent<TestComponent>();
+
 	testGameObject->AddComponent<SpriteRenderer>();
-	Object* object = testGameObject.get();
-	//object->Start();
 
-	Object* srObj1 = testGameObject.get()->GetComponent<SpriteRenderer>();
+	Component* srObj1 = testGameObject.get()->GetComponent<SpriteRenderer>();
 	//srObj1->Start();
-
-	//Event Dispatcher Testing (Working)
-	std::unique_ptr<DispatcherTest> dispatcher = std::make_unique<DispatcherTest>();
-	std::unique_ptr<ListenerTest> listener = std::make_unique<ListenerTest>(dispatcher.get());
-
-	dispatcher->BroadcastOnMeowEvent(10);
 
 
 	while (window.isOpen())
@@ -50,6 +45,8 @@ int main()
 		std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
 		deltaTime = std::chrono::duration_cast<std::chrono::microseconds>(now - lastTime).count() / 1000000.f;
 		lastTime = now;
+
+		g_OnStart(0);
 
 		#pragma region CloseWindow
 		sf::Event event;
@@ -61,25 +58,31 @@ int main()
 #pragma endregion
 
 		//Input Handling
+		numberOfUpdates++;
+		g_OnUpdate(deltaTime);
 
 		#pragma region Physics
 		timeSincePhysicsStep += deltaTime;
 		while (timeSincePhysicsStep > FIXEDFRAMERATE)
 		{
 			//step physics
+			g_OnFixedUpdate(deltaTime);
 			//collect collision info
 			//dispatch collisions
+			numberOfFixedUpdates++;
+			/*if (numberOfFixedUpdates >= 50)
+			{
+				testGameObject->RemoveComponent<SpriteRenderer>();
+			}*/
 			timeSincePhysicsStep -= FIXEDFRAMERATE;
 		}
 		#pragma endregion
-
 		//Update
-		g_OnUpdate(deltaTime);
 
 		#pragma region Render
 		window.clear();
 
-		window.draw(testGameObject.get()->GetComponent<SpriteRenderer>()->returnShape());
+		//window.draw(testGameObject.get()->GetComponent<SpriteRenderer>()->returnShape());
 
 		window.display();
 #pragma endregion

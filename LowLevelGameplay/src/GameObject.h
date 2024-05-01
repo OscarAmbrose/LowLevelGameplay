@@ -50,21 +50,23 @@ public:
 		return static_cast<T*>(m_Components[m_Components.size()-1].get());
 	};
 
-	template<class T> requires isComponent<T> bool RemoveComponent(T* comp)
+	template<class T> requires isComponent<T> bool RemoveComponent()
 	{
-		bool returnBool;
+		bool returnBool = false;
+		T* returnComp = nullptr;
 
 		for (int i = 0; i < m_Components.size(); i++)
 		{
-			T* returnComp = dynamic_cast<T*>(m_Components[i].get());
+			returnComp = dynamic_cast<T*>(m_Components[i].get());
 			if (returnComp != nullptr)
 			{
 				returnBool = true;
-				m_Components.erase(i);
+				m_Components.erase(m_Components.begin() + i);
 				break;
 			}
 			returnBool = false;
 		}
+		return returnBool;
 	};
 #pragma endregion
 

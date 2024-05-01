@@ -17,6 +17,11 @@ public:
 		SetTexture("Textures/Test.png");
 		CreateRect();
 	}
+
+	~SpriteRenderer()
+	{
+		std::cout << "Meow" << std::endl;
+	}
 	
 	void SetTexture(std::string filePath)
 	{

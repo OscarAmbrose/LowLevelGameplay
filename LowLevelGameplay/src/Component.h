@@ -17,9 +17,9 @@ public:
 	Component(GameObject* owner);
 	virtual ~Component();
 
-	void Start() { };
+	void Start(float start);
 	void Update(float deltaTime);
-	void FixedUpdate() {};
+	void FixedUpdate(float deltaTime);
 
 	GameObject* GetGameObject() { return _GameObject; }
 	virtual void OwnerActiveChange(bool newActive) {}

@@ -69,7 +69,7 @@ project "LowLevelGameplay"
         links
         {
             "sfml-graphics-s",
-            "sfml-windows-s",
+            "sfml-window-s",
             "sfml-system-s",
             "sfml-audio-s",
             "sfml-network-s"
