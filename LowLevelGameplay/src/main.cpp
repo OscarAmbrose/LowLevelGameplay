@@ -13,7 +13,7 @@
 #include <TestComponent.h>
 //#include <Transform.h>
 
-using namespace LLGP;
+//using namespace LLGP;
 
 
 #define FIXEDFRAMERATE 0.016f

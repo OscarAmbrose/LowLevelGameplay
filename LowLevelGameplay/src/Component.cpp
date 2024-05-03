@@ -17,12 +17,11 @@ Component::~Component()
 	g_OnUpdate.RemoveListener(this, std::bind(&Component::Update, this, std::placeholders::_1));
 	g_OnFixedUpdate.RemoveListener(this, std::bind(&Component::FixedUpdate, this, std::placeholders::_1));
 	g_OnStart.RemoveListener(this, std::bind(&Component::Start, this, std::placeholders::_1));
-
 }
 
 void Component::Start(float start)
 {
-	g_OnStart.RemoveListener(this, std::bind(&Component::Start, this, std::placeholders::_1));
+	//g_OnStart.RemoveListener(this, std::bind(&Component::Start, this, std::placeholders::_1));
 	std::cout << "Start" << std::endl;
 
 }
