@@ -14,8 +14,7 @@ public:
 	SpriteRenderer(GameObject* owner) : Component(owner) 
 	{ 
 		//std::cout << parentTransform << std::endl;
-		SetTexture("Textures/Test.png");
-		CreateRect();
+		SetTexture("Textures/JoustSpritesActual.png");
 	}
 
 	~SpriteRenderer()
@@ -23,46 +22,26 @@ public:
 		std::cout << "Meow" << std::endl;
 	}
 	
-	void SetTexture(std::string filePath)
+	void SetTexture(std::string filePath);
+
+	void setUV(Vector2i selectedSprite);
+
+	void setUV(Vector2i selectedSprite, Vector2i spriteSize);
+
+	sf::RectangleShape returnShape();
+
+
+	//Testing overriding an update function (Working)
+	void Update(float deltaTime)
 	{
-		renderTexture.reset();
-		renderTexture = std::make_unique<sf::Texture>();
-		//std::cout << filePath << std::endl;
-		renderTexture.get()->loadFromFile(filePath);
-		//std::cout << renderTexture.get() << "    1" << std::endl;
-		shape.setTexture(renderTexture.get());
-		Vector2i spritesInTexture = Vector2i(4, 4);
-		Vector2i selectedSprite = Vector2i(1, 1);
-		setUV(spritesInTexture, selectedSprite);
+		Component::Update(deltaTime);
+
+		std::cout << "meowest" << std::endl;
 	}
-
-	void setUV(Vector2i& spritesInTexture, Vector2i selectedSprite)
-	{
-		Vector2i rectTexSize(renderTexture.get()->getSize());
-		sf::IntRect rectTexUV((rectTexSize.x / spritesInTexture.x)* selectedSprite.x, (rectTexSize.y / spritesInTexture.y) * selectedSprite.y, rectTexSize.x / spritesInTexture.x, rectTexSize.y / spritesInTexture.y);
-		shape.setTextureRect(rectTexUV);
-	}
-
-	void CreateRect()
-	{
-		//shape.setFillColor(sf::Color::White);
-	}
-
-	sf::RectangleShape returnShape() 
-	{
-		LLGP::Vector2<float> rectSize = 1 * (parentTransform->returnScale());
-		shape.setSize(rectSize);
-		shape.setOrigin(rectSize / 2);
-		shape.setRotation(parentTransform->returnRotation());
-
-		shape.setPosition(/*LLGP::Vector2(450, 450)*/parentTransform->returnPosition());
-
-		return shape;
-	}
-
 
 private:
 	sf::RectangleShape shape;
 	std::unique_ptr<sf::Texture> renderTexture;
+	LLGP::Vector2<float> rectangleSize;
 
 };

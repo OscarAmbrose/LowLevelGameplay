@@ -21,17 +21,21 @@ Component::~Component()
 
 void Component::Start(float start)
 {
-	//g_OnStart.RemoveListener(this, std::bind(&Component::Start, this, std::placeholders::_1));
 	std::cout << "Start" << std::endl;
-
 }
 
 void Component::Update(float deltaTime)
 {
-	std::cout << "Update: " << deltaTime << std::endl;
+	//Ensure Start is only called once:
+	if (!Started)
+	{
+		g_OnStart.RemoveListener(this, std::bind(&Component::Start, this, std::placeholders::_1));
+		Started = true;
+	}
+
 }
 
 void Component::FixedUpdate(float deltaTime)
 {
-	std::cout << "Fixed Update: " << deltaTime << std::endl;
+	
 }

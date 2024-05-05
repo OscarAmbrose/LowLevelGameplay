@@ -24,7 +24,7 @@ public:
 	inline void SetTag(std::string newTag) { m_Tag = newTag; }
 	inline bool CompareTag(std::string comp) { return m_Tag == comp; }
 
-	inline Transform2D* getTransform() { return transform.get(); }
+	Transform2D* getTransform() { return transform.get(); }
 
 
 #pragma region ComponentManagement
@@ -62,6 +62,7 @@ public:
 			{
 				returnBool = true;
 				m_Components.erase(m_Components.begin() + i);
+				//m_Components.erase(dynamic_cast<T*>(m_Components[i].get()));
 				break;
 			}
 			returnBool = false;

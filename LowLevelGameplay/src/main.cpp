@@ -1,20 +1,11 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include <Vector2.h>
 #include <chrono>
-#include <memory>
 #include <iostream>
-#include <SpriteRenderer.h>
 #include <GameObject.h>
-#include <Component.h>
 #include <GlobalEvents.h>
-#include <DispatcherTest1.h>
-#include <ListenerTest.h>
-#include <TestComponent.h>
-//#include <Transform.h>
-
-//using namespace LLGP;
-
+#include <GameManager.h>
+#include <SpriteAnimator.h>
 
 #define FIXEDFRAMERATE 0.016f
 
@@ -28,16 +19,18 @@ int main()
 	int numberOfUpdates = 0;
 	//Update Stuff
 
+
 	//Creates the window
 	sf::RenderWindow window(sf::VideoMode(1800, 1080), "SFML works!");
 
-	std::unique_ptr<GameObject> testGameObject = std::make_unique<GameObject>();
-	testGameObject->AddComponent<TestComponent>();
+	std::unique_ptr<GameManager> testGameManager = std::make_unique<GameManager>();
 
-	testGameObject->AddComponent<SpriteRenderer>();
+	std::vector<SpriteRenderer*> srs;
+	std::cout << testGameManager->getGameObjectByName("Object") << std::endl;
+	std::cout << testGameManager->getGameObjectByName("Test") << std::endl;
 
-	Component* srObj1 = testGameObject.get()->GetComponent<SpriteRenderer>();
-	//srObj1->Start();
+	//testGameManager->getGameObjectByName("Test")->GetComponent<SpriteRenderer>()->setUV(LLGP::Vector2i(6, 10), LLGP::Vector2i(176, 18) );
+	testGameManager->getGameObjectByName("Test")->AddComponent<SpriteAnimator>();
 
 
 	while (window.isOpen())
@@ -66,14 +59,14 @@ int main()
 		while (timeSincePhysicsStep > FIXEDFRAMERATE)
 		{
 			//step physics
-			g_OnFixedUpdate(deltaTime);
+			g_OnFixedUpdate(FIXEDFRAMERATE);
 			//collect collision info
 			//dispatch collisions
 			numberOfFixedUpdates++;
-			/*if (numberOfFixedUpdates >= 50)
-			{
-				testGameObject->RemoveComponent<SpriteRenderer>();
-			}*/
+			//if (numberOfFixedUpdates >= 50)
+			//{
+			//	testGameObject->RemoveComponent<SpriteRenderer>();
+			//}
 			timeSincePhysicsStep -= FIXEDFRAMERATE;
 		}
 		#pragma endregion
@@ -81,8 +74,15 @@ int main()
 
 		#pragma region Render
 		window.clear();
+		srs.clear();
 
-		//window.draw(testGameObject.get()->GetComponent<SpriteRenderer>()->returnShape());
+		srs = testGameManager->getAllComponentsOfType<SpriteRenderer>();
+
+		for (int i = 0; i < srs.size(); i++)
+		{
+			window.draw(srs[i]->returnShape());
+		}
+		
 
 		window.display();
 #pragma endregion
