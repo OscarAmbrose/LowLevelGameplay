@@ -23,7 +23,7 @@ int main()
 	//Creates the window
 	sf::RenderWindow window(sf::VideoMode(1800, 1080), "SFML works!");
 	
-	std::unique_ptr<GlobalTexture> globalTextureTest = std::make_unique<GlobalTexture>();
+	//std::unique_ptr<GlobalTexture> globalTextureTest = std::make_unique<GlobalTexture>();
 	
 	std::unique_ptr<GameManager> testGameManager = std::make_unique<GameManager>();
 
@@ -79,15 +79,8 @@ int main()
 
 		#pragma region Render
 		window.clear();
-		srs.clear();
 
-		srs = testGameManager->getAllComponentsOfType<SpriteRenderer>();
-
-		for (int i = 0; i < srs.size(); i++)
-		{
-			window.draw(srs[i]->returnShape());
-		}
-		
+		g_OnRender(&window);
 
 		window.display();
 #pragma endregion

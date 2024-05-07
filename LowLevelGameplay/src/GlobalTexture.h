@@ -2,15 +2,15 @@
 #include <memory>
 #include <SFML/Graphics.hpp>
 
-extern std::shared_ptr<sf::Texture> renderTexture;
+extern sf::Texture* renderTexture;
 
 class GlobalTexture
 {
 public:
 	GlobalTexture()
 	{
-		renderTexture = std::make_shared<sf::Texture>();
-		renderTexture.get()->loadFromFile("Textures/JoustSpritesActual.png");
+		renderTexture = new sf::Texture();
+		renderTexture->loadFromFile("Textures/JoustSpritesActual.png");
 	}
 
 	~GlobalTexture() {};
