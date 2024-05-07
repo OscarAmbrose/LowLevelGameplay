@@ -3,11 +3,6 @@
 
 void SpriteRenderer::SetTexture(std::string filePath)
 {
-	renderTexture.reset();
-	renderTexture = std::make_unique<sf::Texture>();
-
-	renderTexture.get()->loadFromFile(filePath);
-
 	shape.setTexture(renderTexture.get());
 	Vector2i selectedSprite = Vector2i(0, 0);
 	setUV(selectedSprite);

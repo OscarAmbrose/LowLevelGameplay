@@ -21,13 +21,13 @@ public:
 		testScoper->SetName("Test");
 		testScoper2->SetName("Test 2");
 		testScoper->SetTag("Debug Object");
-		testScoper2->SetName("Debug Object 2");
 
 		testScoper2->getTransform()->setPosition(Vector2<float>(testScoper2->getTransform()->returnPosition().x + 100, 100));
 
 		m_GameObjects.push_back(std::move(testScoper));
 		m_GameObjects.push_back(std::move(testScoper2));
 	};
+
 	~GameManager() {};
 
 	template<class T> requires isComponent<T>

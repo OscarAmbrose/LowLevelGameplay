@@ -2,6 +2,7 @@
 #include <Component.h>
 #include <SpriteRenderer.h>
 #include <stdexcept>
+#include <vector>
 
 class GameObject;
 

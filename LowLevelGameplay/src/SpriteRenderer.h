@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <Component.h>
 #include <memory>
+#include <GlobalTexture.h>
 
 //class Transform2D;
 class GameObject;
@@ -41,7 +42,7 @@ public:
 
 private:
 	sf::RectangleShape shape;
-	std::unique_ptr<sf::Texture> renderTexture;
+
 	LLGP::Vector2<float> rectangleSize;
 
 };

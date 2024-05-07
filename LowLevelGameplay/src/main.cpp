@@ -11,6 +11,7 @@
 
 int main()
 {
+
 	//Update Stuff
 	std::chrono::steady_clock::time_point lastTime = std::chrono::steady_clock::now();
 	float deltaTime = 0.f;
@@ -19,17 +20,19 @@ int main()
 	int numberOfUpdates = 0;
 	//Update Stuff
 
-
 	//Creates the window
 	sf::RenderWindow window(sf::VideoMode(1800, 1080), "SFML works!");
-
+	
+	std::unique_ptr<GlobalTexture> globalTextureTest = std::make_unique<GlobalTexture>();
+	
 	std::unique_ptr<GameManager> testGameManager = std::make_unique<GameManager>();
 
 	std::vector<SpriteRenderer*> srs;
 	std::cout << testGameManager->getGameObjectByName("Object") << std::endl;
 	std::cout << testGameManager->getGameObjectByName("Test") << std::endl;
 
-	//testGameManager->getGameObjectByName("Test")->GetComponent<SpriteRenderer>()->setUV(LLGP::Vector2i(6, 10), LLGP::Vector2i(176, 18) );
+	testGameManager->getGameObjectByName("Test")->GetComponent<SpriteRenderer>()->setUV(LLGP::Vector2i(6, 10), LLGP::Vector2i(176, 18) );
+	//testGameManager->getGameObjectByName("Test")->GetComponent<SpriteRenderer>()->setUV(LLGP::Vector2i(3, 1));
 	testGameManager->getGameObjectByName("Test")->AddComponent<SpriteAnimator>();
 
 
@@ -46,7 +49,9 @@ int main()
 		while (window.pollEvent(event))
 		{
 			if (event.type == sf::Event::Closed)
+			{
 				window.close();
+			}
 		}
 #pragma endregion
 
@@ -65,7 +70,7 @@ int main()
 			numberOfFixedUpdates++;
 			//if (numberOfFixedUpdates >= 50)
 			//{
-			//	testGameObject->RemoveComponent<SpriteRenderer>();
+			//	testGameManager->getGameObjectByName("Test")->RemoveComponent<SpriteRenderer>();
 			//}
 			timeSincePhysicsStep -= FIXEDFRAMERATE;
 		}
