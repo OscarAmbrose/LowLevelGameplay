@@ -5,7 +5,7 @@
 #include <GameObject.h>
 #include <GlobalEvents.h>
 #include <GameManager.h>
-//#include <SpriteAnimator.h>
+#include <AnimationManager.h>
 
 #define FIXEDFRAMERATE 0.016f
 
@@ -21,19 +21,16 @@ int main()
 	//Update Stuff
 
 	//Creates the window
-	sf::RenderWindow window(sf::VideoMode(1800, 1080), "SFML works!");
+	sf::RenderWindow window(sf::VideoMode(1800, 1080), "Not Actually Joust");
 	
-	//std::unique_ptr<GlobalTexture> globalTextureTest = std::make_unique<GlobalTexture>();
+	std::unique_ptr<GlobalTexture> globalTextureTest = std::make_unique<GlobalTexture>();
 	
 	std::unique_ptr<GameManager> testGameManager = std::make_unique<GameManager>();
 
-	std::vector<SpriteRenderer*> srs;
 	std::cout << testGameManager->getGameObjectByName("Object") << std::endl;
 	std::cout << testGameManager->getGameObjectByName("Test") << std::endl;
 
-	//testGameManager->getGameObjectByName("Test")->GetComponent<SpriteRenderer>()->setUV(LLGP::Vector2i(6, 10), LLGP::Vector2i(176, 18) );
-	//testGameManager->getGameObjectByName("Test")->GetComponent<SpriteRenderer>()->setUV(LLGP::Vector2i(3, 1));
-	//testGameManager->getGameObjectByName("Test")->AddComponent<SpriteAnimator>();
+	testGameManager->getGameObjectByName("Test")->GetComponent<SpriteRenderer>()->setUV(LLGP::Vector2i(6, 10), LLGP::Vector2i(176, 18) );
 
 
 	while (window.isOpen())
@@ -76,8 +73,6 @@ int main()
 		}
 		#pragma endregion
 		//Update
-
-		std::cout << "I am cringe!!! meow meow meow" << std::endl;
 
 		#pragma region Render
 		window.clear();

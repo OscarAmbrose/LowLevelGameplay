@@ -1,11 +1,7 @@
 #pragma once
 #include <Object.h>
-//#include <Transform.h>
 #include <iostream>
-//#include <GameObject.h>
-//#include <GlobalEvents.h> 
 
-//class Transform2D;
 class GameObject;
 
 class Component : public Object

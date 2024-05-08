@@ -5,6 +5,7 @@
 #include <isComponenet.h>
 #include <SpriteRenderer.h>
 #include <TestComponent.h>
+#include <AnimationManager.h>
 
 class GameManager
 {
@@ -14,8 +15,9 @@ public:
 		std::shared_ptr<GameObject> testScoper = std::make_shared<GameObject>();
 		std::shared_ptr<GameObject> testScoper2 = std::make_shared<GameObject>();
 
-		testScoper->AddComponent<TestComponent>();
+		//testScoper->AddComponent<TestComponent>();
 		testScoper->AddComponent<SpriteRenderer>();
+		testScoper->AddComponent<AnimationManager>();
 		testScoper2->AddComponent<SpriteRenderer>();
 
 		testScoper->SetName("Test");

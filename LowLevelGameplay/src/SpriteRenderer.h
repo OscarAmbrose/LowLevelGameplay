@@ -1,12 +1,13 @@
 #pragma once
 #include <Vector2.h>
 #include <SFML/Graphics.hpp>
-#include <Component.h>w
+#include <Component.h>
 #include <memory>
 #include <Event.h>
 #include <GlobalEvents.h>
-#include <AssetManager.h>
+//#include <AssetManager.h>
 #include<Texture.h>
+#include<GlobalTexture.h>
 
 //class Transform2D;
 class GameObject;
@@ -17,8 +18,7 @@ public:
 
 	SpriteRenderer(GameObject* owner) : Component(owner) 
 	{ 
-		//std::shared_ptr<Texture> meow = LLGP::AssetManager::GetAsset<Texture>("Textures/JoustSpritesActual.png");
-		//shape.setTexture(*meow.get());
+		shape.setTexture(renderTexture);
 
 		SetTexture();
 
@@ -47,13 +47,11 @@ public:
 	{
 		Component::Update(deltaTime);
 
-		std::cout << "meowest" << std::endl;
+		//std::cout << "meowest" << std::endl;
 	}
 
 private:
 	sf::RectangleShape shape;
-
-	std::shared_ptr<Texture> texture;
 
 	LLGP::Vector2<float> rectangleSize;
 

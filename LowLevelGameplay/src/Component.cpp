@@ -12,6 +12,8 @@ Component::Component(GameObject* owner) : _GameObject(owner)
 	g_OnFixedUpdate.AddListener(this, std::bind(&Component::FixedUpdate, this, std::placeholders::_1));
 }
 
+
+
 Component::~Component()
 {
 	g_OnUpdate.RemoveListener(this, std::bind(&Component::Update, this, std::placeholders::_1));
