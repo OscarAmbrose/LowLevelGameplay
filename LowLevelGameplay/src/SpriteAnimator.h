@@ -1,10 +1,9 @@
 #pragma once
-#include <Component.h>
 #include <SpriteRenderer.h>
 #include <stdexcept>
 #include <vector>
 
-class GameObject;
+//class GameObject;
 
 class SpriteAnimator : public Component
 {

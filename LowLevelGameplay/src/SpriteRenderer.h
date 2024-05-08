@@ -17,8 +17,8 @@ public:
 
 	SpriteRenderer(GameObject* owner) : Component(owner) 
 	{ 
-		std::shared_ptr<Texture> meow = LLGP::AssetManager::GetAsset<Texture>("Textures/JoustSpritesActual.png");
-		shape.setTexture(*meow.get());
+		//std::shared_ptr<Texture> meow = LLGP::AssetManager::GetAsset<Texture>("Textures/JoustSpritesActual.png");
+		//shape.setTexture(*meow.get());
 
 		SetTexture();
 
