@@ -19,12 +19,13 @@ public:
 		testScoper->AddComponent<SpriteRenderer>();
 		testScoper->AddComponent<AnimationManager>();
 		testScoper2->AddComponent<SpriteRenderer>();
+		//testScoper2->AddComponent<AnimationManager>();
 
 		testScoper->SetName("Test");
 		testScoper2->SetName("Test 2");
 		testScoper->SetTag("Debug Object");
 
-		testScoper2->getTransform()->setPosition(Vector2<float>(testScoper2->getTransform()->returnPosition().x + 100, 100));
+		testScoper2->getTransform()->setPosition(Vector2<float>(testScoper2->getTransform()->returnPosition().x + 10, 300));
 
 		m_GameObjects.push_back(std::move(testScoper));
 		m_GameObjects.push_back(std::move(testScoper2));

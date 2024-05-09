@@ -21,6 +21,5 @@ SpriteRenderer* AnimationManager::returnSpriteRenderer()
 
 void AnimationManager::FixedUpdate(float deltaTime)
 {
-	//std::cout << "NextAnimation" << std::endl;
-	testActiveAnimState->nextAnimTest(deltaTime);
+	
 }

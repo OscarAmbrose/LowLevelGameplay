@@ -44,13 +44,16 @@ public:
 		return returnComp;
 	};
 
-	template<class T> requires isComponent<T> T* AddComponent() {
+	template<class T> requires isComponent<T> 
+	T* AddComponent() 
+	{
 		std::unique_ptr<Component> newComp = std::make_unique<T>(this);
 		m_Components.push_back(std::move(newComp));
 		return dynamic_cast<T*>(m_Components[m_Components.size()-1].get());
 	};
 
-	template<class T> requires isComponent<T> bool RemoveComponent()
+	template<class T> requires isComponent<T> 
+	bool RemoveComponent()
 	{
 		bool returnBool = false;
 		T* returnComp = nullptr;

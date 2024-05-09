@@ -30,7 +30,7 @@ int main()
 	std::cout << testGameManager->getGameObjectByName("Object") << std::endl;
 	std::cout << testGameManager->getGameObjectByName("Test") << std::endl;
 
-	testGameManager->getGameObjectByName("Test")->GetComponent<SpriteRenderer>()->setUV(LLGP::Vector2i(6, 10), LLGP::Vector2i(176, 18) );
+	//testGameManager->getGameObjectByName("Test")->GetComponent<SpriteRenderer>()->setUV(LLGP::Vector2i(6, 10), LLGP::Vector2i(176, 18) );
 
 
 	while (window.isOpen())
