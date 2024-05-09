@@ -42,14 +42,17 @@ public:
 	inline void setName(std::string newName) { m_animName = newName; }
 	inline std::string getName() { return m_animName; }
 
+	inline int returnAnimationType() { return animType; }
+	inline void setAnimationType(int newType) { animType = newType; }
+
 protected:
 
 	std::shared_ptr<std::vector<LLGP::Vector2i>> animationPositions;
-	bool largeAnim;
 	std::shared_ptr<std::vector<LLGP::Vector2i>> animationSizes;
-	//bool uniqueAnim;
-	//std::unique_ptr<LLGP::Vector2i> animationOrigin;
+
 	int currentFrame;
+	//Values used to track what type of animation is being stored.
+	bool largeAnim;
 	int animType;
 	std::string m_animName;
 private:

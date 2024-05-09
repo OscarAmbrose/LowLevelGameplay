@@ -67,7 +67,7 @@ public:
 	//void updateRenderer(LLGP::Vector2i position, LLGP::Vector2i size, LLGP::Vector2i spriteOrigin);
 
 	//Global events to be bound to enable/disable the animation state.
-	void UpdateAnimation(float deltaTime);
+	void FixedUpdateAnimation(float deltaTime);
 
 
 protected:

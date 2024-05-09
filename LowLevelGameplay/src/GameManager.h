@@ -6,6 +6,7 @@
 #include <SpriteRenderer.h>
 #include <TestComponent.h>
 #include <AnimationManager.h>
+#include <InputManager.h>
 
 class GameManager
 {
@@ -18,6 +19,13 @@ public:
 		//testScoper->AddComponent<TestComponent>();
 		testScoper->AddComponent<SpriteRenderer>();
 		testScoper->AddComponent<AnimationManager>();
+		InputManager* inputManagerTest = testScoper->AddComponent<InputManager>();
+		inputManagerTest->addEvent<InputAsset<int>>("TestEvent");
+		InputAssetBase* testInputBase = inputManagerTest->GetInputAction<InputAsset<int>>("TestEvent");
+		LLGP::Event<int>* test = testInputBase->getEvent<int>();
+		//inputManagerTest->GetInputAction<InputAsset<int>>("TestEvent")->getEvent<int>()).AddListener(this, std::bind(&GameManager::testFunction, this, std::placeholders::_1));
+		std::cout << (inputManagerTest->GetInputAction<InputAsset<int>>("TestEvent")->getEvent<int>()) << std::endl;
+		inputManagerTest->GetInputAction<InputAsset<int>>("TestEvent")->eventCalled(5);
 		testScoper2->AddComponent<SpriteRenderer>();
 		//testScoper2->AddComponent<AnimationManager>();
 
@@ -30,6 +38,11 @@ public:
 		m_GameObjects.push_back(std::move(testScoper));
 		m_GameObjects.push_back(std::move(testScoper2));
 	};
+
+	void testFunction(int i)
+	{
+		std::cout << i << std::endl;
+	}
 
 	~GameManager() {};
 

@@ -19,7 +19,7 @@ AnimationState::AnimationState(AnimationManager* animManager)
 //Deconstructor
 AnimationState::~AnimationState()
 {
-	g_OnFixedUpdate.RemoveListener(this, std::bind(&AnimationState::UpdateAnimation, this, std::placeholders::_1));
+	g_OnFixedUpdate.RemoveListener(this, std::bind(&AnimationState::FixedUpdateAnimation, this, std::placeholders::_1));
 }
 
 void AnimationState::playAnimation(std::string animationName)
@@ -42,13 +42,13 @@ void AnimationState::setActive(bool newActive)
 	else if (newActive == true) 
 	{
 		m_Active = true;
-		g_OnFixedUpdate.AddListener(this, std::bind(&AnimationState::UpdateAnimation, this, std::placeholders::_1));
+		g_OnFixedUpdate.AddListener(this, std::bind(&AnimationState::FixedUpdateAnimation, this, std::placeholders::_1));
 		return;
 	}
 	//Otherwise resolve false. Technically I could remove this else, but I think it improves readability.
 	else
 	{
-		g_OnFixedUpdate.RemoveListener(this, std::bind(&AnimationState::UpdateAnimation, this, std::placeholders::_1));
+		g_OnFixedUpdate.RemoveListener(this, std::bind(&AnimationState::FixedUpdateAnimation, this, std::placeholders::_1));
 	}
 }
 
@@ -87,10 +87,25 @@ void AnimationState::updateRenderer(LLGP::Vector2i position, LLGP::Vector2i size
 
 //Animation update function, I figured update it better than fixed update for this.
 //But it might be better to change this to fixed update, as animations shouldn't change without the physics change.
-void AnimationState::UpdateAnimation(float deltaTime)
+void AnimationState::FixedUpdateAnimation(float deltaTime)
 {
-	//std::cout << "Hey Im an updating Animation" << std::endl;
-	speedBasedAnimation(18, deltaTime);
+	//Switch on which animation type is currently active
+	int currentAnimationType = m_animations[m_activeAnimation].get()->returnAnimationType();
+	switch (currentAnimationType) {
+	case 0:
+		//DefaultSizeAnimations (Speed Based)
+		speedBasedAnimation(18, deltaTime);
+		break;
+	case 1:
+		//DefaultSizeAnimations (Input Based)
+		break;
+	case 2:
+		//LargeStyleAnimations (TimeBased)
+		break;
+	default:
+		//CodeInfo
+		break;
+	}
 }
 
 inline SpriteRenderer* AnimationState::getSpriteRenderer()

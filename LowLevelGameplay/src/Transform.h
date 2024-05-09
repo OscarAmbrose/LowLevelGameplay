@@ -28,7 +28,6 @@ namespace LLGP
 				}
 			}
 			m_Rotation = newRotation;
-
 		};
 
 		inline LLGP::Vector2<float> returnPosition() { return m_Position; }
