@@ -50,6 +50,8 @@ int main()
 				window.close();
 			}
 		}
+
+
 #pragma endregion
 
 		//Input Handling
@@ -60,6 +62,7 @@ int main()
 		timeSincePhysicsStep += deltaTime;
 		while (timeSincePhysicsStep > FIXEDFRAMERATE)
 		{
+			g_OnPollInputs(event);
 			//step physics
 			g_OnFixedUpdate(FIXEDFRAMERATE);
 			//collect collision info

@@ -21,7 +21,7 @@ protected:
 
 
 
-template<typename T> requires arithmetic<T>
+template<typename T>
 class InputAsset : public InputAssetBase
 {
 public:
@@ -32,17 +32,16 @@ public:
 
 	//T* getReturnType(){ return class T; }
 
-	void eventCalled(T output)
+	void CallEvent(T output)
 	{
-		(*inputEvent.get()).Invoke(output);
+		inputEvent.get()->Invoke(output);
 	}
 
-	template<typename T> requires arithmetic<T>
+	template<typename T>
 	LLGP::Event<T>* getEvent()
 	{ 
 		return inputEvent.get();
 	}
-
 
 protected:
 	std::unique_ptr<LLGP::Event<T>> inputEvent = std::make_unique<LLGP::Event<T>>();

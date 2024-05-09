@@ -12,7 +12,16 @@ class InputManager : public Component
 public:
 	InputManager(GameObject* owner) : Component(owner)
 	{
+		g_OnPollInputs.AddListener(this, std::bind(&InputManager::PollInput, this, std::placeholders::_1));
+	}
 
+	~InputManager() 
+	{
+
+	}
+
+	virtual void PollInput(sf::Event i)
+	{
 	}
 
 	template<class T>
@@ -42,7 +51,7 @@ public:
 		return returnBool;
 	}
 
-	template<class T> requires isInputAsset<T>
+	template<class T>
 	T* GetInputAction(std::string eventName)
 	{
 		T* returnInputAction = nullptr;
@@ -56,6 +65,19 @@ public:
 			}
 		}
 		return returnInputAction;
+	}
+
+	template<typename T>
+	LLGP::Event<T>* getEvent(std::string eventName)
+	{
+		LLGP::Event<T>* eventPointer = nullptr;
+		return GetInputAction<InputAsset<T>>(eventName)->getEvent<T>();
+	}
+
+	template<typename T>
+	void invokeEvent(std::string eventName, T value)
+	{
+		GetInputAction<InputAsset<T>>(eventName)->CallEvent(value);
 	}
 
 protected:

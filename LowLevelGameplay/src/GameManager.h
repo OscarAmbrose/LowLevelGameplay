@@ -6,7 +6,8 @@
 #include <SpriteRenderer.h>
 #include <TestComponent.h>
 #include <AnimationManager.h>
-#include <InputManager.h>
+#include <PlayerController.h>
+#include <Vector2.h>
 
 class GameManager
 {
@@ -16,18 +17,22 @@ public:
 		std::shared_ptr<GameObject> testScoper = std::make_shared<GameObject>();
 		std::shared_ptr<GameObject> testScoper2 = std::make_shared<GameObject>();
 
-		//testScoper->AddComponent<TestComponent>();
 		testScoper->AddComponent<SpriteRenderer>();
 		testScoper->AddComponent<AnimationManager>();
-		InputManager* inputManagerTest = testScoper->AddComponent<InputManager>();
-		inputManagerTest->addEvent<InputAsset<int>>("TestEvent");
-		InputAssetBase* testInputBase = inputManagerTest->GetInputAction<InputAsset<int>>("TestEvent");
-		LLGP::Event<int>* test = testInputBase->getEvent<int>();
-		//inputManagerTest->GetInputAction<InputAsset<int>>("TestEvent")->getEvent<int>()).AddListener(this, std::bind(&GameManager::testFunction, this, std::placeholders::_1));
-		std::cout << (inputManagerTest->GetInputAction<InputAsset<int>>("TestEvent")->getEvent<int>()) << std::endl;
-		inputManagerTest->GetInputAction<InputAsset<int>>("TestEvent")->eventCalled(5);
+
+		PlayerInputController* PC = testScoper->AddComponent<PlayerInputController>();
+
+		//InputManager* inputManagerTest = testScoper->AddComponent<InputManager>();
+		//inputManagerTest->addEvent<InputAsset<int>>("TestEvent");
+		//inputManagerTest->getEvent<int>("TestEvent")->AddListener(this, std::bind(&GameManager::testFunction, this, std::placeholders::_1));
+		//inputManagerTest->GetInputAction<InputAsset<int>>("TestEvent")->CallEvent(5);
+
+		//inputManagerTest->addEvent<InputAsset<LLGP::Vector2i>>("TestEvent2");
+		//inputManagerTest->getEvent<LLGP::Vector2i>("TestEvent2")->AddListener(this, std::bind(&GameManager::testFunction2, this, std::placeholders::_1));
+		//inputManagerTest->invokeEvent<LLGP::Vector2i>("TestEvent2", LLGP::Vector2i(5, 0));
+
 		testScoper2->AddComponent<SpriteRenderer>();
-		//testScoper2->AddComponent<AnimationManager>();
+
 
 		testScoper->SetName("Test");
 		testScoper2->SetName("Test 2");
@@ -42,6 +47,11 @@ public:
 	void testFunction(int i)
 	{
 		std::cout << i << std::endl;
+	}
+
+	void testFunction2(LLGP::Vector2i i)
+	{
+		std::cout << i.x << ", " << i.y << std::endl;
 	}
 
 	~GameManager() {};
