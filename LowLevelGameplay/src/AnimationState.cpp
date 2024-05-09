@@ -19,7 +19,7 @@ AnimationState::AnimationState(AnimationManager* animManager)
 //Deconstructor
 AnimationState::~AnimationState()
 {
-	g_OnUpdate.RemoveListener(this, std::bind(&AnimationState::UpdateAnimation, this, std::placeholders::_1));
+	g_OnFixedUpdate.RemoveListener(this, std::bind(&AnimationState::UpdateAnimation, this, std::placeholders::_1));
 }
 
 void AnimationState::playAnimation(std::string animationName)
@@ -42,20 +42,20 @@ void AnimationState::setActive(bool newActive)
 	else if (newActive == true) 
 	{
 		m_Active = true;
-		g_OnUpdate.AddListener(this, std::bind(&AnimationState::UpdateAnimation, this, std::placeholders::_1));
+		g_OnFixedUpdate.AddListener(this, std::bind(&AnimationState::UpdateAnimation, this, std::placeholders::_1));
 		return;
 	}
 	//Otherwise resolve false. Technically I could remove this else, but I think it improves readability.
 	else
 	{
-		g_OnUpdate.RemoveListener(this, std::bind(&AnimationState::UpdateAnimation, this, std::placeholders::_1));
+		g_OnFixedUpdate.RemoveListener(this, std::bind(&AnimationState::UpdateAnimation, this, std::placeholders::_1));
 	}
 }
 
 void AnimationState::speedBasedAnimation(float Speed, float deltaTime)
 {
 	distanceTravelled += Speed * deltaTime;
-	std::cout << distanceTravelled << std::endl;
+	//std::cout << distanceTravelled << std::endl;
 	if (distanceTravelled >= (getSpriteRenderer()->returnShape().getSize().x * (4.5 / 32)))
 	{
 		updateRenderer(m_animations[m_activeAnimation]->getNextFrame());
@@ -89,8 +89,8 @@ void AnimationState::updateRenderer(LLGP::Vector2i position, LLGP::Vector2i size
 //But it might be better to change this to fixed update, as animations shouldn't change without the physics change.
 void AnimationState::UpdateAnimation(float deltaTime)
 {
-	std::cout << "Hey Im an updating Animation" << std::endl;
-	speedBasedAnimation(8, deltaTime);
+	//std::cout << "Hey Im an updating Animation" << std::endl;
+	speedBasedAnimation(18, deltaTime);
 }
 
 inline SpriteRenderer* AnimationState::getSpriteRenderer()

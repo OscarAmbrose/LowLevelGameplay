@@ -65,10 +65,7 @@ int main()
 			//collect collision info
 			//dispatch collisions
 			numberOfFixedUpdates++;
-			//if (numberOfFixedUpdates >= 50)
-			//{
-			//	testGameManager->getGameObjectByName("Test")->RemoveComponent<SpriteRenderer>();
-			//}
+
 			timeSincePhysicsStep -= FIXEDFRAMERATE;
 		}
 		#pragma endregion

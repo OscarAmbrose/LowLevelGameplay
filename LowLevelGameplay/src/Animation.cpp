@@ -63,7 +63,7 @@ LLGP::Vector2i Animation::getNextFrame()
 		currentFrame = 0;
 	}
 
-	std::cout << (*tempVector)[currentFrame].x << std::endl;
+	//std::cout << (*tempVector)[currentFrame].x << std::endl;
 	return (*tempVector)[currentFrame];
 }
 
