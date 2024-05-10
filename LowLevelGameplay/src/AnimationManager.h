@@ -24,7 +24,7 @@ public:
 		AnimationState* testAnimState = new AnimationState(this);
 		Animation* tempAnim = testAnimState->AddAnimation();
 		tempAnim ->setName((std::string)"Bird_Walk");
-		tempAnim->addAnimation(4, LLGP::Vector2i(0, 2), LLGP::Vector2i(1, 2), LLGP::Vector2i(2, 2), LLGP::Vector2i(3, 2));
+		tempAnim->addAnimation(4, LLGP::Vector2i(0, 0), LLGP::Vector2i(1, 0), LLGP::Vector2i(2, 0), LLGP::Vector2i(3, 0));
 		testAnimState->setActive(true);
 	};
 

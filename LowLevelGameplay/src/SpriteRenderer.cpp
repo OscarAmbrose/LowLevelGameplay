@@ -3,7 +3,6 @@
 
 void SpriteRenderer::SetTexture()
 {
-	
 	Vector2i selectedSprite = Vector2i(0, 0);
 	setUV(selectedSprite);
 }
@@ -33,7 +32,9 @@ sf::RectangleShape SpriteRenderer::returnShape()
 	shape.setOrigin(rectangleSize / 2);
 	shape.setRotation(parentTransform->returnRotation());
 
-	shape.setPosition(/*LLGP::Vector2(450, 450)*/parentTransform->returnPosition());
+	LLGP::Vector2f position = parentTransform->returnPosition() + offset;
+
+	shape.setPosition(position);
 
 	return shape;
 }

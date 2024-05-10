@@ -26,7 +26,7 @@ class InputAsset : public InputAssetBase
 {
 public:
 	InputAsset() { eventName = ""; }
-	InputAsset(std::string meow) { eventName = meow; }
+	InputAsset(std::string name) { eventName = name; }
 
 	~InputAsset() {};
 

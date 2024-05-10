@@ -39,6 +39,20 @@ public:
 
 	sf::RectangleShape returnShape();
 
+	inline bool getFlipped() { return isFlipped; }
+	inline void setFlipped(bool newFlipped) 
+	{ 
+		isFlipped = newFlipped;
+		if (newFlipped)
+		{
+			shape.setScale(-1.f, 1.f);
+		}
+		else
+		{
+			shape.setScale(1.f, 1.f);
+		}
+	}
+
 	//void renderShape(float renderNum);
 	void renderShape(sf::RenderWindow* window);
 
@@ -50,9 +64,16 @@ public:
 		//std::cout << "meowest" << std::endl;
 	}
 
+	inline void setOffSet(LLGP::Vector2f newOffset) { offset = newOffset; }
+	inline LLGP::Vector2f getOffset() { return offset; }
+
 private:
 	sf::RectangleShape shape;
 
 	LLGP::Vector2<float> rectangleSize;
+
+	LLGP::Vector2f offset = LLGP::Vector2f(0, 0);
+
+	bool isFlipped = false;
 
 };

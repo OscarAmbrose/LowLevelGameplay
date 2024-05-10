@@ -3,6 +3,7 @@
 //#include <arithmetic.h>
 #include <InputAsset.h>
 #include <vector>
+#include <GlobalEvents.h>
 
 template <class T>
 concept isInputAsset = std::derived_from<T, InputAssetBase> == true;
