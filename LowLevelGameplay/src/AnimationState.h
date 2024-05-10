@@ -6,6 +6,7 @@
 #include <Event.h>
 #include <SpriteRenderer.h>
 #include <Animation.h>
+#include <cstdarg>
 
 class AnimationManager;
 
@@ -21,9 +22,15 @@ public:
 
 	//I originially templated this function but I realised I can keep all of my animations
 	//the same so a regular function will work.
-	Animation* AddAnimation()
+	Animation* AddAnimation(std::string name, int animType, int animLength, ...)
 	{
 		std::unique_ptr<Animation> newAnim = std::make_unique<Animation>();
+		newAnim.get()->setName(name);
+		newAnim.get()->setAnimationType(animType);
+		va_list args;
+		va_start(args, animLength);
+		newAnim.get()->addAnimation(animLength, args);
+		va_end(args);
 		m_animations.push_back(std::move(newAnim));
 		//I don't need this dynamic cast, I should change this.
 		return dynamic_cast<Animation*>(m_animations[m_animations.size() - 1].get());
@@ -69,6 +76,8 @@ public:
 	//Global events to be bound to enable/disable the animation state.
 	void FixedUpdateAnimation(float deltaTime);
 
+	inline void setName(std::string newName) { m_animationStateName = newName; }
+	inline std::string getName() { return m_animationStateName; }
 
 protected:
 	//Designed to make this class more readable.
@@ -87,4 +96,6 @@ protected:
 
 	float currentTime = 0;
 	float distanceTravelled = 0;
+
+	std::string m_animationStateName;
 };

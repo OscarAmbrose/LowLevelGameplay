@@ -64,16 +64,15 @@ LLGP::Vector2i Animation::getNextFrame()
 	}
 
 	//std::cout << (*tempVector)[currentFrame].x << std::endl;
+	
 	return (*tempVector)[currentFrame];
 }
 
 // I decided to use variadic arguments to create my animations.
 // This was to make it easier to create the animations.
-void Animation::addAnimation(int numArgs, ...)
+void Animation::addAnimation(int numArgs, va_list args)
 {
 	//Create my variadic arg list
-	va_list args;
-	va_start(args, numArgs);
 	//Loop through all of my arguments
 	for (int i = 0; i < numArgs; i++)
 	{
@@ -82,8 +81,6 @@ void Animation::addAnimation(int numArgs, ...)
 		animationPositions->push_back(nextPos);
 	}
 	//end because its necesarry to clean up data?
-	va_end(args);
-
 }
 
 //Adds a single frame to the animation

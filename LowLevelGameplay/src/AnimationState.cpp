@@ -37,11 +37,12 @@ void AnimationState::playAnimation(std::string animationName)
 void AnimationState::setActive(bool newActive)
 {
 	//Check if we need to do anything at all.
-	if (m_Active == newActive) { return; }
+	//if (m_Active == newActive) { return; }
 	//If we do, first resolve true.
-	else if (newActive == true) 
+	if (newActive == true) 
 	{
 		m_Active = true;
+		updateRenderer(m_animations[m_activeAnimation]->getNextFrame());
 		g_OnFixedUpdate.AddListener(this, std::bind(&AnimationState::FixedUpdateAnimation, this, std::placeholders::_1));
 		return;
 	}
@@ -49,6 +50,10 @@ void AnimationState::setActive(bool newActive)
 	else
 	{
 		g_OnFixedUpdate.RemoveListener(this, std::bind(&AnimationState::FixedUpdateAnimation, this, std::placeholders::_1));
+		for (int i = 0; i < m_animations.size(); i++)
+		{
+			m_animations[i].get()->resetAnim();
+		}
 	}
 }
 
@@ -59,7 +64,7 @@ void AnimationState::speedBasedAnimation(float Speed, float deltaTime)
 	if (distanceTravelled >= (getSpriteRenderer()->returnShape().getSize().x * (4.5 / 32)))
 	{
 		updateRenderer(m_animations[m_activeAnimation]->getNextFrame());
-		distanceTravelled -= (getSpriteRenderer()->returnShape().getSize().x * (4.5 / 32));
+		distanceTravelled -= (getSpriteRenderer()->returnShape().getSize().x * (float)(4.5 / 32));
 	}
 }
 
@@ -93,11 +98,12 @@ void AnimationState::FixedUpdateAnimation(float deltaTime)
 	int currentAnimationType = m_animations[m_activeAnimation].get()->returnAnimationType();
 	switch (currentAnimationType) {
 	case 0:
-		//DefaultSizeAnimations (Speed Based)
-		speedBasedAnimation(18, deltaTime);
+		//DefaultSizeAnimations (Input Based)
+		updateRenderer(m_animations[m_activeAnimation]->getNextFrame());
 		break;
 	case 1:
-		//DefaultSizeAnimations (Input Based)
+		//DefaultSizeAnimations (Speed Based)
+		speedBasedAnimation(18, deltaTime);
 		break;
 	case 2:
 		//LargeStyleAnimations (TimeBased)

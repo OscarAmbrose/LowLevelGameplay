@@ -68,7 +68,6 @@ int main()
 			//collect collision info
 			//dispatch collisions
 			numberOfFixedUpdates++;
-
 			timeSincePhysicsStep -= FIXEDFRAMERATE;
 		}
 		#pragma endregion

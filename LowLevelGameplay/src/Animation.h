@@ -30,7 +30,7 @@ public:
 
 
 	//I have swapped to Variadic args.
-	void addAnimation(int numArgs, ...);
+	void addAnimation(int numArgs, va_list args);
 
 	//Just reset the animation, to be called when we swap from one animation to another.
 	inline void resetAnim() { currentFrame = -1; }

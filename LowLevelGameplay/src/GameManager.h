@@ -20,7 +20,12 @@ public:
 		testScoper->AddComponent<SpriteRenderer>();
 
 		testScoper->AddComponent<AnimationManager>();
-		//testScoper->AddComponent<PlayerInputController>()->getEvent<LLGP::Vector2<float>>("MoveDirection")->AddListener(this, std::bind(&GameManager::testFunction2, this, std::placeholders::_1));
+
+		testScoper->GetComponent<AnimationManager>()->addAnimationState<AnimationState>("Walking")->AddAnimation("Walk", 1, 4, Vector2i(0, 2), Vector2i(1, 2), Vector2i(2, 2), Vector2i(3, 2), Vector2i(4, 2));
+		testScoper->GetComponent<AnimationManager>()->addAnimationState<AnimationState>("Walking2")->AddAnimation("Walk", 0, 1, Vector2i(5, 2));
+		testScoper->GetComponent<AnimationManager>()->setActiveAnimationState<AnimationState>("Walking");
+
+		testScoper->AddComponent<PlayerInputController>()->getEvent<LLGP::Vector2<float>>("MoveDirection")->AddListener(this, std::bind(&GameManager::testFunction2, this, std::placeholders::_1));
 
 		testScoper2->AddComponent<SpriteRenderer>();
 
@@ -42,20 +47,15 @@ public:
 
 	void testFunction2(LLGP::Vector2<float> i)
 	{
-		//if (i.x == -1)
-		//{
-		//	srTesting->setFlipped(true);
-		//	srTesting->setOffSet(LLGP::Vector2f(-3, -9));
-
-		//	srTesting2->setFlipped(true);
-		//}
-		//else if (i.x == 1)
-		//{
-		//	srTesting->setFlipped(false);
-		//	srTesting->setOffSet(LLGP::Vector2f(3, -9));
-
-		//	srTesting2->setFlipped(false);
-		//}
+		if (i.x == -1)
+		{
+			getGameObjectByName("Test")->GetComponent<AnimationManager>()->setActiveAnimationState<AnimationState>("Walking2");
+		}
+		else if (i.x == 1)
+		{
+			GameObject* test = getGameObjectByName("Test");
+			test->GetComponent<AnimationManager>()->setActiveAnimationState<AnimationState>("Walking");
+		}
 	}
 
 	~GameManager() {};
