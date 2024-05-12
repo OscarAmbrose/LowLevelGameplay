@@ -103,7 +103,7 @@ void AnimationState::FixedUpdateAnimation(float deltaTime)
 		break;
 	case 1:
 		//DefaultSizeAnimations (Speed Based)
-		speedBasedAnimation(18, deltaTime);
+		speedBasedAnimation(30, deltaTime);
 		break;
 	case 2:
 		//LargeStyleAnimations (TimeBased)

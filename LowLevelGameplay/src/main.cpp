@@ -81,7 +81,7 @@ int main()
 		#pragma region Render
 		window.clear();
 
-		g_OnRender(&window);
+		g_OnRender(&window, 0);
 
 		window.display();
 #pragma endregion

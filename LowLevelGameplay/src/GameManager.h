@@ -14,6 +14,9 @@ class GameManager
 public:
 	GameManager()
 	{
+		//WARNING -- HORRIBLE MESS OF TESTING, DO NOT OPEN!!!!!
+
+#pragma region TESTING MESS DO NOT OPEN
 		std::shared_ptr<GameObject> testScoper = std::make_shared<GameObject>();
 		std::shared_ptr<GameObject> testScoper2 = std::make_shared<GameObject>();
 		std::shared_ptr<GameObject> gameObjectExample2 = std::make_shared<GameObject>();
@@ -31,12 +34,10 @@ public:
 
 		gameObjectExample1->GetComponent<SpriteRenderer>()->setUV(LLGP::Vector2i(14, 7));
 		gameObjectExample2->GetComponent<SpriteRenderer>()->setUV(LLGP::Vector2i(6, 10), LLGP::Vector2i(176, 18));
-
-
 		testScoper5->GetComponent<SpriteRenderer>()->setUV(LLGP::Vector2i(17, 7));
+
 		gameObjectExample2->getTransform()->setPosition(LLGP::Vector2f(462, 180));
 		gameObjectExample1->getTransform()->setPosition(LLGP::Vector2f(450, 225));
-		testScoper5->getTransform()->setPosition(LLGP::Vector2f(461, 225));
 		testScoper5->getTransform()->setPosition(LLGP::Vector2f(461, 225));
 		testScoper2->getTransform()->setPosition(LLGP::Vector2f(458, 272));
 		
@@ -57,7 +58,9 @@ public:
 		m_GameObjects.push_back(std::move(gameObjectExample2));
 		m_GameObjects.push_back(std::move(gameObjectExample1));
 		m_GameObjects.push_back(std::move(testScoper5));
+#pragma endregion
 
+		//WARNING -- HORRIBLE MESS OF TESTING, DO NOT OPEN!!!!!
 	};
 
 	void testFunction(int i)

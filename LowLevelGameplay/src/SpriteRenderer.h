@@ -20,6 +20,9 @@ public:
 	{ 
 		shape.setTexture(renderTexture);
 
+		rectTexSize = Vector2i(shape.getTexture()->getSize());
+
+		//Vector2i selectedSprite = Vector2i(10, 15);
 		Vector2i selectedSprite = Vector2i(0, 0);
 		setUV(selectedSprite);
 
@@ -75,4 +78,7 @@ private:
 
 	bool isFlipped = false;
 
+	LLGP::Vector2i spritesInTexture = LLGP::Vector2i(32, 16);
+
+	LLGP::Vector2i rectTexSize = LLGP::Vector2i(0, 0);
 };
