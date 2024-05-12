@@ -79,6 +79,10 @@ public:
 	inline void setName(std::string newName) { m_animationStateName = newName; }
 	inline std::string getName() { return m_animationStateName; }
 
+	void setActiveAnimation(std::string animationName);
+	void setActiveAnimation(int animationName);
+
+
 protected:
 	//Designed to make this class more readable.
 	inline SpriteRenderer* getSpriteRenderer();

@@ -1,12 +1,6 @@
 #include "SpriteRenderer.h"
 #include <Transform.h>
 
-void SpriteRenderer::SetTexture()
-{
-	Vector2i selectedSprite = Vector2i(0, 0);
-	setUV(selectedSprite);
-}
-
 void SpriteRenderer::setUV(Vector2i selectedSprite)
 {
 	Vector2i spritesInTexture = Vector2i(32, 16);

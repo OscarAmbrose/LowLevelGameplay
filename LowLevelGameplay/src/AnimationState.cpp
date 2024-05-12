@@ -114,6 +114,29 @@ void AnimationState::FixedUpdateAnimation(float deltaTime)
 	}
 }
 
+void AnimationState::setActiveAnimation(std::string animationName)
+{
+	Animation* animationToActivate = findAnimation(animationName);
+	for (int i = 0; i < m_animations.size(); i++)
+	{
+		if (m_animations[i].get() == animationToActivate)
+		{
+			if (m_activeAnimation == i)
+			{
+				return;
+			}
+			m_animations[m_activeAnimation].get()->resetAnim();
+			setActiveAnimation(i);
+			updateRenderer(m_animations[m_activeAnimation]->getNextFrame());
+		}
+	}
+}
+
+void AnimationState::setActiveAnimation(int animationName)
+{
+	m_activeAnimation = animationName;
+}
+
 inline SpriteRenderer* AnimationState::getSpriteRenderer()
 {
 	return m_animationManager->returnSpriteRenderer();

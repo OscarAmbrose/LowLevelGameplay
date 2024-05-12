@@ -20,7 +20,8 @@ public:
 	{ 
 		shape.setTexture(renderTexture);
 
-		SetTexture();
+		Vector2i selectedSprite = Vector2i(0, 0);
+		setUV(selectedSprite);
 
 		g_OnRender.AddListener(this, std::bind(&SpriteRenderer::renderShape, this, std::placeholders::_1));
 	}
@@ -30,8 +31,6 @@ public:
 		std::cout << "Meow" << std::endl;
 		g_OnRender.RemoveListener(this, std::bind(&SpriteRenderer::renderShape, this, std::placeholders::_1));
 	}
-	
-	void SetTexture();
 
 	void setUV(Vector2i selectedSprite);
 
