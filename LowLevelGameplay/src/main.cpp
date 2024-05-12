@@ -32,6 +32,11 @@ int main()
 
 	//testGameManager->getGameObjectByName("Test")->GetComponent<SpriteRenderer>()->setUV(LLGP::Vector2i(6, 10), LLGP::Vector2i(176, 18) );
 
+	//Vector2<float> meow = Vector2<float>(15.f, 10.f);
+	//int a = 10;
+	//meow.x += a;
+	//meow / a;
+	//std::cout << (meow.x+=a) << std::endl;
 
 	while (window.isOpen())
 	{
