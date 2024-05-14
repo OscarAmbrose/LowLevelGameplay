@@ -8,6 +8,7 @@
 #include <AnimationManager.h>
 #include <PlayerInputController.h>
 #include <Vector2.h>
+#include <RigidBody.h>
 
 class GameManager
 {
@@ -25,16 +26,19 @@ public:
 
 		g_OnFixedUpdate.AddListener(this, std::bind(&GameManager::fixedUpdate, this, std::placeholders::_1));
 
-		testScoper->AddComponent<SpriteRenderer>();
+		testScoper->AddComponent<SpriteRenderer>()->setRenderLayer(1);
 		testScoper->AddComponent<AnimationManager>();
-		gameObjectExample2->AddComponent<SpriteRenderer>();
-		gameObjectExample1->AddComponent<SpriteRenderer>();
-		testScoper5->AddComponent<SpriteRenderer>();
-		testScoper2->AddComponent<SpriteRenderer>();
+		gameObjectExample2->AddComponent<SpriteRenderer>()->setRenderLayer(0);
+		gameObjectExample1->AddComponent<SpriteRenderer>()->setRenderLayer(0);
+		testScoper5->AddComponent<SpriteRenderer>()->setRenderLayer(0);
+		testScoper2->AddComponent<SpriteRenderer>()->setRenderLayer(0);
 
 		gameObjectExample1->GetComponent<SpriteRenderer>()->setUV(LLGP::Vector2i(14, 7));
 		gameObjectExample2->GetComponent<SpriteRenderer>()->setUV(LLGP::Vector2i(6, 10), LLGP::Vector2i(176, 18));
+
 		testScoper5->GetComponent<SpriteRenderer>()->setUV(LLGP::Vector2i(17, 7));
+
+		testScoper->AddComponent<RigidBody>();
 
 		gameObjectExample2->getTransform()->setPosition(LLGP::Vector2f(462, 180));
 		gameObjectExample1->getTransform()->setPosition(LLGP::Vector2f(450, 225));
@@ -70,7 +74,7 @@ public:
 
 	void testFunction2(LLGP::Vector2<float> i)
 	{
-		meow = i;
+		meow = (LLGP::Vector2f(i.x, -i.y));
 		if (i.x == -1)
 		{
 			GameObject* test = getGameObjectByName("Test");
@@ -98,8 +102,14 @@ public:
 			getGameObjectByName("Test")->GetComponent<SpriteRenderer>()->setFlipped(true);
 		}
 		
-		getGameObjectByName("Test")->getTransform()->setPosition(LLGP::Vector2f(location.x + meow.x, location.y + -meow.y));
+		//getGameObjectByName("Test")->getTransform()->setPosition(LLGP::Vector2f(location.x + meow.x, location.y + -meow.y));
 
+		LLGP::Vector2f movementForce;
+		float movementSpeed = 65.f;
+
+		movementForce = meow * movementSpeed;
+
+		getGameObjectByName("Test")->GetComponent<RigidBody>()->addForce(movementForce);
 	}
 
 	~GameManager() {};

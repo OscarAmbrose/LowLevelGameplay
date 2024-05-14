@@ -9,4 +9,4 @@ extern LLGP::Event<float> g_OnFixedUpdate;
 extern LLGP::Event<float> g_OnPhysicsUpdate;
 extern LLGP::Event<sf::Event> g_OnPollInputs;
 //extern LLGP::Event<float> g_OnRender;
-extern LLGP::Event<sf::RenderWindow*> g_OnRender;
+extern LLGP::Event<sf::RenderWindow*, int> g_OnRender;

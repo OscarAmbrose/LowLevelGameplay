@@ -1,7 +1,7 @@
 #pragma once
 #include <Component.h>
 
-class RigidBody : Component
+class RigidBody : public Component
 {
 public:
 	RigidBody(GameObject* owner) : Component(owner)		
@@ -13,8 +13,12 @@ public:
 	void FixedUpdate(float deltaTime) override;
 
 	void addForce(LLGP::Vector2f force);
-	LLGP::Vector2f SolveForces();
-	float CalculateMaximumFrictionForce();
+	LLGP::Vector2f SolveForces(float deltaTime);
+	LLGP::Vector2f CalculateFrictionForce(float deltaTime);
+
+	float CalculateOpposingForce(float deltaTime, float velocityToOppose, float opposingForceStrength);
+
+	LLGP::Vector2f CalculateDragForce(float deltaTime);
 
 #pragma region Interact with Member Variables
 
@@ -45,6 +49,9 @@ public:
 	inline bool IsGrounded() const { return m_isGrounded; }
 	inline void SetIsGrounded(bool newGrounded) { m_isGrounded = newGrounded; }
 
+	inline bool GravityIsEnabled() { return m_HasGravity; }
+	inline void setGravityEnabled(bool newGrav) { m_HasGravity = newGrav; }
+
 #pragma endregion
 
 protected:
@@ -56,8 +63,9 @@ private:
 	float m_MaxSpeed = 100.f;//
 	LLGP::Vector2f m_Acceleration = LLGP::Vector2f(0.f, 0.f);//
 	float m_FrictionForce = 1.f;//
-	float m_DragForce = 1.f;//
+	float m_DragForce = 12.f;//
 	LLGP::Vector2f m_GravityForce = LLGP::Vector2f(0, 9.81f);//
 	float m_Mass = 1.f;//
 	bool m_isGrounded = false;
+	bool m_HasGravity = false;
 };

@@ -1,8 +1,15 @@
 #include "RigidBody.h"
+#include "GameObject.h"
 
 void RigidBody::FixedUpdate(float deltaTime)
 {
+	AddVelocity(SolveForces(deltaTime));
 
+	Vector2f newPosition;
+
+	newPosition = (GetVelocity()* deltaTime) + (_GameObject->getTransform()->returnPosition());
+
+	_GameObject->getTransform()->setPosition(newPosition);
 }
 
 void RigidBody::addForce(LLGP::Vector2f force)
@@ -10,47 +17,101 @@ void RigidBody::addForce(LLGP::Vector2f force)
 	AddNetForce(force);
 }
 
-
-
-LLGP::Vector2f RigidBody::SolveForces()
+LLGP::Vector2f RigidBody::SolveForces(float deltaTime)
 {
-	m_NetForce += m_GravityForce;
+	Vector2f velocityToAdd = LLGP::Vector2f::zero;
+
+	if (GravityIsEnabled())
+	{
+		m_NetForce += GetGravityForce();
+	}
+	m_NetForce += CalculateFrictionForce(deltaTime);
+	m_NetForce += CalculateDragForce(deltaTime);
+
+	std::cout << std::endl << "Delta Time: " << deltaTime << std::endl;
+
+	std::cout << "m_NetForce = " << m_NetForce.x << ", " << m_NetForce.y << std::endl;
 	
+	velocityToAdd = (m_NetForce / GetMass()) * deltaTime;
+
+	std::cout << "velocityToAdd = " << velocityToAdd.x << ", " << velocityToAdd.y << std::endl;
+
+	m_NetForce = Vector2f::zero;
+
+	return velocityToAdd;
 }
 
-float RigidBody::CalculateMaximumFrictionForce()
+LLGP::Vector2f RigidBody::CalculateFrictionForce(float deltaTime)
+{
+	//If friction is unneeded, return
+	if (!IsGrounded() || GetVelocity().x == 0)
+	{
+		return LLGP::Vector2<float>::zero;
+	}
+
+	float returnForce = 0;
+
+	returnForce = CalculateOpposingForce(deltaTime, GetVelocity().x, GetFriction());
+
+	//Return friction in the X axis
+	return LLGP::Vector2f(returnForce, 0);
+}
+
+float RigidBody::CalculateOpposingForce(float deltaTime, float velocityToOppose, float opposingForceStrength)
 {
 	float attemptedForce = 0;
 	float returnForce = 0;
-	if (IsGrounded())
+
+	// A = V/dT therefore:
+	// F = V/dT * M
+	float velocityForce = ((velocityToOppose / deltaTime) * GetMass());
+
+
+	//Make sure the friction force is in the correct direction
+	if (velocityForce > 0)
 	{
-		if (m_Velocity.x > 0)
-		{
-			attemptedForce = -GetFriction();
-		}
-		else if (m_Velocity.x < 0)
-		{
-			attemptedForce = GetFriction();
-		}
+		attemptedForce = -opposingForceStrength;
 	}
-	else
+	else if (velocityForce < 0)
 	{
-		if (m_Velocity.x > 0)
-		{
-			attemptedForce = -GetFriction();
-		}
-		else if (m_Velocity.x < 0)
-		{
-			attemptedForce = GetFriction();
-		}
+		attemptedForce = opposingForceStrength;
 	}
 
-	if ((attemptedForce > 0 && GetVelocity().x < attemptedForce && GetVelocity().x > 0) ||( attemptedForce < 0 && GetVelocity().x > attemptedForce && GetVelocity().x < 0))
+	//Check that the friction force isn't greater than the velocities force.
+	//if ((attemptedForce > 0 && velocityForce < attemptedForce && velocityForce > 0) || (attemptedForce < 0 && velocityForce > attemptedForce && velocityForce < 0))
+	//{
+	//	returnForce = -velocityForce;
+	//}
+
+	if ((velocityForce > 0 && velocityForce - attemptedForce < 0) || (velocityForce < 0 && velocityForce - attemptedForce > 0))
 	{
-		returnForce = -GetVelocity().x;
+		returnForce = -velocityForce;
 	}
 	else
 	{
 		returnForce = attemptedForce;
 	}
+
+	return returnForce;
+}
+
+LLGP::Vector2f RigidBody::CalculateDragForce(float deltaTime)
+{
+	//If Drag is unneeded, return.
+	if (IsGrounded() || GetVelocity().GetSquareMagnitude() == 0)
+	{
+		return LLGP::Vector2f::zero;
+	}
+	LLGP::Vector2f DragForce = LLGP::Vector2f::zero;
+
+	float returnForceX = CalculateOpposingForce(deltaTime, GetVelocity().x, GetDrag());
+	float returnForceY = CalculateOpposingForce(deltaTime, GetVelocity().y, GetDrag());
+
+	float test = m_Velocity.GetSquareMagnitude();
+
+	DragForce *= (test * test);
+
+	DragForce = LLGP::Vector2f(returnForceX, returnForceY);
+
+	return DragForce;
 }

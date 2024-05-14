@@ -62,15 +62,19 @@ int main()
 		//Input Handling
 		numberOfUpdates++;
 		g_OnUpdate(deltaTime);
+		g_OnPollInputs(event);
 
 		#pragma region Physics
 		timeSincePhysicsStep += deltaTime;
 		while (timeSincePhysicsStep > FIXEDFRAMERATE)
 		{
-			g_OnPollInputs(event);
+
 			//step physics
 			g_OnFixedUpdate(FIXEDFRAMERATE);
 			//collect collision info
+			// 
+			std::cout <<std::endl<< "Number of Fixed Updates: " << numberOfFixedUpdates << std::endl;
+			g_OnPhysicsUpdate(FIXEDFRAMERATE);
 			//dispatch collisions
 			numberOfFixedUpdates++;
 			timeSincePhysicsStep -= FIXEDFRAMERATE;
@@ -81,7 +85,10 @@ int main()
 		#pragma region Render
 		window.clear();
 
-		g_OnRender(&window, 0);
+		for (int i = 0; i < 5; i++)
+		{
+			g_OnRender(&window, i);
+		}
 
 		window.display();
 #pragma endregion

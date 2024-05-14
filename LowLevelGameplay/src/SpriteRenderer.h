@@ -18,6 +18,8 @@ public:
 
 	SpriteRenderer(GameObject* owner) : Component(owner) 
 	{ 
+		m_RenderLayer = 5;
+
 		shape.setTexture(renderTexture);
 
 		rectTexSize = Vector2i(shape.getTexture()->getSize());
@@ -26,13 +28,13 @@ public:
 		Vector2i selectedSprite = Vector2i(0, 0);
 		setUV(selectedSprite);
 
-		g_OnRender.AddListener(this, std::bind(&SpriteRenderer::renderShape, this, std::placeholders::_1));
+		g_OnRender.AddListener(this, std::bind(&SpriteRenderer::renderShape, this, std::placeholders::_1, std::placeholders::_2));
 	}
 
 	~SpriteRenderer()
 	{
 		std::cout << "Meow" << std::endl;
-		g_OnRender.RemoveListener(this, std::bind(&SpriteRenderer::renderShape, this, std::placeholders::_1));
+		g_OnRender.RemoveListener(this, std::bind(&SpriteRenderer::renderShape, this, std::placeholders::_1, std::placeholders::_2));
 	}
 
 	void setUV(Vector2i selectedSprite);
@@ -56,7 +58,7 @@ public:
 	}
 
 	//void renderShape(float renderNum);
-	void renderShape(sf::RenderWindow* window);
+	void renderShape(sf::RenderWindow* window, int renderLayer);
 
 	//Testing overriding an update function (Working)
 	void Update(float deltaTime)
@@ -68,6 +70,9 @@ public:
 
 	inline void setOffSet(LLGP::Vector2f newOffset) { offset = newOffset; }
 	inline LLGP::Vector2f getOffset() { return offset; }
+
+	inline void setRenderLayer(int newRenderLayer) { m_RenderLayer = newRenderLayer; }
+	inline int getRenderLayer() { return m_RenderLayer; }
 
 private:
 	sf::RectangleShape shape;
@@ -81,4 +86,6 @@ private:
 	LLGP::Vector2i spritesInTexture = LLGP::Vector2i(32, 16);
 
 	LLGP::Vector2i rectTexSize = LLGP::Vector2i(0, 0);
+
+	int m_RenderLayer;
 };

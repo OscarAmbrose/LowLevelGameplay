@@ -28,12 +28,10 @@ sf::RectangleShape SpriteRenderer::returnShape()
 	return shape;
 }
 
-void SpriteRenderer::renderShape(sf::RenderWindow* window)
+void SpriteRenderer::renderShape(sf::RenderWindow* window, int renderLayer)
 {
-	window->draw(returnShape());
+	if (renderLayer == getRenderLayer())
+	{
+		window->draw(returnShape());
+	}
 }
-
-//void SpriteRenderer::renderShape(float RenderNum)
-//{
-//	std::cout << "MOEW" << std::endl;
-//}
