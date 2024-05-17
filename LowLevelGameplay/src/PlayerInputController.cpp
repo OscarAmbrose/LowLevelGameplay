@@ -1,4 +1,11 @@
 #include "PlayerInputController.h"
+#include "GameObject.h"
+#include "AnimationManager.h"
+
+void PlayerInputController::DebugWASD(Vector2<float> input)
+{
+	std::cout << "input: " << input.x << ", " << input.y << std::endl;
+}
 
 void PlayerInputController::PollInput(sf::Event i)
 {

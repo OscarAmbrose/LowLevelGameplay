@@ -1,5 +1,6 @@
 #pragma once
 #include "InputManager.h"
+#include "RigidBody.h"
 
 class PlayerInputController : public InputManager
 {
@@ -12,10 +13,7 @@ public:
 
 	~PlayerInputController(){}
 
-	void DebugWASD(Vector2<float> input)
-	{
-		std::cout << "input: " << input.x << ", " << input.y << std::endl;
-	}
+	void DebugWASD(Vector2<float> input);
 
 	void DebugJump(int jumpInt)
 	{

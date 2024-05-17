@@ -1,5 +1,6 @@
 #include "SpriteRenderer.h"
 #include <Transform.h>
+#include <GameObject.h>
 
 void SpriteRenderer::setUV(Vector2i selectedSprite)
 {
@@ -26,6 +27,23 @@ sf::RectangleShape SpriteRenderer::returnShape()
 	shape.setPosition(position);
 
 	return shape;
+}
+
+void SpriteRenderer::setFlipped(bool newFlipped)
+{
+
+	isFlipped = newFlipped;
+	float x = _GameObject->getTransform()->returnScale().x;
+	float y = _GameObject->getTransform()->returnScale().y;
+	if (newFlipped)
+	{
+		shape.setScale(-x, x);
+	}
+	else
+	{
+		shape.setScale(x, x);
+	}
+
 }
 
 void SpriteRenderer::renderShape(sf::RenderWindow* window, int renderLayer)

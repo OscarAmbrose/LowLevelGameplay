@@ -3,11 +3,34 @@
 
 void RigidBody::FixedUpdate(float deltaTime)
 {
-	AddVelocity(SolveForces(deltaTime));
+	LLGP::Vector2f solvedForce = SolveForces(deltaTime);
+	AddVelocity(solvedForce);
+	
+	//Check if player is over max speed.
+	if (GetVelocity().GetMagnitude() > GetMaxSpeed())
+	{
+		SetVelocity(GetVelocity().Normalise() * GetMaxSpeed());
+	}
+	if (GetVelocity().x < 0.5 && GetVelocity().x > -0.5)
+	{
+		SetVelocity(LLGP::Vector2f(0, GetVelocity().y));
+	}
+	if (GetVelocity().y < 0.5 && GetVelocity().y > -0.5)
+	{
+		SetVelocity(LLGP::Vector2f(GetVelocity().x, 0));
+	}
 
-	Vector2f newPosition;
+	std::cout << GetVelocity().x << std::endl;
+
+	LLGP::Vector2f oldPos = _GameObject->getTransform()->returnPosition();
+
+	LLGP::Vector2f newPosition;
 
 	newPosition = (GetVelocity()* deltaTime) + (_GameObject->getTransform()->returnPosition());
+
+	LLGP::Vector2f distance = newPosition - oldPos;
+
+	setDistanceTravelled(distance.GetMagnitude());
 
 	_GameObject->getTransform()->setPosition(newPosition);
 }
@@ -28,13 +51,13 @@ LLGP::Vector2f RigidBody::SolveForces(float deltaTime)
 	m_NetForce += CalculateFrictionForce(deltaTime);
 	m_NetForce += CalculateDragForce(deltaTime);
 
-	std::cout << std::endl << "Delta Time: " << deltaTime << std::endl;
+	//std::cout << std::endl << "Delta Time: " << deltaTime << std::endl;
 
-	std::cout << "m_NetForce = " << m_NetForce.x << ", " << m_NetForce.y << std::endl;
+	//std::cout << "m_NetForce = " << m_NetForce.x << ", " << m_NetForce.y << std::endl;
 	
 	velocityToAdd = (m_NetForce / GetMass()) * deltaTime;
 
-	std::cout << "velocityToAdd = " << velocityToAdd.x << ", " << velocityToAdd.y << std::endl;
+	//std::cout << "velocityToAdd = " << velocityToAdd.x << ", " << velocityToAdd.y << std::endl;
 
 	m_NetForce = Vector2f::zero;
 

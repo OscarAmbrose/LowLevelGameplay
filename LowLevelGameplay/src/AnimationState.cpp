@@ -1,6 +1,9 @@
 #pragma once
 #include "AnimationState.h"
 #include "AnimationManager.h"
+#include <GameObject.h>
+#include <RigidBody.h>
+#include <Event.h>
 
 //Constructor
 AnimationState::AnimationState(AnimationManager* animManager)
@@ -8,11 +11,14 @@ AnimationState::AnimationState(AnimationManager* animManager)
 	//Sets default anim manager reference
 	m_animationManager = animManager;
 	
+	m_GameObject = m_animationManager->GetGameObject();
+
+	m_RigidBody = m_GameObject->GetComponent<RigidBody>();
+
 	//We want each animation state to be false in the beginning as they are added, when we add a animation this can be set to true.
 	m_Active = false;
 	
-	//Default animation start is 0
-	//currentAnimPos = 0;
+	//Default animation is 0
 	m_activeAnimation = 0;
 }
 
@@ -20,6 +26,21 @@ AnimationState::AnimationState(AnimationManager* animManager)
 AnimationState::~AnimationState()
 {
 	g_OnFixedUpdate.RemoveListener(this, std::bind(&AnimationState::FixedUpdateAnimation, this, std::placeholders::_1));
+}
+
+Animation* AnimationState::findAnimation(std::string animationName)
+{
+
+	Animation* returnAnim = nullptr;
+	for (int i = 0; i < m_animations.size(); i++)
+	{
+		returnAnim = m_animations[i].get();
+		if (returnAnim->getName() == animationName)
+		{
+			return returnAnim;
+		}
+	}
+	return returnAnim;
 }
 
 void AnimationState::playAnimation(std::string animationName)
@@ -57,9 +78,9 @@ void AnimationState::setActive(bool newActive)
 	}
 }
 
-void AnimationState::speedBasedAnimation(float Speed, float deltaTime)
+void AnimationState::speedBasedAnimation(float thisFrameDistanceTravelled)
 {
-	distanceTravelled += Speed * deltaTime;
+	distanceTravelled += thisFrameDistanceTravelled;
 	//std::cout << distanceTravelled << std::endl;
 	if (distanceTravelled >= (getSpriteRenderer()->returnShape().getSize().x * (4.5 / 32)))
 	{
@@ -96,14 +117,30 @@ void AnimationState::FixedUpdateAnimation(float deltaTime)
 {
 	//Switch on which animation type is currently active
 	int currentAnimationType = m_animations[m_activeAnimation].get()->returnAnimationType();
+
 	switch (currentAnimationType) {
 	case 0:
 		//DefaultSizeAnimations (Input Based)
 		updateRenderer(m_animations[m_activeAnimation]->getNextFrame());
 		break;
 	case 1:
-		//DefaultSizeAnimations (Speed Based)
-		speedBasedAnimation(30, deltaTime);
+		// (Speed Based Animations)
+		// If the rigid body isnt null, update the speed based animation by distance travelled
+		if (m_RigidBody != nullptr)
+		{
+			speedBasedAnimation(m_RigidBody->GetDistanceTravelled());
+		}
+		//If rigid body is null do this instead
+		else
+		{
+			return;
+		}
+		//If stop moving go to default pose
+		if (m_RigidBody->GetVelocity().GetMagnitude() >= -0.5 && m_RigidBody->GetVelocity().GetMagnitude() <= 0.5)
+		{
+			m_animations[m_activeAnimation].get()->resetAnim();
+			updateRenderer(m_animations[m_activeAnimation].get()->getNextFrame());
+		}
 		break;
 	case 2:
 		//LargeStyleAnimations (TimeBased)
@@ -141,4 +178,3 @@ inline SpriteRenderer* AnimationState::getSpriteRenderer()
 {
 	return m_animationManager->returnSpriteRenderer();
 }
-

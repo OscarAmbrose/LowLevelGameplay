@@ -3,12 +3,12 @@
 #include <vector>
 #include <Vector2.h>
 #include <iostream>
-#include <Event.h>
 #include <SpriteRenderer.h>
 #include <Animation.h>
 #include <cstdarg>
 
 class AnimationManager;
+class RigidBody;
 
 template<typename T>
 concept isAnimation = std::derived_from<T, Animation> == true;
@@ -40,19 +40,7 @@ public:
 	//Each Animation state will probably derive from AnimationState, not be a single class for
 	//ease of development later on.
 
-	Animation* findAnimation(std::string animationName)
-	{
-		Animation* returnAnim = nullptr;
-		for (int i = 0; i < m_animations.size(); i++)
-		{
-			returnAnim = m_animations[i].get();
-			if (returnAnim->getName() == animationName)
-			{
-				return returnAnim;
-			}
-		}
-		return returnAnim;
-	}
+	Animation* findAnimation(std::string animationName);
 
 	void playAnimation(std::string animationName);
 
@@ -63,7 +51,7 @@ public:
 	/// All bird based characters will use this form of animation for walking
 	/// </summary>
 	/// <param name="Speed"></param>
-	void speedBasedAnimation(float Speed, float deltaTime);
+	void speedBasedAnimation(float thisFrameDistanceTravelled);
 
 	void iterateAnimation();
 
@@ -82,10 +70,13 @@ public:
 	void setActiveAnimation(std::string animationName);
 	void setActiveAnimation(int animationName);
 
-
 protected:
 	//Designed to make this class more readable.
 	inline SpriteRenderer* getSpriteRenderer();
+
+	GameObject* m_GameObject;
+
+	RigidBody* m_RigidBody;
 
 	//To check whether this animation state is Active.
 	bool m_Active;

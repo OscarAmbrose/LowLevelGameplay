@@ -3,7 +3,6 @@
 #include <stdexcept>
 #include <vector>
 #include <memory>
-#include <Event.h>
 #include "AnimationState.h"
 
 class AnimationManager : public Component
@@ -76,6 +75,8 @@ public:
 		}
 		return false;
 	}
+
+	inline std::string ReturnActiveAnimationState() { return activeAnimationState; }
 
 	bool findSpriteRenderer();
 

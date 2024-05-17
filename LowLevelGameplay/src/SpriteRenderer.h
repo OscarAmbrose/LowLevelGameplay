@@ -44,18 +44,7 @@ public:
 	sf::RectangleShape returnShape();
 
 	inline bool getFlipped() { return isFlipped; }
-	inline void setFlipped(bool newFlipped) 
-	{ 
-		isFlipped = newFlipped;
-		if (newFlipped)
-		{
-			shape.setScale(-1.f, 1.f);
-		}
-		else
-		{
-			shape.setScale(1.f, 1.f);
-		}
-	}
+	void setFlipped(bool newFlipped);
 
 	//void renderShape(float renderNum);
 	void renderShape(sf::RenderWindow* window, int renderLayer);

@@ -7,7 +7,7 @@
 #include <GameManager.h>
 #include <AnimationManager.h>
 
-#define FIXEDFRAMERATE 0.016f
+#define FIXEDFRAMERATE (1.f/60.f)
 
 int main()
 {
@@ -68,12 +68,11 @@ int main()
 		timeSincePhysicsStep += deltaTime;
 		while (timeSincePhysicsStep > FIXEDFRAMERATE)
 		{
-
 			//step physics
 			g_OnFixedUpdate(FIXEDFRAMERATE);
 			//collect collision info
 			// 
-			std::cout <<std::endl<< "Number of Fixed Updates: " << numberOfFixedUpdates << std::endl;
+			//std::cout <<std::endl<< "Number of Fixed Updates: " << numberOfFixedUpdates << std::endl;
 			g_OnPhysicsUpdate(FIXEDFRAMERATE);
 			//dispatch collisions
 			numberOfFixedUpdates++;
