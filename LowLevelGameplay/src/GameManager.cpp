@@ -1,5 +1,6 @@
 #include <GameManager.h>
 #include <BoxCollider.h>
+#include <Collider.h>
 
 GameManager::GameManager()
 {
@@ -28,6 +29,7 @@ GameManager::GameManager()
 		testScoper5->GetComponent<SpriteRenderer>()->setUV(LLGP::Vector2i(17, 7));
 
 		testScoper->AddComponent<RigidBody>();
+		testScoper->AddComponent<BoxCollider>();
 
 		gameObjectExample2->getTransform()->setPosition(LLGP::Vector2f(462, 180));
 		gameObjectExample1->getTransform()->setPosition(LLGP::Vector2f(450, 225));
@@ -46,7 +48,7 @@ GameManager::GameManager()
 		testScoper2->SetName("Test 2");
 		testScoper->SetTag("Debug Object");
 
-		testScoper->AddComponent<BoxCollider>()->setUpCollider(LLGP::Vector2f(0,0));
+		//testScoper->AddComponent<BoxCollider>()->setUpCollider(LLGP::Vector2i(0,0));
 
 
 		m_GameObjects.push_back(std::move(testScoper));
