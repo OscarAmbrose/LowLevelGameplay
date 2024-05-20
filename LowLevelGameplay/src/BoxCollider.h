@@ -1,8 +1,8 @@
 #pragma once
 #include <Component.h>
-#include <CollisionInfo.h>
+#include <Collider.h>
 
-class BoxCollider : public Component
+class BoxCollider : public Collider
 {
 public:
 	BoxCollider(GameObject* owner);
@@ -19,6 +19,9 @@ public:
 
 	inline LLGP::Vector2f GetOffset() { return m_Offset; }
 	inline void SetOffset(LLGP::Vector2f newOffset) { m_Offset = newOffset; }
+
+	CollisionInfo* IsCollidingWith(Collider* other) override;
+	CollisionInfo* IsCollidingWith(BoxCollider* other) override;
 
 	inline LLGP::Vector2f GetBoxHalfExtents() { return m_HalfBoxExtents; }
 

@@ -2,6 +2,7 @@
 #include <Collider.h>
 #include <RigidBody.h>
 #include <GameObject.h>
+#include <BoxCollider.h>
 
 std::vector<CollisionInfo*> Physics::_collisions;
 std::vector<CollisionInfo*> Physics::_oldCollisions;

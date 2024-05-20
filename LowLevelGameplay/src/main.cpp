@@ -6,6 +6,7 @@
 #include <GlobalEvents.h>
 #include <GameManager.h>
 #include <AnimationManager.h>
+#include <Physics.h>
 
 #define FIXEDFRAMERATE (1.f/60.f)
 

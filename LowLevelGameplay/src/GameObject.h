@@ -57,7 +57,7 @@ public:
 
 		for (int i = 0; i < m_Components.size(); i++)
 		{
-			if (comp = dynamic_cast<T*>(m_Components[i].get()))
+			if (T* comp = dynamic_cast<T*>(m_Components[i].get()))
 			{
 				returnComps.push_back(comp);
 			}
