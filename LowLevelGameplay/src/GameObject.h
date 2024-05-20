@@ -6,6 +6,9 @@
 #include <isComponenet.h>
 //#include <Transform.h>
 #include <iostream>
+#include <Event.h>
+
+struct CollisionInfo;
 
 class GameObject : public Object
 {
@@ -13,7 +16,9 @@ public:
 	GameObject();
 	GameObject(const GameObject&) = default;
 
-
+	LLGP::Event<CollisionInfo*> onCollisionEnter;
+	LLGP::Event<CollisionInfo*> onCollisionStay;
+	LLGP::Event<CollisionInfo*> onCollisionExit;
 	
 	inline void SetName(std::string newName) { m_Name = newName; }
 	inline std::string GetName() { return m_Name; }
@@ -24,11 +29,12 @@ public:
 	inline void SetTag(std::string newTag) { m_Tag = newTag; }
 	inline bool CompareTag(std::string comp) { return m_Tag == comp; }
 
-	Transform2D* getTransform() { return transform.get(); }
+	Transform2D* getTransform() { return transform; }
 
 
 #pragma region ComponentManagement
-	template<class T> requires isComponent<T> T* GetComponent()
+	template<class T> requires isComponent<T>
+	T* GetComponent()
 	{
 		T* returnComp = nullptr;
 
@@ -37,18 +43,33 @@ public:
 			returnComp = dynamic_cast<T*>(m_Components[i].get());
 			if (returnComp != nullptr)
 			{
-				break;
+				return returnComp;
 			}
 		}
 
-		return returnComp;
+		return nullptr;
+	};
+
+	template<class T> requires isComponent<T>
+	std::vector<T*> GetComponents()
+	{
+		std::vector<T*> returnComps;
+
+		for (int i = 0; i < m_Components.size(); i++)
+		{
+			if (comp = dynamic_cast<T*>(m_Components[i].get()))
+			{
+				returnComps.push_back(comp);
+			}
+		}
+
+		return returnComps;
 	};
 
 	template<class T> requires isComponent<T> 
 	T* AddComponent() 
 	{
-		std::unique_ptr<Component> newComp = std::make_unique<T>(this);
-		m_Components.push_back(std::move(newComp));
+		m_Components.push_back(std::make_unique<T>(this));
 		return dynamic_cast<T*>(m_Components[m_Components.size()-1].get());
 	};
 
@@ -82,7 +103,5 @@ private:
 	std::vector<std::unique_ptr<Component>> m_Components;
 
 public:
-	std::unique_ptr<Transform2D> transform = std::make_unique<Transform2D>();
-	inline bool operator==(const GameObject& other) { return this->uuid == other.uuid; }
-	inline bool operator!=(const GameObject& other) { return !(*this == other); }
+	Transform2D* transform;
 };

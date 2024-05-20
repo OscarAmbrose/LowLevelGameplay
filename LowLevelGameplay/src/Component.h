@@ -5,6 +5,8 @@
 
 class GameObject;
 
+struct CollisionInfo;
+
 class Component : public Object
 {
 protected:
@@ -21,4 +23,9 @@ public:
 
 	GameObject* GetGameObject() { return _GameObject; }
 	virtual void OwnerActiveChange(bool newActive) {}
+	
+protected:
+	virtual void OnCollisionEnter(CollisionInfo* col) {}
+	virtual void OnCollisionStay(CollisionInfo* col) {}
+	virtual void OnCollisionExit(CollisionInfo* col) {}
 };

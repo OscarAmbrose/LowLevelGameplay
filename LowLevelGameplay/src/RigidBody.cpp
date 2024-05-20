@@ -11,6 +11,8 @@ void RigidBody::FixedUpdate(float deltaTime)
 	{
 		SetVelocity(GetVelocity().Normalise() * GetMaxSpeed());
 	}
+
+	//Fix jitter
 	if (GetVelocity().x < 0.5 && GetVelocity().x > -0.5)
 	{
 		SetVelocity(LLGP::Vector2f(0, GetVelocity().y));

@@ -1,13 +1,14 @@
 #pragma once
 #include <Vector2.h>
+#include "Component.h"
 
 namespace LLGP
 {
-	class Transform2D
+	class Transform2D : public Component
 	{
 	public:
-		Transform2D();
-		Transform2D(LLGP::Vector2<float> pos, LLGP::Vector2<float> scal, float rot);
+		Transform2D(GameObject* owner);
+
 
 		//template<class T> requires isComponent<T> T* GetComponent();
 
