@@ -4,7 +4,7 @@
 class BoxCollider;
 struct CollisionInfo;
 
-class Collider :public Component
+class Collider : public Component
 {
 public:
 	Collider(GameObject* owner);

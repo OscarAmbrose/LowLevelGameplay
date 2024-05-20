@@ -37,58 +37,7 @@ public:
 		}
 	}
 
-	void fixedUpdate(float deltaTime)
-	{
-		float currentRotation = getGameObjectByName("Test")->getTransform()->returnRotation();
-		LLGP::Vector2f location = getGameObjectByName("Test")->getTransform()->returnPosition();
-
-		RigidBody* rb = getGameObjectByName("Test")->GetComponent<RigidBody>();
-		LLGP::Vector2f velocity = rb->GetVelocity();
-		std::string animState = getGameObjectByName("Test")->GetComponent<AnimationManager>()->ReturnActiveAnimationState();
-
-		if ((meow.x > 0 && velocity.x < 0) || (meow.x < 0 && velocity.x > 0))
-		{
-			rb->setOpposingMovement(true);
-		}
-		else
-		{
-			rb->setOpposingMovement(false);
-		}
-
-		if (rb->GetOpposingMovement())
-		{
-			getGameObjectByName("Test")->GetComponent<AnimationManager>()->GetAnimationState<AnimationState>(animState)->setActiveAnimation("Reverse");
-		}
-		else
-		{
-			getGameObjectByName("Test")->GetComponent<AnimationManager>()->GetAnimationState<AnimationState>(animState)->setActiveAnimation("Walk");
-		}
-		
-		if (rb->GetOpposingMovement())
-		{
-
-		}
-		else
-		{
-			if (meow.x == 1)
-			{
-				getGameObjectByName("Test")->GetComponent<SpriteRenderer>()->setFlipped(false);
-			}
-			else if (meow.x == -1)
-			{
-				getGameObjectByName("Test")->GetComponent<SpriteRenderer>()->setFlipped(true);
-			}
-		}
-		
-		//getGameObjectByName("Test")->getTransform()->setPosition(LLGP::Vector2f(location.x + meow.x, location.y + -meow.y));
-
-		LLGP::Vector2f movementForce;
-		float movementSpeed = 200.f;
-
-		movementForce = meow * movementSpeed;
-
-		getGameObjectByName("Test")->GetComponent<RigidBody>()->addForce(movementForce);
-	}
+	void fixedUpdate(float deltaTime);
 
 	~GameManager() {};
 

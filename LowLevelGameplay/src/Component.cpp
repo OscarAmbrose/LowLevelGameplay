@@ -5,8 +5,6 @@
 
 Component::Component(GameObject* owner) : _GameObject(owner)
 {
-	/*parentTransform = pTransform;*/
-	parentTransform = _GameObject->getTransform();
 	g_OnUpdate.AddListener(this, std::bind(&Component::Update, this, std::placeholders::_1));
 	g_OnStart.AddListener(this, std::bind(&Component::Start, this, std::placeholders::_1));
 	g_OnFixedUpdate.AddListener(this, std::bind(&Component::FixedUpdate, this, std::placeholders::_1));

@@ -7,13 +7,15 @@
 //#include <Transform.h>
 #include <iostream>
 
+class Transform2D;
+
 class GameObject : public Object
 {
 public:
 	GameObject();
 	GameObject(const GameObject&) = default;
 
-
+	//~GameObject();
 	
 	inline void SetName(std::string newName) { m_Name = newName; }
 	inline std::string GetName() { return m_Name; }
@@ -24,7 +26,7 @@ public:
 	inline void SetTag(std::string newTag) { m_Tag = newTag; }
 	inline bool CompareTag(std::string comp) { return m_Tag == comp; }
 
-	Transform2D* getTransform() { return transform.get(); }
+	Transform2D* getTransform() { return transform; }
 
 
 #pragma region ComponentManagement
@@ -82,7 +84,7 @@ private:
 	std::vector<std::unique_ptr<Component>> m_Components;
 
 public:
-	std::unique_ptr<Transform2D> transform = std::make_unique<Transform2D>();
+	Transform2D* transform = nullptr;
 	inline bool operator==(const GameObject& other) { return this->uuid == other.uuid; }
 	inline bool operator!=(const GameObject& other) { return !(*this == other); }
 };

@@ -1,5 +1,6 @@
 #include "RigidBody.h"
 #include "GameObject.h"
+#include "Transform.h"
 
 void RigidBody::FixedUpdate(float deltaTime)
 {

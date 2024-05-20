@@ -9,7 +9,6 @@ class Component : public Object
 {
 protected:
 	GameObject* _GameObject;
-	Transform2D* parentTransform = nullptr;
 	bool Started = false;
 public:
 	Component(GameObject* owner);
