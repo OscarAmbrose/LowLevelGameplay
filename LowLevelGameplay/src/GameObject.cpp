@@ -6,7 +6,6 @@
 GameObject::GameObject()
 {
 	SetActive(true);
-	transform = AddComponent<Transform2D>();
 }
 
 

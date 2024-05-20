@@ -1,7 +1,7 @@
 #pragma once
-#include <Physics.h>
 #include <Component.h>
 
+class Physics;
 class BoxCollider;
 struct CollisionInfo;
 
@@ -11,6 +11,6 @@ public:
 	Collider(GameObject* owner);
 	~Collider();
 
-	virtual CollisionInfo* IsCollidingWith(Collider* other) = 0;
-	virtual CollisionInfo* IsCollidingWith(BoxCollider* other) = 0;
+	virtual CollisionInfo* IsCollidingWith(Collider* other) { return nullptr;  };
+	virtual CollisionInfo* IsCollidingWith(BoxCollider* other) { return nullptr; };
 };

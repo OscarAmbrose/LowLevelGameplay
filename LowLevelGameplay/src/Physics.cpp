@@ -3,6 +3,7 @@
 #include <RigidBody.h>
 #include <GameObject.h>
 #include <BoxCollider.h>
+#include "Collider.h"
 
 std::vector<CollisionInfo*> Physics::_collisions;
 std::vector<CollisionInfo*> Physics::_oldCollisions;
@@ -12,7 +13,7 @@ std::vector<RigidBody*> Physics::_rigidBodies;
 
 bool CollisionInfo::operator==(const CollisionInfo& other)
 {
-	return (*collider == *other.collider && *otherCollider == *other.otherCollider) || (*collider == *other.otherCollider && *otherCollider == *other.collider);
+	return (*collider == *other.collider && *otherCollider == *other.otherCollider) || ((Collider)*collider == *other.otherCollider && *otherCollider == *other.collider);
 }
 
 CollisionInfo CollisionInfo::Reverse()
@@ -83,7 +84,7 @@ void Physics::DispatchCollisions()
 	for (int newIndex = _collisions.size() - 1; newIndex >= 0; newIndex--)
 	{
 		bool newCollision = true;
-		for (int oldIndex = _oldCollisions.size() - 1; oldIndex >= 0; oldIndex--)
+		for (int oldIndex = (_oldCollisions.size() - 1); oldIndex >= 0; oldIndex--)
 		{
 			if (_collisions[newIndex] != _oldCollisions[oldIndex]) { continue; }
 			//Collision Stay
@@ -107,7 +108,10 @@ void Physics::DispatchCollisions()
 	{
 		//Collision Exit
 		_oldCollisions[i]->collider->GetGameObject()->onCollisionExit(_collisions[i]);
-		if (_oldCollisions[i]->otherIsRB) { _oldCollisions[i]->otherCollider->GetGameObject()->onCollisionExit(&_oldCollisions[i]->Reverse()); }
+		if (_oldCollisions[i]->otherIsRB) 
+		{ 
+			_oldCollisions[i]->otherCollider->GetGameObject()->onCollisionExit(&_oldCollisions[i]->Reverse()); 
+		}
 		delete _oldCollisions[i];
 	}
 	_oldCollisions.clear();

@@ -1,14 +1,14 @@
 #pragma once
 #include <Vector2.h>
-#include <Component.h>
+//#include <Component.h>
 
-class Component;
+//class Component;
 class GameObject;
 
-class Transform2D : public Component
+class Transform2D /*: public Component*/
 {
 public:
-	Transform2D(GameObject* owner) : Component(owner) {
+	Transform2D(/*GameObject* owner*/)/* : Component(owner)*/ {
 		m_Rotation = 0.0f;
 		m_Position = LLGP::Vector2<float>(750, 500);
 		m_Scale = LLGP::Vector2<float>(1, 1);

@@ -31,7 +31,7 @@ public:
 	inline void SetTag(std::string newTag) { m_Tag = newTag; }
 	inline bool CompareTag(std::string comp) { return m_Tag == comp; }
 
-	Transform2D* getTransform() { return transform; }
+	Transform2D* getTransform() { return transform.get(); }
 
 
 #pragma region ComponentManagement
@@ -105,5 +105,5 @@ private:
 	std::vector<std::unique_ptr<Component>> m_Components;
 
 public:
-	Transform2D* transform = nullptr;
+	std::unique_ptr<Transform2D> transform = std::make_unique<Transform2D>();
 };

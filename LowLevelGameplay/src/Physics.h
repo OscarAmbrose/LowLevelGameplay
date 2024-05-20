@@ -1,9 +1,9 @@
 #pragma once
 #include <Vector2.h>
 #include <vector>
+#include "Collider.h"
+#include "BoxCollider.h"
 
-class Collider;
-class BoxCollider;
 class RigidBody;
 
 struct CollisionInfo
