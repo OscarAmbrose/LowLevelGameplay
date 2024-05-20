@@ -69,6 +69,10 @@ namespace LLGP
 	template<typename T, typename U> requires arithmetic<T> and arithmetic<U>
 	Vector2<T>& operator*=(Vector2<T>& v, const U a) { v.x *= a; v.y *= a; return v; }
 
+	//Vector *= Vector, for times by scale
+	template<typename T, typename U> requires arithmetic<T> and arithmetic<U>
+	Vector2<T>& operator*=( Vector2<T> v, const Vector2<U> a) { v.x *= a.x; v.y *= a.y; return v; }
+
 	template<typename T, typename U> requires arithmetic<T> and arithmetic<U>
 	Vector2<T> operator*(Vector2<T> v, const U a) { return v *= a; }
 

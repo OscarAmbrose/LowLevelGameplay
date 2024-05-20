@@ -6,6 +6,9 @@
 #include <isComponenet.h>
 //#include <Transform.h>
 #include <iostream>
+#include <Event.h>
+
+struct CollisionInfo;
 
 class Transform2D;
 
@@ -15,7 +18,9 @@ public:
 	GameObject();
 	GameObject(const GameObject&) = default;
 
-	//~GameObject();
+	LLGP::Event<CollisionInfo*> onCollisionEnter;
+	LLGP::Event<CollisionInfo*> onCollisionStay;
+	LLGP::Event<CollisionInfo*> onCollisionExit;
 	
 	inline void SetName(std::string newName) { m_Name = newName; }
 	inline std::string GetName() { return m_Name; }
@@ -30,7 +35,8 @@ public:
 
 
 #pragma region ComponentManagement
-	template<class T> requires isComponent<T> T* GetComponent()
+	template<class T> requires isComponent<T>
+	T* GetComponent()
 	{
 		T* returnComp = nullptr;
 
@@ -39,18 +45,33 @@ public:
 			returnComp = dynamic_cast<T*>(m_Components[i].get());
 			if (returnComp != nullptr)
 			{
-				break;
+				return returnComp;
 			}
 		}
 
-		return returnComp;
+		return nullptr;
+	};
+
+	template<class T> requires isComponent<T>
+	std::vector<T*> GetComponents()
+	{
+		std::vector<T*> returnComps;
+
+		for (int i = 0; i < m_Components.size(); i++)
+		{
+			if (T* comp = dynamic_cast<T*>(m_Components[i].get()))
+			{
+				returnComps.push_back(comp);
+			}
+		}
+
+		return returnComps;
 	};
 
 	template<class T> requires isComponent<T> 
 	T* AddComponent() 
 	{
-		std::unique_ptr<Component> newComp = std::make_unique<T>(this);
-		m_Components.push_back(std::move(newComp));
+		m_Components.push_back(std::make_unique<T>(this));
 		return dynamic_cast<T*>(m_Components[m_Components.size()-1].get());
 	};
 
@@ -85,6 +106,4 @@ private:
 
 public:
 	Transform2D* transform = nullptr;
-	inline bool operator==(const GameObject& other) { return this->uuid == other.uuid; }
-	inline bool operator!=(const GameObject& other) { return !(*this == other); }
 };

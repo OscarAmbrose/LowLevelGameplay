@@ -8,11 +8,14 @@ BoxCollider::BoxCollider(GameObject* owner) : Collider(owner)
 
 BoxCollider::~BoxCollider()
 {
+
 }
 
-void BoxCollider::setUpCollider(LLGP::Vector2i boxSize)
+void BoxCollider::SetUpCollider(LLGP::Vector2i boxSize)
 {
-	SetBoxSize(boxSize);
+	m_BoxPosition = _GameObject->getTransform()->returnPosition() + GetOffset();
+	m_BoxSize = boxSize;
+	m_HalfBoxExtents = LLGP::Vector2f(GetBoxSize().x/2, GetBoxSize().y/2) * _GameObject->getTransform()->returnScale();
 }
 
 CollisionInfo* BoxCollider::IsCollidingWith(Collider* other)
@@ -23,4 +26,10 @@ CollisionInfo* BoxCollider::IsCollidingWith(Collider* other)
 CollisionInfo* BoxCollider::IsCollidingWith(BoxCollider* other)
 {
 	return nullptr;
+}
+
+void BoxCollider::Update(float deltaTime)
+{	
+	Component::Update(deltaTime);
+	SetBoxPosition(_GameObject->getTransform()->returnPosition() + GetOffset());
 }

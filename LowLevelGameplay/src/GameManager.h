@@ -9,6 +9,7 @@
 #include <PlayerInputController.h>
 #include <Vector2.h>
 #include <RigidBody.h>
+#include <BoxCollider.h>
 
 class GameManager
 {

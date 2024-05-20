@@ -1,6 +1,8 @@
 #include "SpriteRenderer.h"
 #include <Transform.h>
 #include <GameObject.h>
+#include <Event.h>
+
 
 void SpriteRenderer::setUV(Vector2i selectedSprite)
 {

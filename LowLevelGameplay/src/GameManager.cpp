@@ -38,8 +38,8 @@ GameManager::GameManager()
 		testScoper5->getTransform()->setPosition(LLGP::Vector2f(461, 225));
 		testScoper2->getTransform()->setPosition(LLGP::Vector2f(458, 272));
 
-		testScoper->GetComponent<AnimationManager>()->addAnimationState<AnimationState>("Walking")->AddAnimation("Walk", 1, 4, Vector2i(0, 2), Vector2i(1, 2), Vector2i(2, 2), Vector2i(3, 2), Vector2i(4, 2));
-		testScoper->GetComponent<AnimationManager>()->GetAnimationState<AnimationState>("Walking")->AddAnimation("Reverse", 0, 1, Vector2i(4, 2));
+		testScoper->GetComponent<AnimationManager>()->addAnimationState<AnimationState>("Walking")->AddAnimation("Walk", 1, 4, Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0), Vector2i(4, 0));
+		testScoper->GetComponent<AnimationManager>()->GetAnimationState<AnimationState>("Walking")->AddAnimation("Reverse", 0, 1, Vector2i(4, 0));
 		//testScoper->GetComponent<AnimationManager>()->addAnimationState<AnimationState>("Walking2")->AddAnimation("Walk", 0, 1, Vector2i(5, 2));
 		testScoper->GetComponent<AnimationManager>()->setActiveAnimationState<AnimationState>("Walking");
 

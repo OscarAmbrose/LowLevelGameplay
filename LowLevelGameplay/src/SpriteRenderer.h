@@ -2,11 +2,8 @@
 #include <Vector2.h>
 #include <SFML/Graphics.hpp>
 #include <Component.h>
-#include <memory>
-#include <Event.h>
 #include <GlobalEvents.h>
 //#include <AssetManager.h>
-#include<Texture.h>
 #include<GlobalTexture.h>
 
 //class Transform2D;

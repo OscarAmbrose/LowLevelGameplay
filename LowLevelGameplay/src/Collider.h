@@ -1,6 +1,7 @@
 #pragma once
-#include "Physics.h"
-#include "Component.h"
+#include <Physics.h>
+#include <Component.h>
+
 class BoxCollider;
 struct CollisionInfo;
 

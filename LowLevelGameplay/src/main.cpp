@@ -10,7 +10,7 @@
 #include <GlobalEvents.h>
 #include <GameManager.h>
 #include <AnimationManager.h>
-#include "Physics.h"
+#include <Physics.h>
 
 #define FIXEDFRAMERATE (1.f/60.f)
 
@@ -68,7 +68,7 @@ int main()
 			//step physics
 			g_OnFixedUpdate(FIXEDFRAMERATE);
 			//collect collision info
-			// 
+			g_OnCollisionUpdate(FIXEDFRAMERATE);
 			//std::cout <<std::endl<< "Number of Fixed Updates: " << numberOfFixedUpdates << std::endl;
 			g_OnPhysicsUpdate(FIXEDFRAMERATE);
 			//dispatch collisions

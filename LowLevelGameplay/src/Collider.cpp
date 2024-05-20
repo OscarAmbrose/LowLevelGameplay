@@ -1,12 +1,15 @@
 #include "Collider.h"
 #include "GameObject.h"
+#include "Physics.h"
+#include "BoxCollider.h"
 
 Collider::Collider(GameObject* owner) : Component(owner)
 {
-
+	Physics::ReigsterColldier(this);
 }
 
 Collider::~Collider()
 {
-	Physics::DeregisterCollider(this);
+	Physics::DereigsterColldier(this);
 }
+
