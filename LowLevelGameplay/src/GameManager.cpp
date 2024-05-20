@@ -1,5 +1,5 @@
 #include <GameManager.h>
-
+#include <BoxCollider.h>
 
 GameManager::GameManager()
 {
@@ -45,6 +45,9 @@ GameManager::GameManager()
 		testScoper->SetName("Test");
 		testScoper2->SetName("Test 2");
 		testScoper->SetTag("Debug Object");
+
+		testScoper->AddComponent<BoxCollider>()->setUpCollider(LLGP::Vector2f(0,0));
+
 
 		m_GameObjects.push_back(std::move(testScoper));
 		m_GameObjects.push_back(std::move(testScoper2));
