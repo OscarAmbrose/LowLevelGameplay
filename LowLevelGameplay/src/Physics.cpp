@@ -1,31 +1,22 @@
 #include <Physics.h>
-#include <Collider.h>
+#pragma message("-------------------------Inlcuding Physics in " __FILE__)
 #include <RigidBody.h>
+#pragma message("-------------------------Inlcuding RigidBody in " __FILE__)
 #include <GameObject.h>
+#pragma message("-------------------------Inlcuding GameObject in " __FILE__)
 #include <BoxCollider.h>
-#include "Collider.h"
+#pragma message("-------------------------Inlcuding BoxCollider in " __FILE__)
 
 std::vector<CollisionInfo*> Physics::_collisions;
+std::vector<CollisionInfo*> Physics::_reversedCollisions;
 std::vector<CollisionInfo*> Physics::_oldCollisions;
 
 std::vector<Collider*> Physics::_colliders;
 std::vector<RigidBody*> Physics::_rigidBodies;
 
-bool CollisionInfo::operator==(const CollisionInfo& other)
+bool CollisionInfo::operator==(CollisionInfo* other)
 {
-	return (*collider == *other.collider && *otherCollider == *other.otherCollider) || ((Collider)*collider == *other.otherCollider && *otherCollider == *other.collider);
-}
-
-CollisionInfo CollisionInfo::Reverse()
-{
-	CollisionInfo temp;
-	temp.collider = otherCollider;
-	temp.otherCollider = collider;
-
-	temp.Normal = -Normal;
-	temp.Impulse = -Impulse;
-
-	return temp;
+	return (*(this->collider) == *(other->collider) && *(this->otherCollider) == *(other->otherCollider)) || (*(this->collider) == *(other->otherCollider) && *(this->otherCollider) == *(other->collider));
 }
 
 void Physics::ReigsterColldier(Collider* col)
@@ -67,7 +58,7 @@ void Physics::CollectCollisions()
 
 				{
 					CollisionInfo* test; test->collider = rbCol; test->otherCollider = worldCol;
-					if (std::find_if(_collisions.begin(), _collisions.end(), [test](CollisionInfo* check) {return *test == *check; }) == _collisions.end()) { continue; }
+					if (std::find_if(_collisions.begin(), _collisions.end(), [&test](CollisionInfo* check) {return test == check; }) == _collisions.end()) { continue; }
 				}
 
 				if (CollisionInfo* collision = rbCol->IsCollidingWith(worldCol))
@@ -89,7 +80,7 @@ void Physics::DispatchCollisions()
 			if (_collisions[newIndex] != _oldCollisions[oldIndex]) { continue; }
 			//Collision Stay
 			_collisions[newIndex]->collider->GetGameObject()->onCollisionStay(_collisions[newIndex]);
-			if (_collisions[newIndex]->otherIsRB) { _collisions[newIndex]->otherCollider->GetGameObject()->onCollisionStay(&_collisions[newIndex]->Reverse()); }
+			if (_collisions[newIndex]->otherIsRB) { _collisions[newIndex]->otherCollider->GetGameObject()->onCollisionStay(ReverseCollision(_collisions[newIndex])); }
 			delete _oldCollisions[oldIndex];
 			_oldCollisions.erase(std::next(_oldCollisions.begin(), oldIndex));
 			newCollision = false;
@@ -99,8 +90,9 @@ void Physics::DispatchCollisions()
 		{
 			//Collision Enter
 			_collisions[newIndex]->collider->GetGameObject()->onCollisionEnter(_collisions[newIndex]);
-			if (_collisions[newIndex]->otherIsRB) { _collisions[newIndex]->otherCollider->GetGameObject()->onCollisionEnter(&_collisions[newIndex]->Reverse()); }
+			if (_collisions[newIndex]->otherIsRB) { _collisions[newIndex]->otherCollider->GetGameObject()->onCollisionEnter(ReverseCollision(_collisions[newIndex])); }
 		}
+
 	}
 
 
@@ -109,14 +101,30 @@ void Physics::DispatchCollisions()
 		//Collision Exit
 		_oldCollisions[i]->collider->GetGameObject()->onCollisionExit(_collisions[i]);
 		if (_oldCollisions[i]->otherIsRB) 
-		{ 
-			_oldCollisions[i]->otherCollider->GetGameObject()->onCollisionExit(&_oldCollisions[i]->Reverse()); 
+		{
+			_oldCollisions[i]->otherCollider->GetGameObject()->onCollisionExit(ReverseCollision(_oldCollisions[i]));
 		}
 		delete _oldCollisions[i];
 	}
 	_oldCollisions.clear();
 	_oldCollisions = _collisions;
 	_collisions.clear();
+	for (CollisionInfo* C : _reversedCollisions)
+	{
+		delete C;
+	}
+	_reversedCollisions.clear();
+}
+
+CollisionInfo* Physics::ReverseCollision(CollisionInfo* in)
+{
+	CollisionInfo* reverse = new CollisionInfo();
+	reverse->collider = in->otherCollider;
+	reverse->otherCollider = in->collider;
+
+	reverse->Normal = -in->Normal;
+	_reversedCollisions.push_back(reverse);
+	return reverse;
 }
 
 CollisionInfo* Physics::Collision_AABBAABB(BoxCollider* lhs, BoxCollider* rhs)

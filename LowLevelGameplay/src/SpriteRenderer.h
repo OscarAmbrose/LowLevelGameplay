@@ -19,10 +19,10 @@ public:
 
 		shape.setTexture(renderTexture);
 
-		rectTexSize = Vector2i(shape.getTexture()->getSize());
+		rectTexSize = LLGP::Vector2i(shape.getTexture()->getSize());
 
 		//Vector2i selectedSprite = Vector2i(10, 15);
-		Vector2i selectedSprite = Vector2i(0, 0);
+		LLGP::Vector2i selectedSprite = LLGP::Vector2i(0, 0);
 		setUV(selectedSprite);
 
 		g_OnRender.AddListener(this, std::bind(&SpriteRenderer::renderShape, this, std::placeholders::_1, std::placeholders::_2));
@@ -34,9 +34,9 @@ public:
 		g_OnRender.RemoveListener(this, std::bind(&SpriteRenderer::renderShape, this, std::placeholders::_1, std::placeholders::_2));
 	}
 
-	void setUV(Vector2i selectedSprite);
+	void setUV(LLGP::Vector2i selectedSprite);
 
-	void setUV(Vector2i selectedSprite, Vector2i spriteSize);
+	void setUV(LLGP::Vector2i selectedSprite, LLGP::Vector2i spriteSize);
 
 	sf::RectangleShape returnShape();
 

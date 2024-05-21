@@ -1,7 +1,7 @@
 #pragma once
 #include <Object.h>
+#pragma message("-------------------------Inlcuding Object in " __FILE__)
 #include <iostream>
-#include <GlobalEvents.h>
 
 class GameObject;
 

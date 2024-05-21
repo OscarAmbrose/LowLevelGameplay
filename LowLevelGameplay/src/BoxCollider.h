@@ -1,6 +1,6 @@
 #pragma once
-#include <Component.h>
 #include <Collider.h>
+#include <Vector2.h>
 
 class BoxCollider : public Collider
 {

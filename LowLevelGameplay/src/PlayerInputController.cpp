@@ -2,7 +2,7 @@
 #include "GameObject.h"
 #include "AnimationManager.h"
 
-void PlayerInputController::DebugWASD(Vector2<float> input)
+void PlayerInputController::DebugWASD(LLGP::Vector2<float> input)
 {
 	std::cout << "input: " << input.x << ", " << input.y << std::endl;
 }
@@ -11,7 +11,7 @@ void PlayerInputController::PollInput(sf::Event i)
 {
 	//std::cout << "Polling Input" << std::endl;
 
-	Vector2<float> WASDInput = Vector2<float>(0, 0);
+	LLGP::Vector2<float> WASDInput = LLGP::Vector2<float>(0, 0);
 	bool shouldJump = false;
 
 #pragma region IF ELSE HELL
@@ -46,7 +46,7 @@ void PlayerInputController::PollInput(sf::Event i)
 
 	if (WASDInput.x != prevInput.x || WASDInput.y != prevInput.y)
 	{
-		invokeEvent<Vector2<float>>("MoveDirection", WASDInput);
+		invokeEvent<LLGP::Vector2<float>>("MoveDirection", WASDInput);
 		prevInput = WASDInput;
 	}
 

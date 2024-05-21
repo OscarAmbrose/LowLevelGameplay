@@ -1,5 +1,6 @@
 #include "BoxCollider.h"
 #include "GameObject.h"
+#include <Transform.h>
 
 BoxCollider::BoxCollider(GameObject* owner) : Collider(owner)
 {

@@ -4,16 +4,16 @@
 #include <Event.h>
 
 
-void SpriteRenderer::setUV(Vector2i selectedSprite)
+void SpriteRenderer::setUV(LLGP::Vector2i selectedSprite)
 {
-	rectangleSize = Vector2<float>(32, 64);
+	rectangleSize = LLGP::Vector2<float>(32, 64);
 	sf::IntRect rectTexUV((rectTexSize.x / spritesInTexture.x) * selectedSprite.x, (rectTexSize.y / spritesInTexture.y) * selectedSprite.y, rectTexSize.x / spritesInTexture.x, rectTexSize.y / spritesInTexture.y);
 	shape.setTextureRect(rectTexUV);
 }
 
-void SpriteRenderer::setUV(Vector2i selectedSprite, Vector2i spriteSize)
+void SpriteRenderer::setUV(LLGP::Vector2i selectedSprite, LLGP::Vector2i spriteSize)
 {
-	rectangleSize = Vector2<float>(spriteSize.x, spriteSize.y);
+	rectangleSize = LLGP::Vector2<float>(spriteSize.x, spriteSize.y);
 	sf::IntRect rectTexUV((rectTexSize.x / spritesInTexture.x) * selectedSprite.x, (rectTexSize.y / spritesInTexture.y) * selectedSprite.y, spriteSize.x, spriteSize.y);
 	shape.setTextureRect(rectTexUV);
 }

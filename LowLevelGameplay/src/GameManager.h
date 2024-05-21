@@ -71,7 +71,7 @@ private:
 public:
 	std::vector<std::shared_ptr<GameObject>> m_GameObjects;
 
-	LLGP::Vector2f meow = Vector2f(0.f,0.f);
+	LLGP::Vector2f meow = LLGP::Vector2f(0.f,0.f);
 	//SpriteRenderer* srTesting;
 	//SpriteRenderer* srTesting2;
 };

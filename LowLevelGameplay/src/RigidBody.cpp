@@ -1,6 +1,12 @@
 #include "RigidBody.h"
 #include "GameObject.h"
 #include "Transform.h"
+#include <GlobalEvents.h>
+
+RigidBody::RigidBody(GameObject* owner) : Component(owner)
+{
+	g_OnPhysicsUpdate.AddListener(this, std::bind(&RigidBody::FixedUpdate, this, std::placeholders::_1));
+};
 
 void RigidBody::FixedUpdate(float deltaTime)
 {
@@ -45,7 +51,7 @@ void RigidBody::addForce(LLGP::Vector2f force)
 
 LLGP::Vector2f RigidBody::SolveForces(float deltaTime)
 {
-	Vector2f velocityToAdd = LLGP::Vector2f::zero;
+	LLGP::Vector2f velocityToAdd = LLGP::Vector2f::zero;
 
 	if (GravityIsEnabled())
 	{
@@ -62,7 +68,7 @@ LLGP::Vector2f RigidBody::SolveForces(float deltaTime)
 
 	//std::cout << "velocityToAdd = " << velocityToAdd.x << ", " << velocityToAdd.y << std::endl;
 
-	m_NetForce = Vector2f::zero;
+	m_NetForce = LLGP::Vector2f::zero;
 
 	return velocityToAdd;
 }

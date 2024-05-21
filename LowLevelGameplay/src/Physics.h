@@ -16,9 +16,8 @@ struct CollisionInfo
 	float Overlap;
 	LLGP::Vector2f Impulse;
 
-	bool operator==(const CollisionInfo& other);
+	bool operator==(CollisionInfo* other);
 
-	CollisionInfo Reverse();
 };
 
 class Physics
@@ -31,6 +30,7 @@ public:
 	static void DereigsterRigidBody(RigidBody* rb);
 	static void CollectCollisions();
 	static void DispatchCollisions();
+	static CollisionInfo* ReverseCollision(CollisionInfo* in);
 
 	static CollisionInfo* Collision_AABBAABB(BoxCollider* lhs, BoxCollider* rhs);
 
@@ -38,5 +38,6 @@ private:
 	static std::vector<RigidBody*> _rigidBodies;
 	static std::vector<Collider*> _colliders;
 	static std::vector<CollisionInfo*> _collisions;
+	static std::vector<CollisionInfo*> _reversedCollisions;
 	static std::vector<CollisionInfo*> _oldCollisions;
 };

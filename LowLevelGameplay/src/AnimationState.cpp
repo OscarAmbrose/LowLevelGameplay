@@ -3,6 +3,7 @@
 #include "AnimationManager.h"
 #include <GameObject.h>
 #include <RigidBody.h>
+#include <Transform.h>
 #include <Event.h>
 
 //Constructor

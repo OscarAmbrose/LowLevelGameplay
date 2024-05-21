@@ -1,6 +1,6 @@
+#include "Component.h"
 #include <Transform.h>
 #include <GlobalEvents.h> 
-#include "Component.h"
 #include <GameObject.h>
 
 Component::Component(GameObject* owner) : _GameObject(owner)

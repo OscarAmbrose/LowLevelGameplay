@@ -17,7 +17,7 @@ public:
 		std::vector<LLGP::Vector2i> animArgu;
 		for (int i = 0; i < 4; i++)
 		{
-			animArgu.push_back(Vector2i(i, 0));
+			animArgu.push_back(LLGP::Vector2i(i, 0));
 		}
 	};
 

@@ -1,13 +1,11 @@
 #pragma once
 #include <Component.h>
+#include <Vector2.h>
 
 class RigidBody : public Component
 {
 public:
-	RigidBody(GameObject* owner) : Component(owner)		
-	{
-		g_OnPhysicsUpdate.AddListener(this, std::bind(&RigidBody::FixedUpdate, this, std::placeholders::_1));
-	};
+	RigidBody(GameObject* owner);
 	~RigidBody() {};
 
 	void FixedUpdate(float deltaTime) override;

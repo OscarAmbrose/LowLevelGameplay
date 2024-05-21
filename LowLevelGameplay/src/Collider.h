@@ -1,7 +1,7 @@
 #pragma once
 #include <Component.h>
+#pragma message("-------------------------Inlcuding Component in " __FILE__)
 
-class Physics;
 class BoxCollider;
 struct CollisionInfo;
 
