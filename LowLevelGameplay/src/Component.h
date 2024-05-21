@@ -24,7 +24,7 @@ public:
 	virtual void OwnerActiveChange(bool newActive) {}
 	
 protected:
-	virtual void OnCollisionEnter(CollisionInfo* col) {}
-	virtual void OnCollisionStay(CollisionInfo* col) {}
-	virtual void OnCollisionExit(CollisionInfo* col) {}
+	virtual void OnCollisionEnter(CollisionInfo* col) {  }
+	virtual void OnCollisionStay(CollisionInfo* col) {  }
+	virtual void OnCollisionExit(CollisionInfo* col) {  }
 };

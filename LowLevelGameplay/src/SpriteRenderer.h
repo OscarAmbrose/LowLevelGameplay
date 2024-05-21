@@ -57,6 +57,8 @@ public:
 	inline void setOffSet(LLGP::Vector2f newOffset) { offset = newOffset; }
 	inline LLGP::Vector2f getOffset() { return offset; }
 
+	inline LLGP::Vector2<float> GetRectangleSize() { return rectangleSize; }
+
 	inline void setRenderLayer(int newRenderLayer) { m_RenderLayer = newRenderLayer; }
 	inline int getRenderLayer() { return m_RenderLayer; }
 

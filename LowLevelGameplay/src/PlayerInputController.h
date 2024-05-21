@@ -17,7 +17,7 @@ public:
 
 	void DebugJump(int jumpInt)
 	{
-		std::cout << "Player shoud Jump" << std::endl;
+		//std::cout << "Player shoud Jump" << std::endl;
 	}
 
 	void PollInput(sf::Event i);

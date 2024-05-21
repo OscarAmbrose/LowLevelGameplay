@@ -19,8 +19,6 @@ protected:
 	std::string eventName;
 };
 
-
-
 template<typename T>
 class InputAsset : public InputAssetBase
 {

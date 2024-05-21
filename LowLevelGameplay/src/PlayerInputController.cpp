@@ -4,7 +4,7 @@
 
 void PlayerInputController::DebugWASD(LLGP::Vector2<float> input)
 {
-	std::cout << "input: " << input.x << ", " << input.y << std::endl;
+	//std::cout << "input: " << input.x << ", " << input.y << std::endl;
 }
 
 void PlayerInputController::PollInput(sf::Event i)

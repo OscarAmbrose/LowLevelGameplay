@@ -8,15 +8,18 @@ class RigidBody;
 
 struct CollisionInfo
 {
+	CollisionInfo() {};
+
 	Collider* collider;
 	Collider* otherCollider;
-	bool otherIsRB;
-	LLGP::Vector2f Location;
-	LLGP::Vector2f Normal;
-	float Overlap;
-	LLGP::Vector2f Impulse;
-
+	bool otherIsRB = false;
+	LLGP::Vector2f Location = LLGP::Vector2f(0.f, 0.f);
+	LLGP::Vector2f Normal = LLGP::Vector2f(0.f, 0.f);
+	float Overlap = 0.f;
+	float Impulse = 0.f;
+	
 	bool operator==(CollisionInfo* other);
+	bool operator!=(CollisionInfo* other) { return !(*this == other); };
 
 };
 
@@ -31,6 +34,8 @@ public:
 	static void CollectCollisions();
 	static void DispatchCollisions();
 	static CollisionInfo* ReverseCollision(CollisionInfo* in);
+	static float CalculateImpulse(RigidBody* rb1, RigidBody* rb2);
+	static float CalculateImpulse(RigidBody* rb1);
 
 	static CollisionInfo* Collision_AABBAABB(BoxCollider* lhs, BoxCollider* rhs);
 

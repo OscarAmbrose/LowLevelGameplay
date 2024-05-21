@@ -2,11 +2,25 @@
 #include "GameObject.h"
 #include "Transform.h"
 #include <GlobalEvents.h>
+#include <Physics.h>
 
 RigidBody::RigidBody(GameObject* owner) : Component(owner)
 {
+	_GameObject->onCollisionEnter.AddListener(this, std::bind(&RigidBody::OnCollisionEnter, this, std::placeholders::_1));
+	_GameObject->onCollisionExit.AddListener(this, std::bind(&RigidBody::OnCollisionExit, this, std::placeholders::_1));
+
 	g_OnPhysicsUpdate.AddListener(this, std::bind(&RigidBody::FixedUpdate, this, std::placeholders::_1));
-};
+	Physics::ReigsterRigidBody(this);
+}
+RigidBody::~RigidBody()
+{
+	Physics::DereigsterRigidBody(this);
+	_GameObject->onCollisionEnter.RemoveListener(this, std::bind(&RigidBody::OnCollisionEnter, this, std::placeholders::_1));
+	_GameObject->onCollisionExit.RemoveListener(this, std::bind(&RigidBody::OnCollisionExit, this, std::placeholders::_1));
+	g_OnPhysicsUpdate.RemoveListener(this, std::bind(&RigidBody::FixedUpdate, this, std::placeholders::_1));
+
+}
+;
 
 void RigidBody::FixedUpdate(float deltaTime)
 {
@@ -29,7 +43,7 @@ void RigidBody::FixedUpdate(float deltaTime)
 		SetVelocity(LLGP::Vector2f(GetVelocity().x, 0));
 	}
 
-	std::cout << GetVelocity().x << std::endl;
+	//std::cout << GetVelocity().x << std::endl;
 
 	LLGP::Vector2f oldPos = _GameObject->getTransform()->returnPosition();
 

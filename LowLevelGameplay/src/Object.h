@@ -1,6 +1,6 @@
 #pragma once
 #include <UUID.h>
-
+#include <iostream>
 class Object
 {
 public:

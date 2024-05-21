@@ -16,7 +16,17 @@ std::vector<RigidBody*> Physics::_rigidBodies;
 
 bool CollisionInfo::operator==(CollisionInfo* other)
 {
-	return (*(this->collider) == *(other->collider) && *(this->otherCollider) == *(other->otherCollider)) || (*(this->collider) == *(other->otherCollider) && *(this->otherCollider) == *(other->collider));
+	//If objects are both equal (in either direction)
+	if ((Object)*(this->collider) == (Object)*(other->collider) && (Object) * (this->otherCollider) == (Object) * (other->otherCollider)
+		|| (Object) * (this->otherCollider) == (Object) * (other->collider) && (Object) * (this->otherCollider) == (Object) * (other->collider))
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+	//return (*(this->collider) == *(other->collider) && *(this->otherCollider) == *(other->otherCollider)) || (*(this->collider) == *(other->otherCollider) && *(this->otherCollider) == *(other->collider));
 }
 
 void Physics::ReigsterColldier(Collider* col)
@@ -47,20 +57,37 @@ void Physics::DereigsterRigidBody(RigidBody* rb)
 
 void Physics::CollectCollisions()
 {
+	//For each game object with a rigidbody
 	for (RigidBody* rb : _rigidBodies)
 	{
+		//get all of the rigid body game objects with a colldier
 		std::vector<Collider*> rbCols = rb->GetGameObject()->GetComponents<Collider>();
+		//For each rigid body in my rigid body list, check against all other colliders
 		for (Collider* rbCol : rbCols)
 		{
+			//Check against all world colliders
 			for (Collider* worldCol : _colliders)
 			{
+				//If I AM that collider, continue.
 				if (*rbCol == *worldCol || *rbCol->GetGameObject() == *worldCol->GetGameObject()) { continue; }
 
+				//If the collision info already exists, continue. Or, if the collision masks don't match, continue. 
 				{
-					CollisionInfo* test; test->collider = rbCol; test->otherCollider = worldCol;
-					if (std::find_if(_collisions.begin(), _collisions.end(), [&test](CollisionInfo* check) {return test == check; }) == _collisions.end()) { continue; }
-				}
+					CollisionInfo* test = new CollisionInfo(); test->collider = rbCol; test->otherCollider = worldCol;
 
+					//I added bitwise collision masking :)
+					if ((test->collider->GetCollisionMask() & test->otherCollider->GetCollisionLayer()) == 0) { continue; }
+					//End of bitwise collision masking :(
+
+					if (std::find_if(_collisions.begin(), _collisions.end(), [&test](CollisionInfo* check) {return *test == check; }) != _collisions.end())
+					{
+						delete test;
+						continue;
+					}
+					//Found the memory leak, fix is here
+					delete test;
+				}
+				//If collision isnt the same, throw it back
 				if (CollisionInfo* collision = rbCol->IsCollidingWith(worldCol))
 				{
 					_collisions.push_back(collision);
@@ -70,14 +97,19 @@ void Physics::CollectCollisions()
 	}
 }
 
+//Dispatch everything
 void Physics::DispatchCollisions()
 {
+	//Go backwards down the list
 	for (int newIndex = _collisions.size() - 1; newIndex >= 0; newIndex--)
 	{
 		bool newCollision = true;
+		//If the collision exists in the old list, return true and call on collision stay etc
+
 		for (int oldIndex = (_oldCollisions.size() - 1); oldIndex >= 0; oldIndex--)
 		{
-			if (_collisions[newIndex] != _oldCollisions[oldIndex]) { continue; }
+			//100000 years of debugging lies here
+			if ((*_collisions[newIndex] != _oldCollisions[oldIndex])) { continue; }
 			//Collision Stay
 			_collisions[newIndex]->collider->GetGameObject()->onCollisionStay(_collisions[newIndex]);
 			if (_collisions[newIndex]->otherIsRB) { _collisions[newIndex]->otherCollider->GetGameObject()->onCollisionStay(ReverseCollision(_collisions[newIndex])); }
@@ -86,6 +118,8 @@ void Physics::DispatchCollisions()
 			newCollision = false;
 			break;
 		}
+		
+		
 		if (newCollision)
 		{
 			//Collision Enter
@@ -95,17 +129,18 @@ void Physics::DispatchCollisions()
 
 	}
 
-
-	for (int i = _oldCollisions.size()-1; i >= 0 ; i--)
+	for (int i = (_oldCollisions.size() - 1); i >= 0; i--)
 	{
 		//Collision Exit
-		_oldCollisions[i]->collider->GetGameObject()->onCollisionExit(_collisions[i]);
-		if (_oldCollisions[i]->otherIsRB) 
+		_oldCollisions[i]->collider->GetGameObject()->onCollisionExit(_oldCollisions[i]);
+		if (_oldCollisions[i]->otherIsRB)
 		{
 			_oldCollisions[i]->otherCollider->GetGameObject()->onCollisionExit(ReverseCollision(_oldCollisions[i]));
 		}
 		delete _oldCollisions[i];
 	}
+	
+	
 	_oldCollisions.clear();
 	_oldCollisions = _collisions;
 	_collisions.clear();
@@ -122,12 +157,122 @@ CollisionInfo* Physics::ReverseCollision(CollisionInfo* in)
 	reverse->collider = in->otherCollider;
 	reverse->otherCollider = in->collider;
 
+	if (in->collider->GetGameObject()->GetComponent<RigidBody>() != nullptr)
+	{
+		reverse->otherIsRB = true;
+	}
 	reverse->Normal = -in->Normal;
+	//_reversedCollisions.push_back(std::move(reverse));
 	_reversedCollisions.push_back(reverse);
+	//delete reverse;
+	//return _reversedCollisions.back();
 	return reverse;
+}
+
+float Physics::CalculateImpulse(RigidBody* rb1, RigidBody* rb2)
+{
+	return 0.f;
+}
+
+float Physics::CalculateImpulse(RigidBody* rb1)
+{
+	return 0.f;
 }
 
 CollisionInfo* Physics::Collision_AABBAABB(BoxCollider* lhs, BoxCollider* rhs)
 {
-	return nullptr;
+	if ((lhs->GetBoxPosition().x + lhs->GetBoxHalfExtents().x < rhs->GetBoxPosition().x - rhs->GetBoxHalfExtents().x) ||
+		(lhs->GetBoxPosition().y + lhs->GetBoxHalfExtents().y < rhs->GetBoxPosition().y - rhs->GetBoxHalfExtents().y) ||
+		(lhs->GetBoxPosition().x - lhs->GetBoxHalfExtents().x > rhs->GetBoxPosition().x + rhs->GetBoxHalfExtents().x) || 
+		(lhs->GetBoxPosition().y - lhs->GetBoxHalfExtents().y > rhs->GetBoxPosition().y + rhs->GetBoxHalfExtents().y))
+	{
+		return nullptr;
+	}
+
+	//MEMORYLEAK: REMEMBER TO FIX ~ I think it's not a memory leak actually, as it should be handled later when we delete the values from "Old collision or NewCollisions"
+	CollisionInfo* newCollisionInfo = new CollisionInfo();
+
+	float penDepthX = 0;
+	float penDepthY = 0;
+
+	LLGP::Vector2f collisionNormal = LLGP::Vector2f(0, 0);
+
+#pragma region		GetPenDepth
+	//GetPenDepthX
+	if (lhs->GetBoxPosition().x < rhs->GetBoxPosition().x)
+	{
+		penDepthX = (lhs->GetBoxPosition().x + lhs->GetBoxHalfExtents().x) - (rhs->GetBoxPosition().x - rhs->GetBoxHalfExtents().x);
+		collisionNormal = LLGP::Vector2f(-1, 0);
+	}
+	else
+	{
+		penDepthX = (rhs->GetBoxPosition().x + rhs->GetBoxHalfExtents().x) - (lhs->GetBoxPosition().x - lhs->GetBoxHalfExtents().x);
+		collisionNormal = LLGP::Vector2f(1, 0);
+	}
+
+	//GetPenDepthY
+	if (lhs->GetBoxPosition().y < rhs->GetBoxPosition().y)
+	{
+		penDepthY = (lhs->GetBoxPosition().y - lhs->GetBoxHalfExtents().y) - (rhs->GetBoxPosition().y + rhs->GetBoxHalfExtents().y);
+		collisionNormal = LLGP::Vector2f(collisionNormal.x, -1);
+
+	}
+	else
+	{
+		penDepthY = (rhs->GetBoxPosition().y - rhs->GetBoxHalfExtents().y) - (lhs->GetBoxPosition().y + lhs->GetBoxHalfExtents().y);
+		collisionNormal = LLGP::Vector2f(collisionNormal.x, 1);
+	}
+
+	if (penDepthX < penDepthY)
+	{
+		newCollisionInfo->Overlap = penDepthX;
+		collisionNormal = LLGP::Vector2f(collisionNormal.x, 0);
+	}
+	else
+	{
+		newCollisionInfo->Overlap = penDepthY;
+		collisionNormal = LLGP::Vector2f(0, collisionNormal.y);
+	}
+#pragma endregion
+
+	newCollisionInfo->collider = lhs; 
+	newCollisionInfo->otherCollider = rhs;
+
+	newCollisionInfo->Normal = collisionNormal;
+
+	float calculatedImpulse;
+
+	RigidBody* rbTest;
+	RigidBody* col1RigidBody = lhs->GetGameObject()->GetComponent<RigidBody>();
+
+	if (rbTest = (rhs->GetGameObject()->GetComponent<RigidBody>()))
+	{
+		newCollisionInfo->otherIsRB = true;
+		calculatedImpulse = CalculateImpulse(col1RigidBody, rbTest);
+	}
+	else
+	{
+		CalculateImpulse(col1RigidBody);
+	}
+
+	std::cout << "I COLLIDED" << std::endl;
+	return newCollisionInfo;
 }
+
+///Bit Operators (trying to remember their uses)
+
+// u_int8 a // 00000111
+// u_int8 b // 00000001
+
+// a = a ^ b;  00000110
+// b = b ^ a;  00000111
+// a = a ^ b;  00000001
+
+
+//Im have implemented this! This is for my notes.
+// u_int8 colLayer     //00000001
+// u_int8 detectLayer  //11111001
+
+// (colLayer & detectLayer) != 0 //
+
+// <<

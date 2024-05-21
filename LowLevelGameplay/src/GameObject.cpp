@@ -7,5 +7,3 @@ GameObject::GameObject()
 {
 	SetActive(true);
 }
-
-

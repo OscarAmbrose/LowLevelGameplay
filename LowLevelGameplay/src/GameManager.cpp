@@ -2,6 +2,7 @@
 #include <BoxCollider.h>
 #include <Collider.h>
 #include "Transform.h"
+#include <DebugBox.h>
 
 
 GameManager::GameManager()
@@ -31,7 +32,9 @@ GameManager::GameManager()
 		testScoper5->GetComponent<SpriteRenderer>()->setUV(LLGP::Vector2i(17, 7));
 
 		testScoper->AddComponent<RigidBody>();
-		testScoper->AddComponent<BoxCollider>();
+		testScoper->AddComponent<BoxCollider>()->SetDebugEnabled(true);
+		testScoper2->AddComponent<BoxCollider>()->SetDebugEnabled(true);
+
 
 		gameObjectExample2->getTransform()->setPosition(LLGP::Vector2f(462, 180));
 		gameObjectExample1->getTransform()->setPosition(LLGP::Vector2f(450, 225));

@@ -6,9 +6,18 @@ class RigidBody : public Component
 {
 public:
 	RigidBody(GameObject* owner);
-	~RigidBody() {};
+	~RigidBody();
 
 	void FixedUpdate(float deltaTime) override;
+
+	void OnCollisionEnter(CollisionInfo* col) 
+	{
+		std::cout << "Collision Enter" << std::endl;
+		std::cout << "Collision Enter" << std::endl;
+
+	}
+	void OnCollisionExit(CollisionInfo* col) { std::cout << "Collision Exit" << std::endl; }
+	//void OnCollisionStay(CollisionInfo* col) { std::cout << "Collision Stay" << std::endl; }
 
 	void addForce(LLGP::Vector2f force);
 	LLGP::Vector2f SolveForces(float deltaTime);
