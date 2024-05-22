@@ -18,6 +18,7 @@ public:
 
 	~InputManager() 
 	{
+		g_OnPollInputs.RemoveListener(this, std::bind(&InputManager::PollInput, this, std::placeholders::_1));
 
 	}
 

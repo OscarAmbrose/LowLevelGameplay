@@ -23,7 +23,7 @@ public:
 
 	void testFunction2(LLGP::Vector2<float> i)
 	{
-		meow = (LLGP::Vector2f(i.x, -i.y));
+		TestInputDirection = (LLGP::Vector2f(i.x, -i.y));
 		if (i.x == -1)
 		{
 			GameObject* test = getGameObjectByName("Test");
@@ -40,7 +40,10 @@ public:
 
 	void fixedUpdate(float deltaTime);
 
-	~GameManager() {};
+	~GameManager() 
+	{
+		g_OnFixedUpdate.RemoveListener(this, std::bind(&GameManager::fixedUpdate, this, std::placeholders::_1));
+	};
 
 	template<class T> requires isComponent<T>
 	std::vector<T*> getAllComponentsOfType()
@@ -71,7 +74,7 @@ private:
 public:
 	std::vector<std::shared_ptr<GameObject>> m_GameObjects;
 
-	LLGP::Vector2f meow = LLGP::Vector2f(0.f,0.f);
+	LLGP::Vector2f TestInputDirection = LLGP::Vector2f(0.f,0.f);
 	//SpriteRenderer* srTesting;
 	//SpriteRenderer* srTesting2;
 };

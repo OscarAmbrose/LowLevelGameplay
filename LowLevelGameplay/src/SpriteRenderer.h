@@ -30,7 +30,6 @@ public:
 
 	~SpriteRenderer()
 	{
-		std::cout << "Meow" << std::endl;
 		g_OnRender.RemoveListener(this, std::bind(&SpriteRenderer::renderShape, this, std::placeholders::_1, std::placeholders::_2));
 	}
 
@@ -50,11 +49,9 @@ public:
 	void Update(float deltaTime)
 	{
 		Component::Update(deltaTime);
-
-		//std::cout << "meowest" << std::endl;
 	}
 
-	inline void setOffSet(LLGP::Vector2f newOffset) { offset = newOffset; }
+	void setOffSet(LLGP::Vector2f newOffset) { offset = newOffset; }
 	inline LLGP::Vector2f getOffset() { return offset; }
 
 	inline LLGP::Vector2<float> GetRectangleSize() { return rectangleSize; }

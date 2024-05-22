@@ -30,11 +30,8 @@ int main()
 	
 	std::unique_ptr<GlobalTexture> globalTextureTest = std::make_unique<GlobalTexture>();
 	
-	std::unique_ptr<GameManager> testGameManager = std::make_unique<GameManager>();
-
-	std::cout << testGameManager->getGameObjectByName("Object") << std::endl;
-	std::cout << testGameManager->getGameObjectByName("Test") << std::endl;
-
+	std::unique_ptr <GameManager> gameManager = std::make_unique <GameManager>();
+	
 	while (window.isOpen())
 	{
 		std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
@@ -65,8 +62,8 @@ int main()
 		timeSincePhysicsStep += deltaTime;
 		while (timeSincePhysicsStep > FIXEDFRAMERATE)
 		{
+			g_OnFixedUpdate(FIXEDFRAMERATE); //Moved this to try and fix animations
 			//step physics
-			g_OnFixedUpdate(FIXEDFRAMERATE);
 			//collect collision info
 			g_OnPhysicsUpdate(FIXEDFRAMERATE);
 			g_OnCollisionUpdate(FIXEDFRAMERATE);

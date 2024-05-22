@@ -1,8 +1,9 @@
 #pragma once
 #include <Component.h>
 #include <Vector2.h>
+#include <Event.h>
 
-class CollisionInfo;
+struct CollisionInfo;
 
 class RigidBody : public Component
 {
@@ -13,7 +14,7 @@ public:
 	void FixedUpdate(float deltaTime) override;
 
 	void OnCollisionEnter(CollisionInfo* col);
-	void OnCollisionExit(CollisionInfo* col) { std::cout << "Collision Exit" << std::endl; }
+	void OnCollisionExit(CollisionInfo* col);
 	//void OnCollisionStay(CollisionInfo* col) { std::cout << "Collision Stay" << std::endl; }
 
 	void addForce(LLGP::Vector2f force);
@@ -64,6 +65,8 @@ public:
 	inline float GetDistanceTravelled() { return m_distanceTravelled; }
 	inline void setDistanceTravelled(float newDistanceTravelled) { m_distanceTravelled = newDistanceTravelled; }
 
+	LLGP::Event<bool> GroundedStateChanged;
+
 #pragma endregion
 
 protected:
@@ -74,12 +77,12 @@ private:
 	LLGP::Vector2f m_Velocity = LLGP::Vector2f(0.f, 0.f);
 	float m_MaxSpeed = 100.f;//
 	LLGP::Vector2f m_Acceleration = LLGP::Vector2f(0.f, 0.f);//
-	float m_FrictionForce = 1.f;//
+	float m_FrictionForce = 45.f;//
 	float m_DragForce = 30.f;//
-	LLGP::Vector2f m_GravityForce = LLGP::Vector2f(0, 50.f);//
+	LLGP::Vector2f m_GravityForce = LLGP::Vector2f(0, 90.f);//
 	float m_Mass = 1.f;//
 	bool m_isGrounded = false;
-	bool m_HasGravity = true;
+	bool m_HasGravity = false;
 	float m_distanceTravelled = 0;
 	bool m_OpposingMovement = false;
 

@@ -11,12 +11,12 @@ RigidBody::RigidBody(GameObject* owner) : Component(owner)
 	_GameObject->onCollisionStay.AddListener(this, std::bind(&RigidBody::OnCollisionEnter, this, std::placeholders::_1));
 
 	g_OnPhysicsUpdate.AddListener(this, std::bind(&RigidBody::FixedUpdate, this, std::placeholders::_1));
-	Physics::ReigsterRigidBody(this);
+	Physics::RegisterRigidBody(this);
 }
 
 RigidBody::~RigidBody()
 {
-	Physics::DereigsterRigidBody(this);
+	Physics::DeregisterRigidBody(this);
 	_GameObject->onCollisionStay.RemoveListener(this, std::bind(&RigidBody::OnCollisionEnter, this, std::placeholders::_1));
 	_GameObject->onCollisionEnter.RemoveListener(this, std::bind(&RigidBody::OnCollisionEnter, this, std::placeholders::_1));
 	_GameObject->onCollisionExit.RemoveListener(this, std::bind(&RigidBody::OnCollisionExit, this, std::placeholders::_1));
@@ -28,12 +28,24 @@ void RigidBody::FixedUpdate(float deltaTime)
 {
 	LLGP::Vector2f solvedForce = SolveForces(deltaTime);
 	AddVelocity(solvedForce);
+
+	int velSignX = (GetVelocity().x >= 0) ? 1 : -1;
+	int velSignY = (GetVelocity().y >= 0) ? 1 : -1;
+
+	if (GetVelocity().x > GetMaxSpeed() || -(GetVelocity().x) > GetMaxSpeed())
+	{
+		m_Velocity.x = GetMaxSpeed() * velSignX;
+	}
+	if (GetVelocity().y > GetMaxSpeed() || -(GetVelocity().y) > GetMaxSpeed())
+	{
+		m_Velocity.y = GetMaxSpeed() * velSignY;
+	}
 	
-	//Check if player is over max speed.
-	if (GetVelocity().GetMagnitude() > GetMaxSpeed())
+	//Check if player is over max speed. DEPRECATED, Made flapping hard to implement
+	/*if (GetVelocity().GetMagnitude() > GetMaxSpeed())
 	{
 		SetVelocity(GetVelocity().Normalise() * GetMaxSpeed());
-	}
+	}*/
 
 	//Fix jitter
 	if (GetVelocity().x < 0.5 && GetVelocity().x > -0.5)
@@ -63,10 +75,11 @@ void RigidBody::FixedUpdate(float deltaTime)
 void RigidBody::OnCollisionEnter(CollisionInfo* col)
 {
 	std::cout << "Collision Enter" << std::endl;
+	bool isFromTop = false;
 
 	col->Normal;
 
-	AddPosition(((col->Normal * std::round(col->Overlap)) + col->Normal));
+	//AddPosition(((col->Normal * std::round(col->Overlap)) + col->Normal));
 
 	if (col->Normal.x != 0)
 	{
@@ -76,11 +89,37 @@ void RigidBody::OnCollisionEnter(CollisionInfo* col)
 
 	if (col->Normal.y != 0)
 	{
-		float impulseVel = abs(GetVelocity().y) * col->Normal.y * 0.3;
-		SetVelocity(LLGP::Vector2f(GetVelocity().x, impulseVel));
+		if (col->Normal.y > 0)
+		{
+			float impulseVel = abs(GetVelocity().y) * col->Normal.y * 0.6;
+			SetVelocity(LLGP::Vector2f(GetVelocity().x, impulseVel));
+		}
+
+
+		if (col->Normal.y < 0)
+		{
+			SetVelocity(LLGP::Vector2f(GetVelocity().x, 0));
+			AddNetForce(-GetNetForce());
+			SetIsGrounded(true);
+			isFromTop = true;
+		}
+	}
+
+	if (isFromTop)
+	{
+		AddPosition(((col->Normal * (col->Overlap))));
+	}
+	else
+	{
+		AddPosition(((col->Normal * std::round(col->Overlap))+ col->Normal));
 	}
 
 	std::cout << "Normal X: " << col->Normal.x << " Normal Y: " << col->Normal.y << std::endl;
+}
+
+void RigidBody::OnCollisionExit(CollisionInfo* col)
+{
+	SetIsGrounded(false);
 }
 
 void RigidBody::addForce(LLGP::Vector2f force)
@@ -100,12 +139,18 @@ LLGP::Vector2f RigidBody::SolveForces(float deltaTime)
 {
 	LLGP::Vector2f velocityToAdd = LLGP::Vector2f::zero;
 
-	if (GravityIsEnabled())
+	if (GravityIsEnabled() && !IsGrounded())
 	{
 		m_NetForce += GetGravityForce();
 	}
-	m_NetForce += CalculateFrictionForce(deltaTime);
-	m_NetForce += CalculateDragForce(deltaTime);
+	if (IsGrounded())
+	{
+		m_NetForce += CalculateFrictionForce(deltaTime);
+	}
+	else
+	{
+		m_NetForce += CalculateDragForce(deltaTime);
+	}
 
 	//std::cout << std::endl << "Delta Time: " << deltaTime << std::endl;
 
@@ -199,5 +244,5 @@ void RigidBody::AddPosition(LLGP::Vector2f posToAdd)
 {
 	Transform2D* transform = _GameObject->getTransform();
 
-	transform->setPosition(LLGP::Vector2f(std::round(transform->returnPosition().x), std::round(transform->returnPosition().y)) + posToAdd);
+	transform->setPosition(LLGP::Vector2f((transform->returnPosition().x), (transform->returnPosition().y)) + posToAdd);
 }

@@ -1,11 +1,27 @@
 #include "PlayerInputController.h"
 #include "GameObject.h"
 #include "AnimationManager.h"
+#include "RigidBody.h"
+
+
+PlayerInputController::PlayerInputController(GameObject* owner) : InputManager(owner)
+{
+	player = _GameObject->GetComponent<RigidBody>();
+
+	addEvent<InputAsset<LLGP::Vector2<float>>>("MoveDirection")->getEvent<LLGP::Vector2<float>>()->AddListener(this, std::bind(&PlayerInputController::DebugWASD, this, std::placeholders::_1));
+	addEvent<InputAsset<int>>("Jump")->getEvent<int>()->AddListener(this, std::bind(&PlayerInputController::DebugJump, this, std::placeholders::_1));
+}
+PlayerInputController::~PlayerInputController()
+{
+	addEvent<InputAsset<int>>("Jump")->getEvent<int>()->RemoveListener(this, std::bind(&PlayerInputController::DebugJump, this, std::placeholders::_1));
+	addEvent<InputAsset<LLGP::Vector2<float>>>("MoveDirection")->getEvent<LLGP::Vector2<float>>()->RemoveListener(this, std::bind(&PlayerInputController::DebugWASD, this, std::placeholders::_1));
+}
 
 void PlayerInputController::DebugWASD(LLGP::Vector2<float> input)
 {
-	//std::cout << "input: " << input.x << ", " << input.y << std::endl;
 }
+
+
 
 void PlayerInputController::PollInput(sf::Event i)
 {

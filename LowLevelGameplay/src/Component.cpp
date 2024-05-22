@@ -2,6 +2,7 @@
 #include <Transform.h>
 #include <GlobalEvents.h> 
 #include <GameObject.h>
+#include <Physics.h>
 
 Component::Component(GameObject* owner) : _GameObject(owner)
 {
@@ -19,8 +20,8 @@ Component::Component(GameObject* owner) : _GameObject(owner)
 Component::~Component()
 {
 	g_OnUpdate.RemoveListener(this, std::bind(&Component::Update, this, std::placeholders::_1));
-	g_OnFixedUpdate.RemoveListener(this, std::bind(&Component::FixedUpdate, this, std::placeholders::_1));
 	g_OnStart.RemoveListener(this, std::bind(&Component::Start, this, std::placeholders::_1));
+	g_OnFixedUpdate.RemoveListener(this, std::bind(&Component::FixedUpdate, this, std::placeholders::_1));
 
 	//_GameObject->onCollisionEnter.RemoveListener(this, std::bind(&Component::OnCollisionEnter, this, std::placeholders::_1));
 	//_GameObject->onCollisionStay.RemoveListener(this, std::bind(&Component::OnCollisionStay, this, std::placeholders::_1));

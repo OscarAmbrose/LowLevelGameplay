@@ -5,11 +5,11 @@
 
 Collider::Collider(GameObject* owner) : Component(owner)
 {
-	Physics::ReigsterColldier(this);
+	Physics::RegisterColldier(this);
 }
 
 Collider::~Collider()
 {
-	Physics::DereigsterColldier(this);
+	Physics::DeregisterColldier(this);
 }
 

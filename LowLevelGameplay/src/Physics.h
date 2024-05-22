@@ -10,8 +10,8 @@ struct CollisionInfo
 {
 	CollisionInfo() {};
 
-	Collider* collider;
-	Collider* otherCollider;
+	Collider* collider = nullptr;
+	Collider* otherCollider = nullptr;
 	bool otherIsRB = false;
 	LLGP::Vector2f Location = LLGP::Vector2f(0.f, 0.f);
 	LLGP::Vector2f Normal = LLGP::Vector2f(0.f, 0.f);
@@ -27,10 +27,10 @@ class Physics
 {
 public:
 	Physics() = delete;
-	static void ReigsterColldier(Collider* col);
-	static void DereigsterColldier(Collider* col);
-	static void ReigsterRigidBody(RigidBody* rb);
-	static void DereigsterRigidBody(RigidBody* rb);
+	static void RegisterColldier(Collider* col);
+	static void DeregisterColldier(Collider* col);
+	static void RegisterRigidBody(RigidBody* rb);
+	static void DeregisterRigidBody(RigidBody* rb);
 	static void CollectCollisions();
 	static void DispatchCollisions();
 	static CollisionInfo* ReverseCollision(CollisionInfo* in);

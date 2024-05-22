@@ -29,7 +29,7 @@ bool CollisionInfo::operator==(CollisionInfo* other)
 	//return (*(this->collider) == *(other->collider) && *(this->otherCollider) == *(other->otherCollider)) || (*(this->collider) == *(other->otherCollider) && *(this->otherCollider) == *(other->collider));
 }
 
-void Physics::ReigsterColldier(Collider* col)
+void Physics::RegisterColldier(Collider* col)
 {
 	if (std::find_if(_colliders.begin(), _colliders.end(), [col](Collider* check) { return *col == *check; }) == _colliders.end())
 	{
@@ -37,12 +37,12 @@ void Physics::ReigsterColldier(Collider* col)
 	}
 }
 
-void Physics::DereigsterColldier(Collider* col)
+void Physics::DeregisterColldier(Collider* col)
 {
 	std::erase_if(_colliders, [col](Collider* check) { return *col == *check; });
 }
 
-void Physics::ReigsterRigidBody(RigidBody* rb)
+void Physics::RegisterRigidBody(RigidBody* rb)
 {
 	if (std::find_if(_rigidBodies.begin(), _rigidBodies.end(), [rb](RigidBody* check) { return *rb == *check; }) == _rigidBodies.end())
 	{
@@ -50,7 +50,7 @@ void Physics::ReigsterRigidBody(RigidBody* rb)
 	}
 }
 
-void Physics::DereigsterRigidBody(RigidBody* rb)
+void Physics::DeregisterRigidBody(RigidBody* rb)
 {
 	std::erase_if(_rigidBodies, [rb](RigidBody* check) { return *rb == *check; });
 }
@@ -274,4 +274,5 @@ CollisionInfo* Physics::Collision_AABBAABB(BoxCollider* lhs, BoxCollider* rhs)
 
 // (colLayer & detectLayer) != 0 //
 
-// <<
+// << (bit shift but wraps)
+// <<< (bit shift but doesnt wrap)
