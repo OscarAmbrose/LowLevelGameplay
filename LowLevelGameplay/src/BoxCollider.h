@@ -14,7 +14,7 @@ public:
 	BoxCollider* SetUpCollider(LLGP::Vector2f boxSize, LLGP::Vector2f boxOffset);
 
 	inline LLGP::Vector2f GetBoxSize() { return m_BoxSize; }
-	inline void SetBoxSize(LLGP::Vector2f newBoxSize) { m_BoxSize = newBoxSize; }
+	void SetBoxSize(LLGP::Vector2f newBoxSize);
 
 	inline LLGP::Vector2f GetBoxPosition() { return m_BoxPosition; }
 	inline void SetBoxPosition(LLGP::Vector2f newBoxPosition) { m_BoxPosition = newBoxPosition; }

@@ -36,6 +36,12 @@ BoxCollider* BoxCollider::SetUpCollider(LLGP::Vector2f boxSize, LLGP::Vector2f b
 	return this;
 }
 
+void BoxCollider::SetBoxSize(LLGP::Vector2f newBoxSize)
+{
+	m_BoxSize = newBoxSize;
+	m_HalfBoxExtents = LLGP::Vector2f(GetBoxSize().x / 2, GetBoxSize().y / 2) * _GameObject->getTransform()->returnScale();
+}
+
 BoxCollider* BoxCollider::SetDebugEnabled(bool newDebug)
 {
 	m_DebugEnabled = newDebug;

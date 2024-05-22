@@ -76,10 +76,10 @@ private:
 	LLGP::Vector2f m_Acceleration = LLGP::Vector2f(0.f, 0.f);//
 	float m_FrictionForce = 1.f;//
 	float m_DragForce = 30.f;//
-	LLGP::Vector2f m_GravityForce = LLGP::Vector2f(0, 28.f);//
+	LLGP::Vector2f m_GravityForce = LLGP::Vector2f(0, 50.f);//
 	float m_Mass = 1.f;//
 	bool m_isGrounded = false;
-	bool m_HasGravity = false;
+	bool m_HasGravity = true;
 	float m_distanceTravelled = 0;
 	bool m_OpposingMovement = false;
 

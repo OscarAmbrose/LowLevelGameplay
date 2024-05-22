@@ -68,11 +68,11 @@ int main()
 			//step physics
 			g_OnFixedUpdate(FIXEDFRAMERATE);
 			//collect collision info
+			g_OnPhysicsUpdate(FIXEDFRAMERATE);
 			g_OnCollisionUpdate(FIXEDFRAMERATE);
 			Physics::CollectCollisions();
 			//std::cout <<std::endl<< "Number of Fixed Updates: " << numberOfFixedUpdates << std::endl;
 			Physics::DispatchCollisions();
-			g_OnPhysicsUpdate(FIXEDFRAMERATE);
 			//dispatch collisions
 			numberOfFixedUpdates++;
 			timeSincePhysicsStep -= FIXEDFRAMERATE;

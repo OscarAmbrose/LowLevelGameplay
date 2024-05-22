@@ -64,7 +64,7 @@ void RigidBody::OnCollisionEnter(CollisionInfo* col)
 
 	col->Normal;
 
-	AddPosition(((col->Normal * col->Overlap) + col->Normal));
+	AddPosition(((col->Normal * std::round(col->Overlap)) + col->Normal));
 
 	if (col->Normal.x != 0)
 	{
@@ -197,5 +197,5 @@ void RigidBody::AddPosition(LLGP::Vector2f posToAdd)
 {
 	Transform2D* transform = _GameObject->getTransform();
 
-	transform->setPosition(transform->returnPosition() + posToAdd);
+	transform->setPosition(LLGP::Vector2f(std::round(transform->returnPosition().x), std::round(transform->returnPosition().y)) + posToAdd);
 }
