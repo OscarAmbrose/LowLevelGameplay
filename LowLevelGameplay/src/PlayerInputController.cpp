@@ -9,11 +9,10 @@ PlayerInputController::PlayerInputController(GameObject* owner) : InputManager(o
 	player = _GameObject->GetComponent<RigidBody>();
 
 	addEvent<InputAsset<LLGP::Vector2<float>>>("MoveDirection")->getEvent<LLGP::Vector2<float>>()->AddListener(this, std::bind(&PlayerInputController::DebugWASD, this, std::placeholders::_1));
-	addEvent<InputAsset<int>>("Jump")->getEvent<int>()->AddListener(this, std::bind(&PlayerInputController::DebugJump, this, std::placeholders::_1));
+	
 }
 PlayerInputController::~PlayerInputController()
 {
-	addEvent<InputAsset<int>>("Jump")->getEvent<int>()->RemoveListener(this, std::bind(&PlayerInputController::DebugJump, this, std::placeholders::_1));
 	addEvent<InputAsset<LLGP::Vector2<float>>>("MoveDirection")->getEvent<LLGP::Vector2<float>>()->RemoveListener(this, std::bind(&PlayerInputController::DebugWASD, this, std::placeholders::_1));
 }
 
@@ -44,20 +43,12 @@ void PlayerInputController::PollInput(sf::Event i)
 		WASDInput.x = 1;
 	}
 
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::W) && sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-	{
-		//Skip the other inputs
-	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) || sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
 		WASDInput.y = 1;
 		shouldJump = true;
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-	{
-		WASDInput.y = -1;
-	}
+
 #pragma endregion
 
 	if (WASDInput.x != prevInput.x || WASDInput.y != prevInput.y)
@@ -66,8 +57,4 @@ void PlayerInputController::PollInput(sf::Event i)
 		prevInput = WASDInput;
 	}
 
-	if (shouldJump)
-	{
-		invokeEvent<int>("Jump", 1);
-	}
 }

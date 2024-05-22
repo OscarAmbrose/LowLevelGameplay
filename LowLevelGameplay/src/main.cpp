@@ -26,7 +26,7 @@ int main()
 	//Update Stuff
 
 	//Creates the window
-	sf::RenderWindow window(sf::VideoMode(1800, 1080), "Not Actually Joust");
+	sf::RenderWindow window(sf::VideoMode(1920, 1080), "Not Actually Joust");
 	
 	std::unique_ptr<GlobalTexture> globalTextureTest = std::make_unique<GlobalTexture>();
 	
@@ -80,6 +80,7 @@ int main()
 		#pragma region Render
 		window.clear();
 
+		//I should change this to a Bit shift and bit compare version, I think that'd be more efficient?
 		for (int i = 0; i < 5; i++)
 		{
 			g_OnRender(&window, i);

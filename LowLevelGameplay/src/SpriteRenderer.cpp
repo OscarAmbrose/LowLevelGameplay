@@ -22,9 +22,9 @@ sf::RectangleShape SpriteRenderer::returnShape()
 {
 	shape.setSize(rectangleSize);
 	shape.setOrigin(rectangleSize / 2);
-	shape.setRotation(_GameObject->getTransform()->returnRotation());
+	shape.setRotation(_GameObject->GetTransform()->returnRotation());
 
-	LLGP::Vector2f position = _GameObject->getTransform()->returnPosition() + offset;
+	LLGP::Vector2f position = _GameObject->GetTransform()->returnPosition() + offset;
 
 	shape.setPosition(position);
 
@@ -35,8 +35,8 @@ void SpriteRenderer::setFlipped(bool newFlipped)
 {
 
 	isFlipped = newFlipped;
-	float x = _GameObject->getTransform()->returnScale().x;
-	float y = _GameObject->getTransform()->returnScale().y;
+	float x = _GameObject->GetTransform()->returnScale().x;
+	float y = _GameObject->GetTransform()->returnScale().y;
 	if (newFlipped)
 	{
 		shape.setScale(-x, x);
@@ -54,4 +54,10 @@ void SpriteRenderer::renderShape(sf::RenderWindow* window, int renderLayer)
 	{
 		window->draw(returnShape());
 	}
+}
+
+SpriteRenderer* SpriteRenderer::setRenderLayer(int newRenderLayer)
+{
+	m_RenderLayer = newRenderLayer;
+	return this;
 }

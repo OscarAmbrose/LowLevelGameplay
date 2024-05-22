@@ -31,7 +31,7 @@ public:
 	inline void SetTag(std::string newTag) { m_Tag = newTag; }
 	inline bool CompareTag(std::string comp) { return m_Tag == comp; }
 
-	Transform2D* getTransform() { return transform.get(); }
+	Transform2D* GetTransform() { return transform.get(); }
 
 
 #pragma region ComponentManagement

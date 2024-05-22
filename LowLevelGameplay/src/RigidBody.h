@@ -54,7 +54,15 @@ public:
 	inline LLGP::Vector2f GetVelocity() const { return m_Velocity; }
 
 	inline bool IsGrounded() const { return m_isGrounded; }
-	inline void SetIsGrounded(bool newGrounded) { m_isGrounded = newGrounded; }
+	void SetIsGrounded(bool newGrounded) 
+	{ 
+		if (newGrounded == IsGrounded())
+		{
+			return;
+		}
+		m_isGrounded = newGrounded;
+		GroundedStateChanged.Invoke(IsGrounded());
+	}
 
 	inline bool GravityIsEnabled() { return m_HasGravity; }
 	inline void setGravityEnabled(bool newGrav) { m_HasGravity = newGrav; }
@@ -75,10 +83,10 @@ protected:
 private:
 	LLGP::Vector2f m_NetForce = LLGP::Vector2f(0.f, 0.f);//
 	LLGP::Vector2f m_Velocity = LLGP::Vector2f(0.f, 0.f);
-	float m_MaxSpeed = 100.f;//
+	float m_MaxSpeed = 150.f;//
 	LLGP::Vector2f m_Acceleration = LLGP::Vector2f(0.f, 0.f);//
-	float m_FrictionForce = 45.f;//
-	float m_DragForce = 30.f;//
+	float m_FrictionForce = 65.f;//
+	float m_DragForce = 40.f;//
 	LLGP::Vector2f m_GravityForce = LLGP::Vector2f(0, 90.f);//
 	float m_Mass = 1.f;//
 	bool m_isGrounded = false;

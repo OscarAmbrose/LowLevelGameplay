@@ -16,34 +16,7 @@ class GameManager
 public:
 	GameManager();
 
-	void testFunction(int i)
-	{
-		std::cout << i << std::endl;
-	}
-
-	void testFunction2(LLGP::Vector2<float> i)
-	{
-		TestInputDirection = (LLGP::Vector2f(i.x, -i.y));
-		if (i.x == -1)
-		{
-			GameObject* test = getGameObjectByName("Test");
-			//test->GetComponent<AnimationManager>()->GetAnimationState<AnimationState>("Walking")->setActiveAnimation("Reverse");
-		}
-		else if (i.x == 1)
-		{
-			GameObject* test = getGameObjectByName("Test");
-			test->GetComponent<AnimationManager>()->setActiveAnimationState<AnimationState>("Walking");
-			//test->GetComponent<AnimationManager>()->GetAnimationState<AnimationState>("Walking")->setActiveAnimation("Walk");
-
-		}
-	}
-
-	void fixedUpdate(float deltaTime);
-
-	~GameManager() 
-	{
-		g_OnFixedUpdate.RemoveListener(this, std::bind(&GameManager::fixedUpdate, this, std::placeholders::_1));
-	};
+	~GameManager() {};
 
 	template<class T> requires isComponent<T>
 	std::vector<T*> getAllComponentsOfType()
@@ -66,7 +39,7 @@ public:
 
 	GameObject* getGameObjectByName(std::string objectTag);
 
-
+	void StartLevelOne();
 
 private:
 	int m_LevelNumber = 0;

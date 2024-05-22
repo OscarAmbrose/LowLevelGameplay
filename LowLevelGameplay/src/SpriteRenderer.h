@@ -56,7 +56,7 @@ public:
 
 	inline LLGP::Vector2<float> GetRectangleSize() { return rectangleSize; }
 
-	inline void setRenderLayer(int newRenderLayer) { m_RenderLayer = newRenderLayer; }
+	SpriteRenderer* setRenderLayer(int newRenderLayer);
 	inline int getRenderLayer() { return m_RenderLayer; }
 
 private:

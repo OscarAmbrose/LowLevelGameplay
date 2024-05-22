@@ -23,19 +23,6 @@ DebugBox::~DebugBox()
 	g_OnRender.RemoveListener(this, std::bind(&DebugBox::renderShape, this, std::placeholders::_1, std::placeholders::_2));
 }
 
-//void DebugBox::Update(float deltaTime)
-//{
-//	Component::Update(deltaTime);
-//	_GameObject->getTransform()
-//}
-
-
-
-//void DebugBox::Start(float deltaTime)
-//{
-//	SetUpDebugBox();
-//}
-
 void DebugBox::SetUpDebugBox()
 {
 	rectangleSize = _GameObject->GetComponent<BoxCollider>()->GetBoxSize();

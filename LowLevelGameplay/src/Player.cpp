@@ -10,6 +10,9 @@
 #include <PlayerInputController.h>
 #include <GlobalEvents.h>
 #include <Event.h>
+#include <ScreenWrapper.h>
+
+#define CHECK_BIT(var,pos) ((var) & (1<<(pos)))
 
 Player::Player()
 {
@@ -19,18 +22,21 @@ Player::Player()
 	rb = AddComponent<RigidBody>();
 	rb->GroundedStateChanged.AddListener(this, std::bind(&Player::ChangeAnimStyle, this, std::placeholders::_1));
 	rb->setGravityEnabled(true);
-	AddComponent<BoxCollider>()->SetUpCollider(LLGP::Vector2f(26, 38), LLGP::Vector2f(0, 0));
-	AddComponent<DebugBox>()->SetUpDebugBox();
-	GetComponent<AnimationManager>()->addAnimationState<AnimationState>("Walking")->AddAnimation("Walk", 1, 4, LLGP::Vector2i(0, 0), LLGP::Vector2i(1, 0), LLGP::Vector2i(2, 0), LLGP::Vector2i(3, 0), LLGP::Vector2i(4, 0));
-	GetComponent<AnimationManager>()->GetAnimationState<AnimationState>("Walking")->AddAnimation("Reverse", 0, 1, LLGP::Vector2i(4, 0));
-	GetComponent<AnimationManager>()->addAnimationState<AnimationState>("Flying")->AddAnimation("Fall", 0, 1, LLGP::Vector2i(6, 0));
-	GetComponent<AnimationManager>()->GetAnimationState<AnimationState>("Flying")->AddAnimation("Flap", 0, 1, LLGP::Vector2i(5, 0));
+	AddComponent<BoxCollider>()->SetUpCollider(LLGP::Vector2f(26, 38), LLGP::Vector2f(0, -3))->SetCollisionMask(0b00000011);
+	//AddComponent<DebugBox>()->SetUpDebugBox();
+	GetComponent<AnimationManager>()->addAnimationState<AnimationState>("Walking")->AddAnimation("Walk", 1, 4, LLGP::Vector2i(0, 2), LLGP::Vector2i(1, 2), LLGP::Vector2i(2, 2), LLGP::Vector2i(3, 2), LLGP::Vector2i(4, 2));
+	GetComponent<AnimationManager>()->GetAnimationState<AnimationState>("Walking")->AddAnimation("Reverse", 0, 1, LLGP::Vector2i(4, 2));
+	GetComponent<AnimationManager>()->addAnimationState<AnimationState>("Flying")->AddAnimation("Fall", 0, 1, LLGP::Vector2i(6, 2));
+	GetComponent<AnimationManager>()->GetAnimationState<AnimationState>("Flying")->AddAnimation("Flap", 0, 1, LLGP::Vector2i(5, 2));
 	GetComponent<AnimationManager>()->setActiveAnimationState<AnimationState>("Flying");
 	AddComponent<PlayerInputController>()->getEvent<LLGP::Vector2<float>>("MoveDirection")->AddListener(this, std::bind(&Player::HandleInput, this, std::placeholders::_1));
+	AddComponent<ScreenWrapper>();
+	this->onCollisionEnter.AddListener(this, std::bind(&Player::JoustResolution, this, std::placeholders::_1));
 }
 
 Player::~Player()
 {
+	this->onCollisionEnter.RemoveListener(this, std::bind(&Player::JoustResolution, this, std::placeholders::_1));
 	rb->GroundedStateChanged.RemoveListener(this, std::bind(&Player::ChangeAnimStyle, this, std::placeholders::_1));
 	g_OnFixedUpdate.RemoveListener(this, std::bind(&Player::FixedUpdate, this, std::placeholders::_1));
 }
@@ -38,17 +44,18 @@ Player::~Player()
 void Player::HandleInput(LLGP::Vector2f value)
 {
 	m_InputDirection = value;
-	std::cout << value.x << ", " << value.y << std::endl;
 }
 
 void Player::ChangeAnimStyle(bool isGrounded)
 {
 	if (isGrounded)
 	{
+		//std::cout << "grounded" << std::endl;
 		GetComponent<AnimationManager>()->setActiveAnimationState<AnimationState>("Walking");
 	}
 	else
 	{
+		//std::cout << "Flying" << std::endl;
 		GetComponent<AnimationManager>()->setActiveAnimationState<AnimationState>("Flying");
 	}
 }
@@ -63,6 +70,8 @@ void Player::MovePlayer(float deltaTime)
 
 	if (m_PreviousInputDirection.y < m_InputDirection.y && m_InputDirection.y == 1)
 	{
+		std::string animState = GetComponent<AnimationManager>()->ReturnActiveAnimationState();
+
 		YForce = 200 * m_MovementSpeed;
 	}
 
@@ -145,4 +154,16 @@ void Player::UpdateAnimation(float deltaTime)
 		}
 	}
 	
+}
+
+void Player::JoustResolution(CollisionInfo* info)
+{
+	//Check whether both colliders are on the joust collision bit layer ( the second bit from the right 0b000000>X<0)
+	//If they are not, return.
+	if (!((CHECK_BIT(info->collider->GetCollisionMask(), 1)) && (CHECK_BIT(info->otherCollider->GetCollisionLayer(), 1))))
+	{
+		return;
+	}
+
+
 }

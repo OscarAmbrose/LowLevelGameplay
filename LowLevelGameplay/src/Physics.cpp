@@ -73,8 +73,8 @@ void Physics::CollectCollisions()
 
 				//If the collision info already exists, continue. Or, if the collision masks don't match, continue. 
 				{
-					CollisionInfo* test = new CollisionInfo(); test->collider = rbCol; test->otherCollider = worldCol;
 
+					CollisionInfo* test = new CollisionInfo(); test->collider = rbCol; test->otherCollider = worldCol;
 					//I added bitwise collision masking :)
 					if ((test->collider->GetCollisionMask() & test->otherCollider->GetCollisionLayer()) == 0) { continue; }
 					//End of bitwise collision masking :(

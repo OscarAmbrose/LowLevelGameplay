@@ -19,6 +19,8 @@ public:
 	void FixedUpdate(float deltaTime);
 
 	void UpdateAnimation(float deltaTime);
+
+	void JoustResolution(CollisionInfo* info);
 protected:
 	LLGP::Vector2f m_InputDirection;
 	LLGP::Vector2f m_PreviousInputDirection;

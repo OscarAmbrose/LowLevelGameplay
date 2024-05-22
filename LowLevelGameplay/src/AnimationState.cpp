@@ -83,10 +83,10 @@ void AnimationState::speedBasedAnimation(float thisFrameDistanceTravelled)
 {
 	distanceTravelled += thisFrameDistanceTravelled;
 	//std::cout << distanceTravelled << std::endl;
-	if (distanceTravelled >= (getSpriteRenderer()->returnShape().getSize().x * ((4.5 / 32) * m_GameObject->getTransform()->returnScale().x) ))
+	if (distanceTravelled >= (getSpriteRenderer()->returnShape().getSize().x * ((4.5 / 32) * m_GameObject->GetTransform()->returnScale().x) ))
 	{
 		updateRenderer(m_animations[m_activeAnimation]->getNextFrame());
-		distanceTravelled -= (getSpriteRenderer()->returnShape().getSize().x * (float)((4.5 / 32) * m_GameObject->getTransform()->returnScale().x));
+		distanceTravelled -= (getSpriteRenderer()->returnShape().getSize().x * (float)((4.5 / 32) * m_GameObject->GetTransform()->returnScale().x));
 	}
 }
 

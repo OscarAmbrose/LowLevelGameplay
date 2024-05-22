@@ -59,22 +59,22 @@ void RigidBody::FixedUpdate(float deltaTime)
 
 	//std::cout << GetVelocity().x << std::endl;
 
-	LLGP::Vector2f oldPos = _GameObject->getTransform()->returnPosition();
+	LLGP::Vector2f oldPos = _GameObject->GetTransform()->returnPosition();
 
 	LLGP::Vector2f newPosition;
 
-	newPosition = (GetVelocity()* deltaTime) + (_GameObject->getTransform()->returnPosition());
+	newPosition = (GetVelocity()* deltaTime) + (_GameObject->GetTransform()->returnPosition());
 
 	LLGP::Vector2f distance = newPosition - oldPos;
 
 	setDistanceTravelled(distance.GetMagnitude());
 
-	_GameObject->getTransform()->setPosition(newPosition);
+	_GameObject->GetTransform()->setPosition(newPosition);
 }
 
 void RigidBody::OnCollisionEnter(CollisionInfo* col)
 {
-	std::cout << "Collision Enter" << std::endl;
+	//std::cout << "Collision Enter" << std::endl;
 	bool isFromTop = false;
 
 	col->Normal;
@@ -83,7 +83,7 @@ void RigidBody::OnCollisionEnter(CollisionInfo* col)
 
 	if (col->Normal.x != 0)
 	{
-		float impulseVel = abs(GetVelocity().x)* col->Normal.x * 0.5;
+		float impulseVel = abs(GetVelocity().x)* col->Normal.x * 1;
 		SetVelocity(LLGP::Vector2f(impulseVel, GetVelocity().y));
 	}
 
@@ -91,14 +91,20 @@ void RigidBody::OnCollisionEnter(CollisionInfo* col)
 	{
 		if (col->Normal.y > 0)
 		{
-			float impulseVel = abs(GetVelocity().y) * col->Normal.y * 0.6;
+			float impulseVel = abs(GetVelocity().y) * col->Normal.y * 1;
 			SetVelocity(LLGP::Vector2f(GetVelocity().x, impulseVel));
 		}
 
 
 		if (col->Normal.y < 0)
 		{
-			SetVelocity(LLGP::Vector2f(GetVelocity().x, 0));
+			if (GetVelocity().y < 0)
+			{
+			}
+			else
+			{
+				SetVelocity(LLGP::Vector2f(GetVelocity().x, 0));
+			}
 			AddNetForce(-GetNetForce());
 			SetIsGrounded(true);
 			isFromTop = true;
@@ -114,7 +120,7 @@ void RigidBody::OnCollisionEnter(CollisionInfo* col)
 		AddPosition(((col->Normal * std::round(col->Overlap))+ col->Normal));
 	}
 
-	std::cout << "Normal X: " << col->Normal.x << " Normal Y: " << col->Normal.y << std::endl;
+	//std::cout << "Normal X: " << col->Normal.x << " Normal Y: " << col->Normal.y << std::endl;
 }
 
 void RigidBody::OnCollisionExit(CollisionInfo* col)
@@ -242,7 +248,7 @@ LLGP::Vector2f RigidBody::CalculateDragForce(float deltaTime)
 
 void RigidBody::AddPosition(LLGP::Vector2f posToAdd)
 {
-	Transform2D* transform = _GameObject->getTransform();
+	Transform2D* transform = _GameObject->GetTransform();
 
 	transform->setPosition(LLGP::Vector2f((transform->returnPosition().x), (transform->returnPosition().y)) + posToAdd);
 }
