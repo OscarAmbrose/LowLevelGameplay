@@ -8,6 +8,7 @@ RigidBody::RigidBody(GameObject* owner) : Component(owner)
 {
 	_GameObject->onCollisionEnter.AddListener(this, std::bind(&RigidBody::OnCollisionEnter, this, std::placeholders::_1));
 	_GameObject->onCollisionExit.AddListener(this, std::bind(&RigidBody::OnCollisionExit, this, std::placeholders::_1));
+	_GameObject->onCollisionStay.AddListener(this, std::bind(&RigidBody::OnCollisionEnter, this, std::placeholders::_1));
 
 	g_OnPhysicsUpdate.AddListener(this, std::bind(&RigidBody::FixedUpdate, this, std::placeholders::_1));
 	Physics::ReigsterRigidBody(this);
@@ -15,6 +16,7 @@ RigidBody::RigidBody(GameObject* owner) : Component(owner)
 RigidBody::~RigidBody()
 {
 	Physics::DereigsterRigidBody(this);
+	_GameObject->onCollisionStay.RemoveListener(this, std::bind(&RigidBody::OnCollisionEnter, this, std::placeholders::_1));
 	_GameObject->onCollisionEnter.RemoveListener(this, std::bind(&RigidBody::OnCollisionEnter, this, std::placeholders::_1));
 	_GameObject->onCollisionExit.RemoveListener(this, std::bind(&RigidBody::OnCollisionExit, this, std::placeholders::_1));
 	g_OnPhysicsUpdate.RemoveListener(this, std::bind(&RigidBody::FixedUpdate, this, std::placeholders::_1));
