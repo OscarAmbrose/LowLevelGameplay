@@ -23,15 +23,23 @@ Player::Player()
 	rb->GroundedStateChanged.AddListener(this, std::bind(&Player::ChangeAnimStyle, this, std::placeholders::_1));
 	rb->setGravityEnabled(true);
 	AddComponent<BoxCollider>()->SetUpCollider(LLGP::Vector2f(26, 38), LLGP::Vector2f(0, -3))->SetCollisionMask(0b00000011);
-	//AddComponent<DebugBox>()->SetUpDebugBox();
-	GetComponent<AnimationManager>()->addAnimationState<AnimationState>("Walking")->AddAnimation("Walk", 1, 4, LLGP::Vector2i(0, 2), LLGP::Vector2i(1, 2), LLGP::Vector2i(2, 2), LLGP::Vector2i(3, 2), LLGP::Vector2i(4, 2));
-	GetComponent<AnimationManager>()->GetAnimationState<AnimationState>("Walking")->AddAnimation("Reverse", 0, 1, LLGP::Vector2i(4, 2));
-	GetComponent<AnimationManager>()->addAnimationState<AnimationState>("Flying")->AddAnimation("Fall", 0, 1, LLGP::Vector2i(6, 2));
-	GetComponent<AnimationManager>()->GetAnimationState<AnimationState>("Flying")->AddAnimation("Flap", 0, 1, LLGP::Vector2i(5, 2));
+	GetComponent<AnimationManager>()->addAnimationState<AnimationState>("Walking")->AddAnimation("Walk", 1, 4, LLGP::Vector2i(0, birdNumber), LLGP::Vector2i(1, birdNumber), LLGP::Vector2i(2, birdNumber), LLGP::Vector2i(3, birdNumber), LLGP::Vector2i(4, birdNumber));
+	GetComponent<AnimationManager>()->GetAnimationState<AnimationState>("Walking")->AddAnimation("Reverse", 0, 1, LLGP::Vector2i(4, birdNumber));
+	GetComponent<AnimationManager>()->addAnimationState<AnimationState>("Flying")->AddAnimation("Fall", 0, 1, LLGP::Vector2i(6, birdNumber));
+	GetComponent<AnimationManager>()->GetAnimationState<AnimationState>("Flying")->AddAnimation("Flap", 0, 1, LLGP::Vector2i(5, birdNumber));
 	GetComponent<AnimationManager>()->setActiveAnimationState<AnimationState>("Flying");
-	AddComponent<PlayerInputController>()->getEvent<LLGP::Vector2<float>>("MoveDirection")->AddListener(this, std::bind(&Player::HandleInput, this, std::placeholders::_1));
+
+	//-----------------------------------------------------------This has been removed for the general character class------------------------------------------------------------//
+	AddComponent<PlayerInputController>()->getEvent<LLGP::Vector2<float>>("MoveDirection")->AddListener(this, std::bind(&Player::HandleInput, this, std::placeholders::_1));  //
+	//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+	
 	AddComponent<ScreenWrapper>();
+	rider = AddComponent<SpriteRenderer>()->setRenderLayer(0)->setOffSet(LLGP::Vector2f(4, -8))->setUV(LLGP::Vector2i(actualRiderColour, 3));
+
 	this->onCollisionEnter.AddListener(this, std::bind(&Player::JoustResolution, this, std::placeholders::_1));
+
+	SetBirdNumber(birdNumber);
+	SetRiderColour('r');
 }
 
 Player::~Player()
@@ -88,9 +96,93 @@ void Player::FixedUpdate(float deltaTime)
 	UpdateAnimation(deltaTime);
 }
 
+void Player::SetRiderOffsets(bool grounded)
+{
+	riderForward = 5;
+	if (grounded)
+	{
+		switch (birdNumber)
+		{
+		case 0:
+			riderHeight = 8;
+
+			break;
+
+		case 1:
+			riderHeight = 8;
+
+			break;
+
+		case 2:
+			riderHeight = 13;
+			riderForward = 5;
+
+			break;
+
+		default:
+			riderHeight = 8;
+
+			break;
+		}
+	}
+	else
+	{
+		switch (birdNumber)
+		{
+		case 0:
+			riderHeight = 8;
+
+			break;
+
+		case 1:
+			riderHeight = 8;
+
+			break;
+
+		case 2:
+			riderHeight = 8;
+			riderForward = 5;
+
+			break;
+
+		default:
+			riderHeight = 8;
+
+			break;
+		}
+	}
+	
+}
+
+void Player::SetBirdNumber(int newBird)
+{
+	birdNumber = newBird;
+	SetRiderOffsets(false);
+
+	switch (newBird)
+	{
+	case 0:
+		GetComponent<BoxCollider>()->SetUpCollider(LLGP::Vector2f(26, 38), LLGP::Vector2f(0, 1));
+		break;
+	case 1:
+		GetComponent<BoxCollider>()->SetUpCollider(LLGP::Vector2f(26, 38), LLGP::Vector2f(0, 1));
+
+		break;
+	case 2:
+		GetComponent<BoxCollider>()->SetUpCollider(LLGP::Vector2f(26, 38), LLGP::Vector2f(0, -3));
+
+		break;
+	default:
+		GetComponent<BoxCollider>()->SetUpCollider(LLGP::Vector2f(26, 38), LLGP::Vector2f(0, 0));
+
+		break;
+	}
+}
+
 void Player::UpdateAnimation(float deltaTime)
 {
 	std::string animState = GetComponent<AnimationManager>()->ReturnActiveAnimationState();
+
 
 #pragma region IsGrounded
 	//If player is grounded do walky stuff
@@ -123,10 +215,12 @@ void Player::UpdateAnimation(float deltaTime)
 			if (m_InputDirection.x == 1)
 			{
 				GetComponent<SpriteRenderer>()->setFlipped(false);
+				rider->setFlipped(false);
 			}
 			else if (m_InputDirection.x == -1)
 			{
 				GetComponent<SpriteRenderer>()->setFlipped(true);
+				rider->setFlipped(true);
 			}
 		}
 	}
@@ -138,10 +232,12 @@ void Player::UpdateAnimation(float deltaTime)
 		if (m_InputDirection.x == 1)
 		{
 			GetComponent<SpriteRenderer>()->setFlipped(false);
+			rider->setOffSet(LLGP::Vector2f(riderForward, -riderHeight))->setFlipped(false);
 		}
 		else if (m_InputDirection.x == -1)
 		{
 			GetComponent<SpriteRenderer>()->setFlipped(true);
+			rider->setOffSet(LLGP::Vector2f(-riderForward, -riderHeight))->setFlipped(true);
 		}
 
 		if (rb->GetVelocity().y < 0 && m_InputDirection.y == 1)
@@ -154,6 +250,16 @@ void Player::UpdateAnimation(float deltaTime)
 		}
 	}
 	
+	SetRiderOffsets(rb->IsGrounded());
+
+	if (rider->getFlipped())
+	{
+		rider->setOffSet(LLGP::Vector2f(-riderForward, -riderHeight));
+	}
+	else
+	{
+		rider->setOffSet(LLGP::Vector2f(riderForward, -riderHeight));
+	}
 }
 
 void Player::JoustResolution(CollisionInfo* info)
@@ -166,4 +272,31 @@ void Player::JoustResolution(CollisionInfo* info)
 	}
 
 
+}
+
+void Player::SetRiderColour(char newRiderColour)
+{
+	riderColour = newRiderColour;
+	switch (riderColour)
+	{
+	case 'y':
+		actualRiderColour = 0;
+		break;
+	case 'r':
+		actualRiderColour = 2;
+		break;
+	case 'b':
+		actualRiderColour = 6;
+		break;
+	case 'c':
+		actualRiderColour = 1;
+		break;
+	case 'g':
+		actualRiderColour = 4;
+		break;
+	default:
+		break;
+	}
+
+	rider->setUV(LLGP::Vector2i(actualRiderColour, 3));
 }

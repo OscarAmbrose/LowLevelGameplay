@@ -33,9 +33,9 @@ public:
 		g_OnRender.RemoveListener(this, std::bind(&SpriteRenderer::renderShape, this, std::placeholders::_1, std::placeholders::_2));
 	}
 
-	void setUV(LLGP::Vector2i selectedSprite);
+	SpriteRenderer* setUV(LLGP::Vector2i selectedSprite);
 
-	void setUV(LLGP::Vector2i selectedSprite, LLGP::Vector2i spriteSize);
+	SpriteRenderer* setUV(LLGP::Vector2i selectedSprite, LLGP::Vector2i spriteSize);
 
 	sf::RectangleShape returnShape();
 
@@ -51,7 +51,7 @@ public:
 		Component::Update(deltaTime);
 	}
 
-	void setOffSet(LLGP::Vector2f newOffset) { offset = newOffset; }
+	SpriteRenderer* setOffSet(LLGP::Vector2f newOffset);
 	inline LLGP::Vector2f getOffset() { return offset; }
 
 	inline LLGP::Vector2<float> GetRectangleSize() { return rectangleSize; }

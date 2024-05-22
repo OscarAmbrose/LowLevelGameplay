@@ -4,18 +4,20 @@
 #include <Event.h>
 
 
-void SpriteRenderer::setUV(LLGP::Vector2i selectedSprite)
+SpriteRenderer* SpriteRenderer::setUV(LLGP::Vector2i selectedSprite)
 {
 	rectangleSize = LLGP::Vector2<float>(32, 64);
 	sf::IntRect rectTexUV((rectTexSize.x / spritesInTexture.x) * selectedSprite.x, (rectTexSize.y / spritesInTexture.y) * selectedSprite.y, rectTexSize.x / spritesInTexture.x, rectTexSize.y / spritesInTexture.y);
 	shape.setTextureRect(rectTexUV);
+	return this;
 }
 
-void SpriteRenderer::setUV(LLGP::Vector2i selectedSprite, LLGP::Vector2i spriteSize)
+SpriteRenderer* SpriteRenderer::setUV(LLGP::Vector2i selectedSprite, LLGP::Vector2i spriteSize)
 {
 	rectangleSize = LLGP::Vector2<float>(spriteSize.x, spriteSize.y);
 	sf::IntRect rectTexUV((rectTexSize.x / spritesInTexture.x) * selectedSprite.x, (rectTexSize.y / spritesInTexture.y) * selectedSprite.y, spriteSize.x, spriteSize.y);
 	shape.setTextureRect(rectTexUV);
+	return this;
 }
 
 sf::RectangleShape SpriteRenderer::returnShape()
@@ -54,6 +56,12 @@ void SpriteRenderer::renderShape(sf::RenderWindow* window, int renderLayer)
 	{
 		window->draw(returnShape());
 	}
+}
+
+SpriteRenderer* SpriteRenderer::setOffSet(LLGP::Vector2f newOffset)
+{
+	offset = newOffset;
+	return this;
 }
 
 SpriteRenderer* SpriteRenderer::setRenderLayer(int newRenderLayer)

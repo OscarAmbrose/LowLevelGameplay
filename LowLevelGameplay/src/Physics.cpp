@@ -276,3 +276,6 @@ CollisionInfo* Physics::Collision_AABBAABB(BoxCollider* lhs, BoxCollider* rhs)
 
 // << (bit shift but wraps)
 // <<< (bit shift but doesnt wrap)
+
+// 10000001
+// 00000011 << 
