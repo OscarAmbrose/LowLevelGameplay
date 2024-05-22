@@ -2,6 +2,8 @@
 #include <Component.h>
 #include <Vector2.h>
 
+class CollisionInfo;
+
 class RigidBody : public Component
 {
 public:
@@ -10,18 +12,14 @@ public:
 
 	void FixedUpdate(float deltaTime) override;
 
-	void OnCollisionEnter(CollisionInfo* col) 
-	{
-		std::cout << "Collision Enter" << std::endl;
-		std::cout << "Collision Enter" << std::endl;
-
-	}
+	void OnCollisionEnter(CollisionInfo* col);
 	void OnCollisionExit(CollisionInfo* col) { std::cout << "Collision Exit" << std::endl; }
 	//void OnCollisionStay(CollisionInfo* col) { std::cout << "Collision Stay" << std::endl; }
 
 	void addForce(LLGP::Vector2f force);
 	LLGP::Vector2f SolveForces(float deltaTime);
 	LLGP::Vector2f CalculateFrictionForce(float deltaTime);
+	LLGP::Vector2f GetTotalForces();
 
 	float CalculateOpposingForce(float deltaTime, float velocityToOppose, float opposingForceStrength);
 
@@ -78,10 +76,12 @@ private:
 	LLGP::Vector2f m_Acceleration = LLGP::Vector2f(0.f, 0.f);//
 	float m_FrictionForce = 1.f;//
 	float m_DragForce = 30.f;//
-	LLGP::Vector2f m_GravityForce = LLGP::Vector2f(0, 9.81f);//
+	LLGP::Vector2f m_GravityForce = LLGP::Vector2f(0, 28.f);//
 	float m_Mass = 1.f;//
 	bool m_isGrounded = false;
 	bool m_HasGravity = false;
 	float m_distanceTravelled = 0;
 	bool m_OpposingMovement = false;
+
+	void AddPosition(LLGP::Vector2f posToAdd);
 };

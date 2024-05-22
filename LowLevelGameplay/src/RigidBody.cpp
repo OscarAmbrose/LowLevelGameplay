@@ -58,9 +58,40 @@ void RigidBody::FixedUpdate(float deltaTime)
 	_GameObject->getTransform()->setPosition(newPosition);
 }
 
+void RigidBody::OnCollisionEnter(CollisionInfo* col)
+{
+	std::cout << "Collision Enter" << std::endl;
+
+	col->Normal;
+
+	AddPosition(((col->Normal * col->Overlap) + col->Normal));
+
+	if (col->Normal.x != 0)
+	{
+		float impulseVel = abs(GetVelocity().x)* col->Normal.x * 0.5;
+		SetVelocity(LLGP::Vector2f(impulseVel, GetVelocity().y));
+	}
+
+	if (col->Normal.y != 0)
+	{
+		float impulseVel = abs(GetVelocity().y) * col->Normal.y * 0.3;
+		SetVelocity(LLGP::Vector2f(GetVelocity().x, impulseVel));
+	}
+
+	std::cout << "Normal X: " << col->Normal.x << " Normal Y: " << col->Normal.y << std::endl;
+}
+
 void RigidBody::addForce(LLGP::Vector2f force)
 {
 	AddNetForce(force);
+}
+
+LLGP::Vector2f RigidBody::GetTotalForces() 
+{
+	LLGP::Vector2f currentTotalForce;
+	currentTotalForce += GetNetForce();
+
+	return LLGP::Vector2f::zero;
 }
 
 LLGP::Vector2f RigidBody::SolveForces(float deltaTime)
@@ -160,4 +191,11 @@ LLGP::Vector2f RigidBody::CalculateDragForce(float deltaTime)
 	DragForce = LLGP::Vector2f(returnForceX, returnForceY);
 
 	return DragForce;
+}
+
+void RigidBody::AddPosition(LLGP::Vector2f posToAdd)
+{
+	Transform2D* transform = _GameObject->getTransform();
+
+	transform->setPosition(transform->returnPosition() + posToAdd);
 }

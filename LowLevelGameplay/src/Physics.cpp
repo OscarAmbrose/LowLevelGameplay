@@ -211,16 +211,15 @@ CollisionInfo* Physics::Collision_AABBAABB(BoxCollider* lhs, BoxCollider* rhs)
 	}
 
 	//GetPenDepthY
-	if (lhs->GetBoxPosition().y < rhs->GetBoxPosition().y)
+	if (lhs->GetBoxPosition().y > rhs->GetBoxPosition().y)
 	{
-		penDepthY = (lhs->GetBoxPosition().y - lhs->GetBoxHalfExtents().y) - (rhs->GetBoxPosition().y + rhs->GetBoxHalfExtents().y);
-		collisionNormal = LLGP::Vector2f(collisionNormal.x, -1);
-
+		penDepthY = (rhs->GetBoxPosition().y + rhs->GetBoxHalfExtents().y) - (lhs->GetBoxPosition().y - lhs->GetBoxHalfExtents().y);
+		collisionNormal = LLGP::Vector2f(collisionNormal.x, 1);
 	}
 	else
 	{
-		penDepthY = (rhs->GetBoxPosition().y - rhs->GetBoxHalfExtents().y) - (lhs->GetBoxPosition().y + lhs->GetBoxHalfExtents().y);
-		collisionNormal = LLGP::Vector2f(collisionNormal.x, 1);
+		penDepthY = (lhs->GetBoxPosition().y + lhs->GetBoxHalfExtents().y) - (rhs->GetBoxPosition().y - rhs->GetBoxHalfExtents().y);
+		collisionNormal = LLGP::Vector2f(collisionNormal.x, -1);
 	}
 
 	if (penDepthX < penDepthY)
@@ -255,7 +254,7 @@ CollisionInfo* Physics::Collision_AABBAABB(BoxCollider* lhs, BoxCollider* rhs)
 		CalculateImpulse(col1RigidBody);
 	}
 
-	std::cout << "I COLLIDED" << std::endl;
+	//std::cout << "I COLLIDED" << std::endl;
 	return newCollisionInfo;
 }
 

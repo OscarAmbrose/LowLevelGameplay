@@ -31,12 +31,14 @@ GameManager::GameManager()
 
 		testScoper5->GetComponent<SpriteRenderer>()->setUV(LLGP::Vector2i(17, 7));
 
-		testScoper->AddComponent<RigidBody>();
+		testScoper->AddComponent<RigidBody>()->setGravityEnabled(true);
 		testScoper->AddComponent<BoxCollider>()->SetDebugEnabled(true);
 		testScoper2->AddComponent<BoxCollider>()->SetDebugEnabled(true);
+		gameObjectExample2->AddComponent<BoxCollider>()/*->SetDebugEnabled(true)*/;
+		gameObjectExample2->GetComponent<BoxCollider>()->SetBoxSize(LLGP::Vector2f(176, 18));
 
 
-		gameObjectExample2->getTransform()->setPosition(LLGP::Vector2f(462, 180));
+		gameObjectExample2->getTransform()->setPosition(LLGP::Vector2f(750, 600));
 		gameObjectExample1->getTransform()->setPosition(LLGP::Vector2f(450, 225));
 		testScoper5->getTransform()->setPosition(LLGP::Vector2f(461, 225));
 		testScoper2->getTransform()->setPosition(LLGP::Vector2f(458, 272));
