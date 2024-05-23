@@ -13,10 +13,7 @@ public:
 
 	void DebugWASD(LLGP::Vector2<float> input);
 
-	void DebugJump(int jumpInt)
-	{
-		//std::cout << "Player shoud Jump" << std::endl;
-	}
+	void DebugJump(int jumpInt);
 
 	void PollInput(sf::Event i);
 

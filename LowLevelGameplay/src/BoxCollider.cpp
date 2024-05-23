@@ -9,8 +9,8 @@
 BoxCollider::BoxCollider(GameObject* owner) : Collider(owner)
 {
 	//SetUpCollider(LLGP::Vector2f(26, 38), LLGP::Vector2f(-7, -9));
-	SetCollisionLayer(0b00000001);
-	SetCollisionMask(0b00000001);
+	SetCollisionLayer(0b00000000);
+	SetCollisionMask(0b00000000);
 }
 
 BoxCollider::~BoxCollider()

@@ -34,7 +34,7 @@ std::shared_ptr<Platform> Platform::CreatePlatformType1(LLGP::Vector2f platformL
 std::shared_ptr<Platform> Platform::CreateCeiling()
 {
 	std::shared_ptr<Platform> platform = std::make_shared<Platform>();
-	(platform.get())->AddComponent<BoxCollider>()->SetUpCollider(LLGP::Vector2f(1920, 10), LLGP::Vector2f(0, 0));
+	(platform.get())->AddComponent<BoxCollider>()->SetUpCollider(LLGP::Vector2f(1920, 10), LLGP::Vector2f(0, 0))->SetCollisionLayer(0b00000001);
 	(platform.get())->GetTransform()->setPosition(LLGP::Vector2f(960, -10));
 	(platform.get())->GetComponent<SpriteRenderer>()->setUV(LLGP::Vector2i(13, 13));
 	return platform;
@@ -44,7 +44,7 @@ Platform* Platform::SetPlatformInformation(LLGP::Vector2i platformStart, LLGP::V
 {
 	m_PlatformSize = LLGP::Vector2f(platformSize.x, platformSize.y);
 	GetComponent<SpriteRenderer>()->setUV(platformStart, platformSize);
-	AddComponent<BoxCollider>()->SetUpCollider(m_PlatformSize, LLGP::Vector2f(0, 0));
+	AddComponent<BoxCollider>()->SetUpCollider(m_PlatformSize, LLGP::Vector2f(0, 0))->SetCollisionMask(0xff)->SetCollisionLayer(0b00000001);
 	
 	return this;
 }

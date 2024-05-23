@@ -18,6 +18,11 @@ PlayerInputController::~PlayerInputController()
 
 void PlayerInputController::DebugWASD(LLGP::Vector2<float> input)
 {
+
+}
+
+void PlayerInputController::DebugJump(int jumpInt)
+{
 }
 
 

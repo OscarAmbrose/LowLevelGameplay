@@ -100,7 +100,7 @@ public:
 
 private:
 	std::string m_Name;
-	bool m_Active;
+	bool m_Active = true;
 	std::string m_Tag;
 	std::vector<std::unique_ptr<Component>> m_Components;
 

@@ -4,6 +4,8 @@
 #include <GlobalEvents.h>
 #include <Physics.h>
 
+#define CHECK_BIT(var,pos) ((var) & (1<<(pos)))
+
 RigidBody::RigidBody(GameObject* owner) : Component(owner)
 {
 	_GameObject->onCollisionEnter.AddListener(this, std::bind(&RigidBody::OnCollisionEnter, this, std::placeholders::_1));
@@ -74,6 +76,11 @@ void RigidBody::FixedUpdate(float deltaTime)
 
 void RigidBody::OnCollisionEnter(CollisionInfo* col)
 {
+	//if (!(CHECK_BIT(col->collider->GetCollisionMask(), 0)))
+	//{
+	//	return;
+	//}
+
 	//std::cout << "Collision Enter" << std::endl;
 	bool isFromTop = false;
 

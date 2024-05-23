@@ -3,7 +3,8 @@
 #include <Collider.h>
 #include "Transform.h"
 #include <DebugBox.h>
-#include <Player.h>
+#include <JoustPlayerCharacter.h>
+#include <JoustCharacter.h>
 #include <Platform.h>
 #include <PlayerDeathHandler.h>
 
@@ -35,7 +36,7 @@ GameObject* GameManager::getGameObjectByName(std::string objectTag)
 void GameManager::StartLevelOne()
 {
 	//Create player.
-	std::shared_ptr<GameObject> player = std::make_shared<Player>();
+	std::shared_ptr<GameObject> player = std::make_shared<JoustPlayer>();
 	player.get()->SetName("Player");
 	player.get()->GetTransform()->setPosition(LLGP::Vector2f(928, 400));
 
@@ -47,6 +48,68 @@ void GameManager::StartLevelOne()
 
 	// Top-left platform
 	m_GameObjects.push_back(Platform::CreatePlatformType1(LLGP::Vector2f(200, 90)));
+
+	m_GameObjects.push_back(Character::CreateAICharacter('g', LLGP::Vector2f(200, 30)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(400, 30)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(800, 630)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(100, 630)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(300, 630)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(500, 630)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(600, 630)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(700, 630)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(850, 630)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(750, 630)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(110, 630)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(800, 530)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(800, 130)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(800, 930)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(800, 230)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(800, 430)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(800, 630)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(800, 630)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(800, 630)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(800, 630)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(800, 630)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(800, 630)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(800, 630)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(800, 630)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(800, 630)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(800, 630)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(800, 630)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(800, 630)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(800, 630)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(800, 630)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(800, 630)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(800, 630)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(800, 630)));m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(800, 630)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(800, 630)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(800, 630)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(800, 630)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(800, 630)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(800, 630)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(800, 630)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(800, 630)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(800, 630)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(800, 630)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(800, 630)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(800, 630)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(800, 630)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(800, 630)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(800, 630)));m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(800, 630)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(800, 630)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(800, 630)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(800, 630)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(800, 630)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(800, 630)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(800, 630)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(800, 630)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(800, 630)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(800, 630)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(800, 630)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(800, 630)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(800, 630)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(800, 630)));
+	m_GameObjects.push_back(Character::CreateAICharacter('r', LLGP::Vector2f(800, 630)));
 
 	// Top-right platform
 	m_GameObjects.push_back(Platform::CreatePlatformType1(LLGP::Vector2f(1720, 80)));

@@ -75,8 +75,14 @@ void Physics::CollectCollisions()
 				{
 
 					CollisionInfo* test = new CollisionInfo(); test->collider = rbCol; test->otherCollider = worldCol;
+
 					//I added bitwise collision masking :)
-					if ((test->collider->GetCollisionMask() & test->otherCollider->GetCollisionLayer()) == 0) { continue; }
+					if (((test->collider->GetCollisionMask() & test->otherCollider->GetCollisionLayer())) == 0) 
+					{ 
+						//ALMOST LET A MEMORY LEAK IN 23/05/24!
+						delete test;
+						continue;
+					}
 					//End of bitwise collision masking :(
 
 					if (std::find_if(_collisions.begin(), _collisions.end(), [&test](CollisionInfo* check) {return *test == check; }) != _collisions.end())
@@ -258,7 +264,7 @@ CollisionInfo* Physics::Collision_AABBAABB(BoxCollider* lhs, BoxCollider* rhs)
 	return newCollisionInfo;
 }
 
-///Bit Operators (trying to remember their uses)
+///Bit Operators (for my own memory), I've managed to get my heap memory down tons using these (20kb->5kb)
 
 // u_int8 a // 00000111
 // u_int8 b // 00000001
