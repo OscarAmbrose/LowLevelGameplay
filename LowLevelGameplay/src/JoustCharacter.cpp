@@ -110,6 +110,7 @@ void Character::FixedUpdate(float deltaTime)
 {
 	MovePlayer(deltaTime);
 	UpdateAnimation(deltaTime);
+	RespawnTimer(deltaTime);
 }
 
 void Character::SetRiderOffsets(bool grounded)
@@ -192,6 +193,20 @@ void Character::SetBirdNumber(int newBird)
 		GetComponent<BoxCollider>()->SetUpCollider(LLGP::Vector2f(26, 38), LLGP::Vector2f(0, 0));
 
 		break;
+	}
+}
+
+void Character::RespawnTimer(float deltaTime)
+{
+	if (m_CharIsAlive) { return; }
+
+	m_CurrentRepsawnTimer += deltaTime;
+
+	if (m_CurrentRepsawnTimer >= m_RespawnTime)
+	{
+		m_CharIsAlive = true;
+		GetTransform()->setPosition(LLGP::Vector2f(460, 450));
+		m_CurrentRepsawnTimer = 0;
 	}
 }
 
@@ -287,7 +302,21 @@ void Character::JoustResolution(CollisionInfo* info)
 		return;
 	}
 
+	if (!m_CharIsAlive)
+	{
+		return;
+	}
 
+	std::cout << "Jousted!" << std::endl;
+
+	if ((info->collider->GetGameObject()->GetTransform()->returnPosition()).y < (info->otherCollider->GetGameObject()->GetTransform()->returnPosition()).y)
+	{
+		static_cast<Character*>(info->otherCollider->GetGameObject())->KillChar();
+	}
+	else
+	{
+		KillChar();
+	}
 }
 
 void Character::SetRiderColour(char newRiderColour)
@@ -317,10 +346,18 @@ void Character::SetRiderColour(char newRiderColour)
 	m_Rider->setUV(LLGP::Vector2i(m_ActualRiderColour, 3));
 }
 
+void Character::KillChar()
+{
+	m_CharIsAlive = false;
+	GetTransform()->setPosition(LLGP::Vector2f(450, -100));
+}
+
 std::shared_ptr<Character> Character::CreateAICharacter(char characterColour, LLGP::Vector2f location)
 {
 	std::shared_ptr<Character> newAICharacter = std::make_unique<Character>();
 	newAICharacter.get()->initialiseCharacter(2, characterColour, 0b00000011, 0b00000100);
+
+	newAICharacter.get()->GetTransform()->setPosition(location);
 
 	JoustAIController* controller = newAICharacter.get()->AddComponent<JoustAIController>();
 
@@ -329,11 +366,11 @@ std::shared_ptr<Character> Character::CreateAICharacter(char characterColour, LL
 	switch (characterColour)
 	{
 	case 'r':
-		controller->SetDifficultyVariables(15.f, 1.f);
+		controller->SetDifficultyVariables(15.f, 1.2f);
 		maxSpeed = 75.f;
 		break;
 	case 'g':
-		controller->SetDifficultyVariables(10.f, 1.5f);
+		controller->SetDifficultyVariables(10.f, 1.7f);
 		maxSpeed = 125.f;
 		break;
 	case 'b':

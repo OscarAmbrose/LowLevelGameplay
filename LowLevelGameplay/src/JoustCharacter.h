@@ -25,11 +25,15 @@ public:
 
 	void SetBirdNumber(int newBird);
 
+	void RespawnTimer(float deltaTime);
+
 	void UpdateAnimation(float deltaTime);
 
 	void JoustResolution(CollisionInfo* info);
 
 	void SetRiderColour(char newRiderColour);
+
+	void KillChar();
 
 	static std::shared_ptr<Character> CreateAICharacter(char characterColour, LLGP::Vector2f location);
 
@@ -44,5 +48,7 @@ protected:
 	int m_RiderForward = 5;
 	char m_RiderColour = 'y';
 	int m_ActualRiderColour = 0;
-	bool m_CharIsAlive = false;
+	bool m_CharIsAlive = true;
+	float m_RespawnTime = 3.0f;
+	float m_CurrentRepsawnTimer = 0.f;
 };
