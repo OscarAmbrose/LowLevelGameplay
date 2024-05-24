@@ -13,5 +13,6 @@ public:
 protected:
 	float minimumScreenBounds = 0;
 	float maximumScreenBounds = 1920;
+	float maximumScreenBoundsY = 1200;
 	BoxCollider* boxCollider;
 };

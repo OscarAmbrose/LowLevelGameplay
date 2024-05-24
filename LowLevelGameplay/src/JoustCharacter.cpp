@@ -59,6 +59,7 @@ void Character::initialiseCharacter(int charBirdNumber, char charRiderColour, ui
 
 	AddComponent<ScreenWrapper>();
 
+	m_CanKillChar = true;
 	this->onCollisionEnter.AddListener(this, std::bind(&Character::JoustResolution, this, std::placeholders::_1));
 	g_OnFixedUpdate.AddListener(this, std::bind(&Character::FixedUpdate, this, std::placeholders::_1));
 
@@ -111,6 +112,31 @@ void Character::FixedUpdate(float deltaTime)
 	MovePlayer(deltaTime);
 	UpdateAnimation(deltaTime);
 	RespawnTimer(deltaTime);
+	RespawnImmunity(deltaTime);
+}
+
+void Character::RespawnImmunity(float deltaTime)
+{
+	if (GetName() == "Player")
+	{
+		//std::cout << m_CurrentRepsawnGrace << std::endl;
+		//std::cout << m_CanKillChar << std::endl;
+	}
+
+	if (m_CanKillChar || !m_CharIsAlive) { return; }
+
+	m_CurrentRepsawnGrace += deltaTime;
+	if (m_CurrentRepsawnGrace >= 2.f)
+	{
+		std::cout << "Character Is once again Killable" << std::endl;
+		m_CurrentRepsawnGrace = 0.f;
+		m_CanKillChar = true;
+
+		if (GetName() == "Player")
+		{
+			SetRiderColour('c');
+		}
+	}
 }
 
 void Character::SetRiderOffsets(bool grounded)
@@ -302,7 +328,15 @@ void Character::JoustResolution(CollisionInfo* info)
 		return;
 	}
 
-	if (!m_CharIsAlive)
+	if (info->otherCollider->GetGameObject()->GetName() == "Player")
+	{
+		if (!static_cast<Character*>(info->otherCollider->GetGameObject())->m_CanKillChar)
+		{
+			return;
+		}
+	}
+
+	if (!m_CharIsAlive || !m_CanKillChar)
 	{
 		return;
 	}
@@ -348,8 +382,14 @@ void Character::SetRiderColour(char newRiderColour)
 
 void Character::KillChar()
 {
+	m_CanKillChar = false;
 	m_CharIsAlive = false;
 	GetTransform()->setPosition(LLGP::Vector2f(450, -100));
+
+	if (GetName() == "Player")
+	{
+		SetRiderColour('y');
+	}
 }
 
 std::shared_ptr<Character> Character::CreateAICharacter(char characterColour, LLGP::Vector2f location)
@@ -384,4 +424,14 @@ std::shared_ptr<Character> Character::CreateAICharacter(char characterColour, LL
 	newAICharacter.get()->GetComponent<RigidBody>()->SetMaxSpeed(maxSpeed);
 
 	return newAICharacter;
+}
+
+std::shared_ptr<Character> Character::CreatePlayerCharacter(LLGP::Vector2f location)
+{
+	std::shared_ptr<Character> newPlayerCharacter = std::make_unique<Character>();
+
+	newPlayerCharacter.get()->initialiseCharacter(0, 'c', 0b00000111, 0b00000010);
+	newPlayerCharacter.get()->AddComponent<PlayerInputController>()->getEvent<LLGP::Vector2<float>>("MoveDirection")->AddListener(newPlayerCharacter.get(), std::bind(&Character::HandleInput, newPlayerCharacter.get(), std::placeholders::_1));
+
+	return newPlayerCharacter;
 }

@@ -25,14 +25,16 @@ public:
 	Animation* AddAnimation(std::string name, int animType, int animLength, ...)
 	{
 		std::unique_ptr<Animation> newAnim = std::make_unique<Animation>();
+
 		newAnim.get()->setName(name);
 		newAnim.get()->setAnimationType(animType);
+
 		va_list args;
 		va_start(args, animLength);
 		newAnim.get()->addAnimation(animLength, args);
 		va_end(args);
+
 		m_animations.push_back(std::move(newAnim));
-		//I don't need this dynamic cast, I should change this.
 		return dynamic_cast<Animation*>(m_animations[m_animations.size() - 1].get());
 	}
 

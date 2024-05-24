@@ -21,6 +21,8 @@ public:
 
 	void FixedUpdate(float deltaTime);
 
+	void RespawnImmunity(float deltaTime);
+
 	void SetRiderOffsets(bool grounded);
 
 	void SetBirdNumber(int newBird);
@@ -36,7 +38,9 @@ public:
 	void KillChar();
 
 	static std::shared_ptr<Character> CreateAICharacter(char characterColour, LLGP::Vector2f location);
+	static std::shared_ptr<Character> CreatePlayerCharacter(LLGP::Vector2f location);
 
+	bool m_CanKillChar;
 protected:
 	LLGP::Vector2f m_InputDirection;
 	LLGP::Vector2f m_PreviousInputDirection;
@@ -51,4 +55,5 @@ protected:
 	bool m_CharIsAlive = true;
 	float m_RespawnTime = 3.0f;
 	float m_CurrentRepsawnTimer = 0.f;
+	float m_CurrentRepsawnGrace = 0.f;
 };
