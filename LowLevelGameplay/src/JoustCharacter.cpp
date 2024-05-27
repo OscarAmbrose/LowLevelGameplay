@@ -422,6 +422,7 @@ std::shared_ptr<Character> Character::CreateAICharacter(char characterColour, LL
 	}
 
 	newAICharacter.get()->GetComponent<RigidBody>()->SetMaxSpeed(maxSpeed);
+	//newAICharacter.get()->AddComponent<DebugBox>()->SetUpDebugBox();
 
 	return newAICharacter;
 }
@@ -432,6 +433,9 @@ std::shared_ptr<Character> Character::CreatePlayerCharacter(LLGP::Vector2f locat
 
 	newPlayerCharacter.get()->initialiseCharacter(0, 'c', 0b00000111, 0b00000010);
 	newPlayerCharacter.get()->AddComponent<PlayerInputController>()->getEvent<LLGP::Vector2<float>>("MoveDirection")->AddListener(newPlayerCharacter.get(), std::bind(&Character::HandleInput, newPlayerCharacter.get(), std::placeholders::_1));
+
+	//newPlayerCharacter.get()->AddComponent<DebugBox>()->SetUpDebugBox();
+
 
 	return newPlayerCharacter;
 }

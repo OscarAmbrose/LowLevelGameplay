@@ -28,6 +28,7 @@ std::shared_ptr<Platform> Platform::CreatePlatformType1(LLGP::Vector2f platformL
 	{
 		(platform.get())->GetComponent<SpriteRenderer>()->setFlipped(true);
 	}
+
 	return platform;
 }
 
@@ -49,9 +50,9 @@ Platform* Platform::SetPlatformInformation(LLGP::Vector2i platformStart, LLGP::V
 	return this;
 }
 
-void Platform::AddDebugBox()
+void Platform::AddDebugBox(Platform* platform)
 {
-	AddComponent<DebugBox>()->SetUpDebugBox();
+	platform->AddComponent<DebugBox>()->SetUpDebugBox();
 }
 
 

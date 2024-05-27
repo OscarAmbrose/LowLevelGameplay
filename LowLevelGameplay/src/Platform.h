@@ -15,7 +15,7 @@ public:
 
 	Platform* SetPlatformInformation(LLGP::Vector2i platformStart, LLGP::Vector2i platformSize);
 
-	void AddDebugBox();
+	static void AddDebugBox(Platform* platform);
 
 protected:
 	LLGP::Vector2f m_PlatformSize = LLGP::Vector2f(0,0);

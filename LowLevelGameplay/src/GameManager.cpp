@@ -50,7 +50,7 @@ void GameManager::StartLevelOne()
 	// AI Characters starting positions
 
 	// Easy enemies (r)
-	m_GameObjects.push_back(std::move(Character::CreateAICharacter('r', LLGP::Vector2f(220, 60))));    // Near top-left platform
+	m_GameObjects.push_back(std::move(Character::CreateAICharacter('r', LLGP::Vector2f(220, 60))));    // Near top-left platform 
 	m_GameObjects.push_back(std::move(Character::CreateAICharacter('r', LLGP::Vector2f(1700, 50))));   // Near top-right platform
 	m_GameObjects.push_back(std::move(Character::CreateAICharacter('r', LLGP::Vector2f(340, 410))));   // Near middle-left platform
 	m_GameObjects.push_back(std::move(Character::CreateAICharacter('r', LLGP::Vector2f(1540, 360))));  // Near middle-right platform

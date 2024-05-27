@@ -74,7 +74,7 @@ public:
 		m_Components.push_back(std::make_unique<T>(this));
 		return dynamic_cast<T*>(m_Components[m_Components.size()-1].get());
 	};
-
+	
 	template<class T> requires isComponent<T> 
 	bool RemoveComponent()
 	{
