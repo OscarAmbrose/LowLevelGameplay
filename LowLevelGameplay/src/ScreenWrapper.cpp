@@ -2,7 +2,6 @@
 #include <GameObject.h>
 #include <Transform.h>
 #include <BoxCollider.h>
-#include <JoustCharacter.h>
 
 ScreenWrapper::ScreenWrapper(GameObject* owner) : Component (owner)
 {
@@ -25,14 +24,8 @@ ScreenWrapper::~ScreenWrapper()
 void ScreenWrapper::FixedUpdate(float deltaTime)
 {
 	float PositionX = _GameObject->GetTransform()->returnPosition().x;
-	float PositionY = _GameObject->GetTransform()->returnPosition().y;
 
 	float newPositionX = 0;
-
-	if (PositionY > maximumScreenBoundsY)
-	{
-		static_cast<Character*>(_GameObject)->KillChar();
-	}
 
 	if (PositionX < minimumScreenBounds)
 	{
@@ -49,6 +42,6 @@ void ScreenWrapper::FixedUpdate(float deltaTime)
 
 	if (newPositionX != PositionX)
 	{
-		_GameObject->GetTransform()->setPosition(LLGP::Vector2f(newPositionX, PositionY));
+		_GameObject->GetTransform()->setPosition(LLGP::Vector2f(newPositionX, _GameObject->GetTransform()->returnPosition().y));
 	}
 }
