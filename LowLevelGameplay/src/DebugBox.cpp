@@ -42,7 +42,7 @@ void DebugBox::renderShape(sf::RenderWindow* window, int renderLayer)
 {
 	//LLGP::Vector2f position = _GameObject->getTransform()->returnPosition();
 
-	LLGP::Vector2f position = _GameObject->GetComponent<BoxCollider>()->GetBoxPosition() + _GameObject->GetComponent<BoxCollider>()->GetOffset();
+	LLGP::Vector2f position = _GameObject->GetComponent<BoxCollider>()->GetBoxPosition()/* + _GameObject->GetComponent<BoxCollider>()->GetOffset()*/;
 
 	rectangleSize = _GameObject->GetComponent<BoxCollider>()->GetBoxSize();
 

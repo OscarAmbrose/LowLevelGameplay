@@ -11,6 +11,7 @@
 #include <GameManager.h>
 #include <AnimationManager.h>
 #include <Physics.h>
+#include <WindowManager.h>
 
 #define FIXEDFRAMERATE (1.f/60.f)
 
@@ -28,6 +29,8 @@ int main()
 	//Creates the window
 	sf::RenderWindow window(sf::VideoMode(1920, 1080), "Not Actually Joust");
 	
+	WindowManager::SetNewWindow(&window);
+
 	std::unique_ptr<GlobalTexture> globalTextureTest = std::make_unique<GlobalTexture>();
 	
 	std::unique_ptr <GameManager> gameManager = std::make_unique <GameManager>();

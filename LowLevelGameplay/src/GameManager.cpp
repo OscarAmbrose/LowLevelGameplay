@@ -3,6 +3,7 @@
 #include <Collider.h>
 #include <Transform.h>
 #include <Platform.h>
+#include <Cursor.h>
 
 GameManager::GameManager()
 {
@@ -25,6 +26,11 @@ GameObject* GameManager::getGameObjectByName(std::string objectTag)
 void GameManager::StartLevelOne()
 {
 	//Create player.
+
+
+	std::shared_ptr<GameObject> newPlayerTest = std::make_unique<GameObject>();
+	newPlayerTest.get()->AddComponent<Cursor>();
+	m_GameObjects.push_back(std::move(newPlayerTest));
 
 #pragma region CreateAllPlatforms
 

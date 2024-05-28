@@ -10,6 +10,8 @@ Component::Component(GameObject* owner) : _GameObject(owner)
 	g_OnStart.AddListener(this, std::bind(&Component::Start, this, std::placeholders::_1));
 	g_OnFixedUpdate.AddListener(this, std::bind(&Component::FixedUpdate, this, std::placeholders::_1));
 
+	auto test = owner;
+	test = _GameObject;
 	//_GameObject->onCollisionEnter.AddListener(this, std::bind(&Component::OnCollisionEnter, this, std::placeholders::_1));
 	//_GameObject->onCollisionStay.AddListener(this, std::bind(&Component::OnCollisionStay, this, std::placeholders::_1));
 	//_GameObject->onCollisionExit.AddListener(this, std::bind(&Component::OnCollisionExit, this, std::placeholders::_1));

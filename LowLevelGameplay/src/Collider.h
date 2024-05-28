@@ -24,8 +24,8 @@ public:
 	// 0b0000X000 = enemy eggs?
 	// 0b000X0000 = lava troll
 	// 0b00X00000 = lava
-	// 0b0X000000 = unassigned
-	// 0bX0000000 = unassigned
+	// 0b0X000000 = Mouse
+	// 0bX0000000 = UI Layer
 	void SetCollisionLayer(uint8_t bitLayer) { m_CollisionLayer = bitLayer; }
 	Collider* SetCollisionMask(uint8_t bitLayer) { m_CollisionMask = bitLayer; return this; }
 

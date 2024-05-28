@@ -9,6 +9,9 @@ SpriteRenderer* SpriteRenderer::setUV(LLGP::Vector2i selectedSprite)
 	rectangleSize = LLGP::Vector2<float>(32, 64);
 	sf::IntRect rectTexUV((rectTexSize.x / spritesInTexture.x) * selectedSprite.x, (rectTexSize.y / spritesInTexture.y) * selectedSprite.y, rectTexSize.x / spritesInTexture.x, rectTexSize.y / spritesInTexture.y);
 	shape.setTextureRect(rectTexUV);
+	shape.setSize(rectangleSize);
+	shape.setOrigin(rectangleSize / 2);
+
 	return this;
 }
 
@@ -17,13 +20,14 @@ SpriteRenderer* SpriteRenderer::setUV(LLGP::Vector2i selectedSprite, LLGP::Vecto
 	rectangleSize = LLGP::Vector2<float>(spriteSize.x, spriteSize.y);
 	sf::IntRect rectTexUV((rectTexSize.x / spritesInTexture.x) * selectedSprite.x, (rectTexSize.y / spritesInTexture.y) * selectedSprite.y, spriteSize.x, spriteSize.y);
 	shape.setTextureRect(rectTexUV);
+	shape.setSize(rectangleSize);
+	shape.setOrigin(rectangleSize / 2);
+
 	return this;
 }
 
 sf::RectangleShape SpriteRenderer::returnShape()
 {
-	shape.setSize(rectangleSize);
-	shape.setOrigin(rectangleSize / 2);
 	shape.setRotation(_GameObject->GetTransform()->returnRotation());
 
 	LLGP::Vector2f position = _GameObject->GetTransform()->returnPosition() + offset;

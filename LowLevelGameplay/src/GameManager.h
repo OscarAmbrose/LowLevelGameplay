@@ -4,7 +4,6 @@
 #include <GameObject.h>
 #include <isComponenet.h>
 #include <SpriteRenderer.h>
-#include <TestComponent.h>
 #include <AnimationManager.h>
 #include <Vector2.h>
 #include <RigidBody.h>
