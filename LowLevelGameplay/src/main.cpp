@@ -17,7 +17,6 @@
 
 int main()
 {
-
 	//Update Stuff
 	std::chrono::steady_clock::time_point lastTime = std::chrono::steady_clock::now();
 	float deltaTime = 0.f;
@@ -27,7 +26,7 @@ int main()
 	//Update Stuff
 
 	//Creates the window
-	sf::RenderWindow window(sf::VideoMode(1920, 1080), "Not Actually Joust");
+	sf::RenderWindow window(sf::VideoMode(1920, 1080), "GradEx 2024 ~ Oscar Ambrose", sf::Style::Fullscreen);
 	
 	WindowManager::SetNewWindow(&window);
 
@@ -51,8 +50,12 @@ int main()
 			{
 				window.close();
 			}
-		}
 
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+			{
+				window.close();
+			}
+		}
 
 #pragma endregion
 
@@ -69,7 +72,7 @@ int main()
 			//step physics
 			//collect collision info
 			g_OnPhysicsUpdate(FIXEDFRAMERATE);
-			g_OnCollisionUpdate(FIXEDFRAMERATE);
+
 			Physics::CollectCollisions();
 			//std::cout <<std::endl<< "Number of Fixed Updates: " << numberOfFixedUpdates << std::endl;
 			Physics::DispatchCollisions();

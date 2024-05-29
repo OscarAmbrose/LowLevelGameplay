@@ -11,10 +11,10 @@ Cursor::Cursor(GameObject* owner) : Component(owner)
 {
 	m_RenderWindow = WindowManager::GetActiveWindow();
 	m_RenderWindow->sf::Window::setMouseCursorVisible(false);
-	renderer = _GameObject->AddComponent<SpriteRenderer>()->setUV(LLGP::Vector2i(13, 2), LLGP::Vector2i(64, 64))->setRenderLayer(4);
-	renderer2 = _GameObject->AddComponent<SpriteRenderer>()->setUV(LLGP::Vector2i(10, 2))->setRenderLayer(3);
-	
-	
+
+	renderer = _GameObject->AddComponent<SpriteRenderer>()->setUV(LLGP::Vector2i(13, 2), LLGP::Vector2i(64, 64))->setRenderLayer(3);
+	renderer2 = _GameObject->AddComponent<SpriteRenderer>()->setUV(LLGP::Vector2i(10, 2))->setRenderLayer(4);
+
 	box = _GameObject->AddComponent<BoxCollider>()->SetUpCollider(LLGP::Vector2f(16, 16), LLGP::Vector2f(48, 48));
 	box->SetCollisionMask(0b10000000)->SetCollisionLayer(0b01000000);
 	//_GameObject->AddComponent<DebugBox>()->SetUpDebugBox();
@@ -43,5 +43,18 @@ void Cursor::PollInput(sf::Event event)
 
 void Cursor::FixedUpdate(float deltaTime)
 {
-	
+	auto renderOffsetX = renderer->getOffset().x;
+	auto renderOffsetY = renderer->getOffset().y;
+
+	if (renderOffsetX > 1920 || renderOffsetX < 0)
+	{
+		renderOffsetX = 1000.f;
+	}
+	if (renderOffsetY < 0 || renderOffsetY > 1080)
+	{
+		renderOffsetY = 0.f;
+	}
+
+	auto meow = LLGP::Vector2f(renderOffsetX, renderOffsetY);
+	renderer->setOffSet(meow);
 }

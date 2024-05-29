@@ -15,6 +15,8 @@ public:
 
 	void PollInput(sf::Event event);
 
+	void FixCursorPosition(SpriteRenderer* sprite);
+
 	void FixedUpdate(float deltaTime);
 
 protected:
