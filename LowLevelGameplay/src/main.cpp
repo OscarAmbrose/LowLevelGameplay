@@ -24,6 +24,8 @@ int main()
 	int numberOfFixedUpdates = 0;
 	int numberOfUpdates = 0;
 	//Update Stuff
+	bool paused = false;
+
 
 	//Creates the window
 	sf::RenderWindow window(sf::VideoMode(1920, 1080), "GradEx 2024 ~ Oscar Ambrose", sf::Style::Fullscreen);
@@ -36,45 +38,68 @@ int main()
 	
 	while (window.isOpen())
 	{
+
 		std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
 		deltaTime = std::chrono::duration_cast<std::chrono::microseconds>(now - lastTime).count() / 1000000.f;
 		lastTime = now;
 
-		g_OnStart(0);
+
 
 		#pragma region CloseWindow
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
+			std::cout << "Event polled: " << event.type << std::endl;
+
 			if (event.type == sf::Event::Closed)
 			{
 				window.close();
+				continue;
+			}
+
+			if (event.type == sf::Event::LostFocus)
+			{
+				paused = true;
+				continue;
+			}
+			if (event.type == sf::Event::GainedFocus)
+			{
+				paused = false;
 			}
 
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 			{
 				window.close();
 			}
+			
+			g_OnPollInputs(event);
 		}
 
+		if (paused)
+		{
+			deltaTime = 0.f;
+			continue;
+		}
+
+		g_OnStart(0);
 #pragma endregion
 
 		//Input Handling
 		numberOfUpdates++;
 		g_OnUpdate(deltaTime);
-		g_OnPollInputs(event);
+		
 
 		#pragma region Physics
 		timeSincePhysicsStep += deltaTime;
 		while (timeSincePhysicsStep > FIXEDFRAMERATE)
 		{
-			g_OnFixedUpdate(FIXEDFRAMERATE); //Moved this to try and fix animations
+			g_OnFixedUpdate(FIXEDFRAMERATE); 
 			//step physics
 			//collect collision info
 			g_OnPhysicsUpdate(FIXEDFRAMERATE);
 
 			Physics::CollectCollisions();
-			//std::cout <<std::endl<< "Number of Fixed Updates: " << numberOfFixedUpdates << std::endl;
+			
 			Physics::DispatchCollisions();
 			//dispatch collisions
 			numberOfFixedUpdates++;

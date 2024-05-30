@@ -4,6 +4,7 @@
 #include <Transform.h>
 #include <Platform.h>
 #include <Cursor.h>
+#include <GradExPlayer.h>
 
 GameManager::GameManager()
 {
@@ -28,8 +29,7 @@ void GameManager::StartLevelOne()
 	//Create player.
 
 
-	std::shared_ptr<GameObject> newPlayerTest = std::make_unique<GameObject>();
-	newPlayerTest.get()->AddComponent<Cursor>();
+	std::shared_ptr<PlayerCharacter> newPlayerTest = std::make_unique<PlayerCharacter>(0);
 	m_GameObjects.push_back(std::move(newPlayerTest));
 
 #pragma region CreateAllPlatforms

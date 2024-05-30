@@ -3,21 +3,22 @@
 #include <GameObject.h>
 #include <Transform.h>
 #include <WindowManager.h>
-
 #include <BoxCollider.h>
 #include <DebugBox.h>
 
 Cursor::Cursor(GameObject* owner) : Component(owner)
 {
+	m_ControllerNumber = 1;
+	m_JoystickDir = LLGP::Vector2f::zero;
+
 	m_RenderWindow = WindowManager::GetActiveWindow();
 	m_RenderWindow->sf::Window::setMouseCursorVisible(false);
 
-	renderer = _GameObject->AddComponent<SpriteRenderer>()->setUV(LLGP::Vector2i(13, 2), LLGP::Vector2i(64, 64))->setRenderLayer(3);
-	renderer2 = _GameObject->AddComponent<SpriteRenderer>()->setUV(LLGP::Vector2i(10, 2))->setRenderLayer(4);
+	m_SpriteRenderer = _GameObject->AddComponent<SpriteRenderer>()->setUV(LLGP::Vector2i(13, 2), LLGP::Vector2i(64, 64))->setRenderLayer(3);
 
-	box = _GameObject->AddComponent<BoxCollider>()->SetUpCollider(LLGP::Vector2f(16, 16), LLGP::Vector2f(48, 48));
-	box->SetCollisionMask(0b10000000)->SetCollisionLayer(0b01000000);
-	//_GameObject->AddComponent<DebugBox>()->SetUpDebugBox();
+	m_BoxCollider = _GameObject->AddComponent<BoxCollider>()->SetUpCollider(LLGP::Vector2f(16, 16), LLGP::Vector2f(48, 48));
+	m_BoxCollider->SetCollisionMask(0b10000000)->SetCollisionLayer(0b01000000);
+
 	g_OnPollInputs.AddListener(this, std::bind(&Cursor::PollInput, this, std::placeholders::_1));
 }
 
@@ -29,32 +30,75 @@ void Cursor::PollInput(sf::Event event)
 {
 	if (!GetGameObject()) { return; }
 
-	LLGP::Vector2f offset;
-	//offset += -(GetGameObject()->GetTransform()->returnPosition());
-	offset.x += sf::Mouse::getPosition().x;
-	offset.y += sf::Mouse::getPosition().y;
-	offset.x -= (renderer->GetRectangleSize().x / 8);
-	offset.y -= (renderer->GetRectangleSize().y / 2);
+	switch (event.type)
+	{
+	case sf::Event::JoystickMoved:
+	{
+		if (!sf::Joystick::isConnected(m_ControllerNumber)) { return; }
 
-	box->SetOffset(offset);
-	renderer->setOffSet(offset);
-	renderer2->setOffSet(offset);
+		float axisZ = (sf::Joystick::getAxisPosition(m_ControllerNumber, sf::Joystick::U) / 100);
+		float axisR = (sf::Joystick::getAxisPosition(m_ControllerNumber, sf::Joystick::V) / 100);
+
+		if ((axisR < m_JoystickDeadzone && axisR > -m_JoystickDeadzone))
+		{
+			axisR = 0;
+		}
+		if ((axisZ < m_JoystickDeadzone && axisZ > -m_JoystickDeadzone))
+		{
+			axisZ = 0;
+		}
+
+		m_JoystickDir = LLGP::Vector2f(axisZ, axisR);
+		std::cout << m_JoystickDir.x << ", " << m_JoystickDir.y << std::endl;
+	}
+	break;
+	case sf::Event::JoystickDisconnected:
+	{
+		std::cout << "Controller disconnected: Id: " << event.joystickMove.joystickId << std::endl;
+	}
+	break;
+	case sf::Event::JoystickConnected:
+	{
+		std::cout << "Controller connected: Id: " << event.joystickMove.joystickId << std::endl;
+	}
+	break;
+	default:
+	{
+		break;
+	}
+	}
+}
+
+void Cursor::SetCursorPosition(LLGP::Vector2f location)
+{
+	m_SpriteRenderer->setOffSet(location);
+}
+
+LLGP::Vector2f Cursor::FixCursorPosition(LLGP::Vector2f position)
+{
+	if (position.x > 1920)
+	{
+		position.x = 1920.f;
+	}
+	else if (position.x < 0)
+	{
+		position.x = 0;
+	}
+	if (position.y < 0)
+	{
+		position.y = 0;
+	}
+	else if (position.y > 1080)
+	{
+		position.y = 1080;
+	}
+	return position;
 }
 
 void Cursor::FixedUpdate(float deltaTime)
 {
-	auto renderOffsetX = renderer->getOffset().x;
-	auto renderOffsetY = renderer->getOffset().y;
+	auto RenderOffset = m_SpriteRenderer->getOffset();
+	RenderOffset += m_JoystickDir * m_CursorMoveSpeed * deltaTime;
 
-	if (renderOffsetX > 1920 || renderOffsetX < 0)
-	{
-		renderOffsetX = 1000.f;
-	}
-	if (renderOffsetY < 0 || renderOffsetY > 1080)
-	{
-		renderOffsetY = 0.f;
-	}
-
-	auto meow = LLGP::Vector2f(renderOffsetX, renderOffsetY);
-	renderer->setOffSet(meow);
+	m_SpriteRenderer->setOffSet(FixCursorPosition(RenderOffset));
 }
