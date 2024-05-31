@@ -21,6 +21,7 @@ public:
 	LLGP::Vector2f FixCursorPosition(LLGP::Vector2f position);
 
 	void FixedUpdate(float deltaTime);
+	void Update(float deltaTime);
 
 	Cursor* SetControllerNumber(int newNum) { m_ControllerNumber = newNum; return this; }
 
@@ -30,6 +31,9 @@ protected:
 	SpriteRenderer* m_SpriteRenderer = nullptr;
 
 	LLGP::Vector2f m_JoystickDir;
+
+	LLGP::Vector2f m_PlayerPos;
+	LLGP::Vector2f m_CursorPos;
 
 	BoxCollider* m_BoxCollider = nullptr;
 

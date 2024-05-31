@@ -40,7 +40,7 @@ void DebugBox::SetUpDebugBox()
 
 void DebugBox::renderShape(sf::RenderWindow* window, int renderLayer)
 {
-	//LLGP::Vector2f position = _GameObject->getTransform()->returnPosition();
+	//LLGP::Vector2f position = _GameObject->getTransform()->ReturnPosition();
 
 	LLGP::Vector2f position = _GameObject->GetComponent<BoxCollider>()->GetBoxPosition()/* + _GameObject->GetComponent<BoxCollider>()->GetOffset()*/;
 

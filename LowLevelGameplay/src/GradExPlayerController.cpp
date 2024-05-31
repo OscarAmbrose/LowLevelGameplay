@@ -1,8 +1,12 @@
 #include "GradExPlayerController.h"
 #include <GlobalEvents.h>
+#include <GameObject.h>
+#include <Transform.h>
+#include <RigidBody.h>
 
 PlayerController::PlayerController(GameObject* owner) : Component(owner)
 {
+	m_JoystickDir = LLGP::Vector2f::zero;
 	g_OnPollInputs.AddListener(this, std::bind(&PlayerController::PollInput, this, std::placeholders::_1));
 }
 
@@ -54,7 +58,6 @@ void PlayerController::PollInput(sf::Event event)
 
 		case sf::Event::JoystickMoved:
 		{
-
 			if (!sf::Joystick::isConnected(m_PlayerNumber)) { return; }
 
 			float axisX = (sf::Joystick::getAxisPosition(m_PlayerNumber, sf::Joystick::X) / 100);
@@ -70,7 +73,7 @@ void PlayerController::PollInput(sf::Event event)
 			}
 
 			m_JoystickDir = LLGP::Vector2f(axisX, axisY);
-			std::cout << m_JoystickDir.x << ", " << m_JoystickDir.y << std::endl;
+
 			break;
 		}
 
@@ -79,4 +82,16 @@ void PlayerController::PollInput(sf::Event event)
 			break;
 	}
 
+}
+
+void PlayerController::FixedUpdate(float deltaTime)
+{
+	if (m_JoystickDir == LLGP::Vector2f::zero)
+	{
+		return;
+	}
+
+	auto position = m_JoystickDir * 5000.f;
+
+	_GameObject->GetComponent<RigidBody>()->addForce(position);
 }

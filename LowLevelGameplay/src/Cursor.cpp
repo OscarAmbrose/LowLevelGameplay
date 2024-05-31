@@ -11,6 +11,9 @@ Cursor::Cursor(GameObject* owner) : Component(owner)
 	m_ControllerNumber = 1;
 	m_JoystickDir = LLGP::Vector2f::zero;
 
+	m_PlayerPos = _GameObject->GetTransform()->ReturnPosition();
+	m_CursorPos = _GameObject->GetTransform()->ReturnPosition();
+
 	m_RenderWindow = WindowManager::GetActiveWindow();
 	m_RenderWindow->sf::Window::setMouseCursorVisible(false);
 
@@ -71,34 +74,49 @@ void Cursor::PollInput(sf::Event event)
 
 void Cursor::SetCursorPosition(LLGP::Vector2f location)
 {
-	m_SpriteRenderer->setOffSet(location);
+	auto CursorPosition = m_CursorPos - m_PlayerPos;
+
+	auto test = FixCursorPosition(m_CursorPos - m_PlayerPos);
+
+	m_SpriteRenderer->setOffSet(test);
 }
 
 LLGP::Vector2f Cursor::FixCursorPosition(LLGP::Vector2f position)
 {
-	if (position.x > 1920)
+	if (position.x > (1920 - m_PlayerPos.x))
 	{
-		position.x = 1920.f;
+		position.x = 1920.f - m_PlayerPos.x;
+		m_CursorPos.x = 1920.f;
+
 	}
-	else if (position.x < 0)
+	else if (position.x < (0 - m_PlayerPos.x))
 	{
-		position.x = 0;
+		position.x = 0 - m_PlayerPos.x;
+		m_CursorPos.x = 0;
+
 	}
-	if (position.y < 0)
+	if (position.y < (0 - m_PlayerPos.y))
 	{
-		position.y = 0;
+		position.y = 0 - m_PlayerPos.y;
+		m_CursorPos.y = 0;
 	}
-	else if (position.y > 1080)
+	else if (position.y > (1080 - m_PlayerPos.y))
 	{
-		position.y = 1080;
+		position.y = 1080 - m_PlayerPos.y;
+		m_CursorPos.y = 1080;
 	}
 	return position;
 }
 
 void Cursor::FixedUpdate(float deltaTime)
 {
-	auto RenderOffset = m_SpriteRenderer->getOffset();
-	RenderOffset += m_JoystickDir * m_CursorMoveSpeed * deltaTime;
+	m_PlayerPos = _GameObject->GetTransform()->ReturnPosition();
 
-	m_SpriteRenderer->setOffSet(FixCursorPosition(RenderOffset));
+	m_CursorPos += m_JoystickDir * m_CursorMoveSpeed * deltaTime;
+	SetCursorPosition(m_CursorPos);
+}
+
+void Cursor::Update(float deltaTime)
+{
+
 }

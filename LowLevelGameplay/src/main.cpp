@@ -49,7 +49,7 @@ int main()
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
-			std::cout << "Event polled: " << event.type << std::endl;
+			//std::cout << "Event polled: " << event.type << std::endl;
 
 			if (event.type == sf::Event::Closed)
 			{

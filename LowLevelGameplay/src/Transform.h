@@ -35,7 +35,7 @@ public:
 		m_Rotation = newRotation;
 	};
 
-	inline LLGP::Vector2<float> returnPosition() { return m_Position; }
+	inline LLGP::Vector2<float> ReturnPosition() { return m_Position; }
 	inline LLGP::Vector2<float> returnScale() { return m_Scale; }
 	inline float returnRotation() { return m_Rotation; }
 

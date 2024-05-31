@@ -83,10 +83,10 @@ protected:
 private:
 	LLGP::Vector2f m_NetForce = LLGP::Vector2f(0.f, 0.f);//
 	LLGP::Vector2f m_Velocity = LLGP::Vector2f(0.f, 0.f);
-	float m_MaxSpeed = 150.f;//
+	float m_MaxSpeed = 250.f;//
 	LLGP::Vector2f m_Acceleration = LLGP::Vector2f(0.f, 0.f);//
 	float m_FrictionForce = 65.f;//
-	float m_DragForce = 40.f;//
+	float m_DragForce = 1000.f;//
 	LLGP::Vector2f m_GravityForce = LLGP::Vector2f(0, 90.f);//
 	float m_Mass = 1.f;//
 	bool m_isGrounded = false;

@@ -30,7 +30,7 @@ sf::RectangleShape SpriteRenderer::returnShape()
 {
 	shape.setRotation(_GameObject->GetTransform()->returnRotation());
 
-	LLGP::Vector2f position = _GameObject->GetTransform()->returnPosition() + offset;
+	LLGP::Vector2f position = _GameObject->GetTransform()->ReturnPosition() + offset;
 
 	shape.setPosition(position);
 

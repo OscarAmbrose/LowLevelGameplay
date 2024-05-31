@@ -11,6 +11,8 @@ public:
 
 	void PollInput(sf::Event event);
 
+	void FixedUpdate(float deltaTime);
+
 protected:
 	//This should be equal to the controller number.
 	int m_PlayerNumber = 0;

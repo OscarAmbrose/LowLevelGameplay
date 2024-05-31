@@ -61,11 +61,11 @@ void RigidBody::FixedUpdate(float deltaTime)
 
 	//std::cout << GetVelocity().x << std::endl;
 
-	LLGP::Vector2f oldPos = _GameObject->GetTransform()->returnPosition();
+	LLGP::Vector2f oldPos = _GameObject->GetTransform()->ReturnPosition();
 
 	LLGP::Vector2f newPosition;
 
-	newPosition = (GetVelocity()* deltaTime) + (_GameObject->GetTransform()->returnPosition());
+	newPosition = (GetVelocity()* deltaTime) + (_GameObject->GetTransform()->ReturnPosition());
 
 	LLGP::Vector2f distance = newPosition - oldPos;
 
@@ -257,5 +257,5 @@ void RigidBody::AddPosition(LLGP::Vector2f posToAdd)
 {
 	Transform2D* transform = _GameObject->GetTransform();
 
-	transform->setPosition(LLGP::Vector2f((transform->returnPosition().x), (transform->returnPosition().y)) + posToAdd);
+	transform->setPosition(LLGP::Vector2f((transform->ReturnPosition().x), (transform->ReturnPosition().y)) + posToAdd);
 }
