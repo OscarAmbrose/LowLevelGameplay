@@ -56,6 +56,7 @@ void SpriteRenderer::setFlipped(bool newFlipped)
 
 void SpriteRenderer::renderShape(sf::RenderWindow* window, int renderLayer)
 {
+	if (!_GameObject->GetActive()) { return; }
 	if (renderLayer == getRenderLayer())
 	{
 		window->draw(returnShape());

@@ -38,12 +38,12 @@ public:
 	inline void SetDrag(float newDrag) { m_DragForce = newDrag; }
 
 	inline float GetMass() const { return m_Mass; }
-	inline void SetMass(float newMass) { m_Mass = newMass; }
+	RigidBody* SetMass(float newMass) { m_Mass = newMass; return this; }
 
 	inline void SetAcceleration(LLGP::Vector2f newAccel) { m_Acceleration = newAccel; }
 	inline LLGP::Vector2f GetAcceleration() const { return m_Acceleration; }
 
-	inline void SetMaxSpeed(float newMax) { m_MaxSpeed = newMax; }
+	RigidBody* SetMaxSpeed(float newMax) { m_MaxSpeed = newMax; return this; }
 	inline float GetMaxSpeed() const { return m_MaxSpeed; }
 
 	inline void OverrideNetForce(LLGP::Vector2f netForceOverride) { m_NetForce = netForceOverride; }
@@ -65,7 +65,7 @@ public:
 	}
 
 	inline bool GravityIsEnabled() { return m_HasGravity; }
-	inline void setGravityEnabled(bool newGrav) { m_HasGravity = newGrav; }
+	RigidBody* setGravityEnabled(bool newGrav) { m_HasGravity = newGrav; return this; }
 
 	inline bool GetOpposingMovement() { return m_OpposingMovement; }
 	inline void setOpposingMovement(bool newOpposingMovement) { m_OpposingMovement = newOpposingMovement; }
@@ -83,7 +83,7 @@ protected:
 private:
 	LLGP::Vector2f m_NetForce = LLGP::Vector2f(0.f, 0.f);//
 	LLGP::Vector2f m_Velocity = LLGP::Vector2f(0.f, 0.f);
-	float m_MaxSpeed = 250.f;//
+	float m_MaxSpeed = 150.f;//
 	LLGP::Vector2f m_Acceleration = LLGP::Vector2f(0.f, 0.f);//
 	float m_FrictionForce = 65.f;//
 	float m_DragForce = 1000.f;//

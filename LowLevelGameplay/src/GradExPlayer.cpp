@@ -28,5 +28,7 @@ PlayerCharacter* PlayerCharacter::InitialiseCharacter()
 	AddComponent<DebugBox>()->SetUpDebugBox();
 	AddComponent<Cursor>()->SetControllerNumber(m_PlayerNumber);
 	AddComponent<PlayerController>();
+	SetTag("Player");
+
 	return this;
 }

@@ -28,6 +28,8 @@ RigidBody::~RigidBody()
 
 void RigidBody::FixedUpdate(float deltaTime)
 {
+	if (!_GameObject->GetActive()) { return; }
+
 	LLGP::Vector2f solvedForce = SolveForces(deltaTime);
 	AddVelocity(solvedForce);
 
@@ -74,58 +76,23 @@ void RigidBody::FixedUpdate(float deltaTime)
 
 void RigidBody::OnCollisionEnter(CollisionInfo* col)
 {
-	//if (!(CHECK_BIT(col->collider->GetCollisionMask(), 0)))
-	//{
-	//	return;
-	//}
+	if (!_GameObject->GetActive()) { return; }
 
-	//std::cout << "Collision Enter" << std::endl;
-	bool isFromTop = false;
-
-	col->Normal;
-
-	//AddPosition(((col->Normal * std::round(col->Overlap)) + col->Normal));
+	if (col->otherCollider->GetIsTrigger()) { return; }
 
 	if (col->Normal.x != 0)
 	{
-		float impulseVel = abs(GetVelocity().x)* col->Normal.x * 1;
+		float impulseVel = abs(GetVelocity().x) * col->Normal.x * 1;
 		SetVelocity(LLGP::Vector2f(impulseVel, GetVelocity().y));
 	}
 
 	if (col->Normal.y != 0)
 	{
-		if (col->Normal.y > 0)
-		{
-			float impulseVel = abs(GetVelocity().y) * col->Normal.y * 1;
-			SetVelocity(LLGP::Vector2f(GetVelocity().x, impulseVel));
-		}
-
-
-		if (col->Normal.y < 0)
-		{
-			if (GetVelocity().y < 0)
-			{
-			}
-			else
-			{
-				SetVelocity(LLGP::Vector2f(GetVelocity().x, 0));
-			}
-			AddNetForce(-GetNetForce());
-			SetIsGrounded(true);
-			isFromTop = true;
-		}
+		float impulseVel = abs(GetVelocity().y) * col->Normal.y * 1;
+		SetVelocity(LLGP::Vector2f(GetVelocity().x, impulseVel));
 	}
 
-	if (isFromTop)
-	{
-		AddPosition(((col->Normal * (col->Overlap))));
-	}
-	else
-	{
-		AddPosition(((col->Normal * std::round(col->Overlap))+ col->Normal));
-	}
-
-	//std::cout << "Normal X: " << col->Normal.x << " Normal Y: " << col->Normal.y << std::endl;
+	AddPosition(((col->Normal * std::round(col->Overlap)) + col->Normal));
 }
 
 void RigidBody::OnCollisionExit(CollisionInfo* col)
@@ -135,6 +102,7 @@ void RigidBody::OnCollisionExit(CollisionInfo* col)
 
 void RigidBody::addForce(LLGP::Vector2f force)
 {
+	if (!_GameObject->GetActive()) { return; }
 	AddNetForce(force);
 }
 
@@ -242,8 +210,6 @@ LLGP::Vector2f RigidBody::CalculateDragForce(float deltaTime)
 	DragForce *= (test * test);
 
 	DragForce = LLGP::Vector2f(returnForceX, returnForceY);
-
-	std::cout << "Drag Force: " << DragForce.x << ", " << DragForce.y << "\n";
 
 	return DragForce;
 }

@@ -14,6 +14,9 @@ public:
 	virtual CollisionInfo* IsCollidingWith(Collider* other) { return nullptr; };
 	virtual CollisionInfo* IsCollidingWith(BoxCollider* other) { return nullptr; };
 
+	Collider* SetIsTrigger(bool newTrigger) { m_IsTrigger = newTrigger; return this; }
+	bool GetIsTrigger() { return m_IsTrigger; }
+
 	uint8_t GetCollisionLayer() { return m_CollisionLayer; }
 	uint8_t GetCollisionMask() { return m_CollisionMask; }
 
@@ -33,4 +36,5 @@ protected:
 	uint8_t m_CollisionLayer = 0x00;
 	uint8_t m_CollisionMask = 0x00;
 
+	bool m_IsTrigger = false;
 };

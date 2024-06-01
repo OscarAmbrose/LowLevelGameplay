@@ -26,7 +26,7 @@ DebugBox::~DebugBox()
 void DebugBox::SetUpDebugBox()
 {
 	m_RectangleSize = _GameObject->GetComponent<BoxCollider>()->GetBoxSize();
-	m_RenderLayer = 0;
+	m_RenderLayer = 4;
 	m_Shape.setFillColor(sf::Color::Transparent);
 	m_Shape.setOutlineColor(sf::Color::Red);
 	m_Shape.setOutlineThickness(1.f);

@@ -24,6 +24,8 @@ public:
 
 	Cursor* SetControllerNumber(int newNum) { m_ControllerNumber = newNum; return this; }
 
+	LLGP::Vector2f GetLookAtCursorDirection();
+
 protected:
 	sf::Window* m_RenderWindow = nullptr;
 
@@ -40,5 +42,7 @@ protected:
 
 	float m_JoystickDeadzone = 0.2f;
 
-	float m_CursorMoveSpeed = 700.f;
+	float m_CursorMoveSpeed = 1000.f;
+
+	
 };

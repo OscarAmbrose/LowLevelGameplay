@@ -15,7 +15,7 @@ public:
 
 protected:
 	//This should be equal to the controller number.
-	int m_PlayerNumber = 0;
+	int m_PlayerNumber;
 
 	LLGP::Vector2f m_JoystickDir = LLGP::Vector2f::zero;
 

@@ -5,10 +5,12 @@
 #include <WindowManager.h>
 #include <BoxCollider.h>
 #include <DebugBox.h>
+#include <GradExPlayer.h>
+
 
 Cursor::Cursor(GameObject* owner) : Component(owner)
 {
-	m_ControllerNumber = 1;
+	m_ControllerNumber = static_cast<PlayerCharacter*>(_GameObject)->GetPlayerNumber();
 	m_JoystickDir = LLGP::Vector2f::zero;
 
 	m_PlayerPos = _GameObject->GetTransform()->ReturnPosition();
@@ -21,6 +23,7 @@ Cursor::Cursor(GameObject* owner) : Component(owner)
 
 	m_BoxCollider = _GameObject->AddComponent<BoxCollider>()->SetUpCollider(LLGP::Vector2f(16, 16), LLGP::Vector2f(48, 48));
 	m_BoxCollider->SetCollisionMask(0b10000000)->SetCollisionLayer(0b01000000);
+	
 
 	g_OnPollInputs.AddListener(this, std::bind(&Cursor::PollInput, this, std::placeholders::_1));
 }
@@ -117,6 +120,11 @@ void Cursor::Update(float deltaTime)
 
 	m_CursorPos += m_JoystickDir * m_CursorMoveSpeed * deltaTime;
 	SetCursorPosition(m_CursorPos);
+}
+
+LLGP::Vector2f Cursor::GetLookAtCursorDirection()
+{
+	return LLGP::Vector2f((m_PlayerPos - m_CursorPos).Normalised());
 }
 
 

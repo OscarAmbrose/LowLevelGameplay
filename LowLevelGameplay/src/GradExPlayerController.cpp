@@ -3,9 +3,11 @@
 #include <GameObject.h>
 #include <Transform.h>
 #include <RigidBody.h>
+#include <GradExPlayer.h>
 
 PlayerController::PlayerController(GameObject* owner) : Component(owner)
 {
+	m_PlayerNumber = static_cast<PlayerCharacter*>(_GameObject)->GetPlayerNumber();
 	m_JoystickDir = LLGP::Vector2f::zero;
 	g_OnPollInputs.AddListener(this, std::bind(&PlayerController::PollInput, this, std::placeholders::_1));
 }
@@ -19,50 +21,16 @@ void PlayerController::PollInput(sf::Event event)
 {
 	switch (event.type)
 	{
-		case sf::Event::KeyPressed:
-			//std::cout << "Key code: " << event.key.code << std::endl;
-			switch (event.key.code)
-			{
-
-			case sf::Keyboard::A:
-				//std::cout << "A pressed" << std::endl;
-				break;
-
-			case sf::Keyboard::B:
-				//std::cout << "B pressed" << std::endl;
-				break;
-
-			default:
-				//std::cout << "Other key pressed" << std::endl;
-				break;
-			}
-			break;
-
-		case sf::Event::KeyReleased:
-			switch (event.key.code)
-			{
-
-			case sf::Keyboard::A:
-				//std::cout << "A released" << std::endl;
-				break;
-
-			case sf::Keyboard::B:
-				//std::cout << "B released" << std::endl;
-				break;
-
-			default:
-				//std::cout << "Other key released" << std::endl;
-				break;
-			}
-			break;
-
 		case sf::Event::JoystickMoved:
 		{
+			//If the input is from the incorrect controller, return.
 			if (!sf::Joystick::isConnected(m_PlayerNumber)) { return; }
 
+			//Get both axis values (/100 to make it a float between 1 and 0)
 			float axisX = (sf::Joystick::getAxisPosition(m_PlayerNumber, sf::Joystick::X) / 100);
 			float axisY = (sf::Joystick::getAxisPosition(m_PlayerNumber, sf::Joystick::Y) / 100);
-
+			
+			//To fix stick drift
 			if ((axisX < m_JoystickDeadzone && axisX > -m_JoystickDeadzone))
 			{
 				axisX = 0;
@@ -72,11 +40,13 @@ void PlayerController::PollInput(sf::Event event)
 				axisY = 0;
 			}
 
+			//Set the joystick direction
 			m_JoystickDir = LLGP::Vector2f(axisX, axisY);
 
 			break;
 		}
 
+		//If the event isnt being looked for, do nothing.
 		default:
 			//std::cout << "Non KeyPressed event" << std::endl;
 			break;
@@ -86,12 +56,12 @@ void PlayerController::PollInput(sf::Event event)
 
 void PlayerController::FixedUpdate(float deltaTime)
 {
+	//If the joystick has no direction, return.
 	if (m_JoystickDir == LLGP::Vector2f::zero)
 	{
 		return;
 	}
 
-	auto position = m_JoystickDir * 5000.f;
-
-	_GameObject->GetComponent<RigidBody>()->addForce(position);
+	//Add a large force in the direction of movement (designed to make movement snappy, not floaty)
+	_GameObject->GetComponent<RigidBody>()->addForce(m_JoystickDir * 100000.f);
 }
