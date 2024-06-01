@@ -5,6 +5,7 @@
 
 class SpriteRenderer;
 class BoxCollider;
+class DebugBox;
 
 class Cursor : public Component
 {
@@ -37,6 +38,7 @@ protected:
 	LLGP::Vector2f m_CursorPos;
 
 	BoxCollider* m_BoxCollider = nullptr;
+	DebugBox* m_DebugBoxCollider = nullptr;
 
 	int m_ControllerNumber;
 

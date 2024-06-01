@@ -15,7 +15,6 @@ public:
 
 	void OnCollisionEnter(CollisionInfo* col);
 	void OnCollisionExit(CollisionInfo* col);
-	//void OnCollisionStay(CollisionInfo* col) { std::cout << "Collision Stay" << std::endl; }
 
 	void addForce(LLGP::Vector2f force);
 	LLGP::Vector2f SolveForces(float deltaTime);

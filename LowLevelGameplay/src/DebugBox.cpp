@@ -7,8 +7,6 @@
 
 DebugBox::DebugBox(GameObject* owner) : Component(owner)
 {
-	m_RenderLayer = 0;
-
 	m_Shape.setFillColor(sf::Color::Transparent);
 	m_Shape.setOutlineColor(sf::Color::Red);
 	m_Shape.setOutlineThickness(3.f);
@@ -23,7 +21,7 @@ DebugBox::~DebugBox()
 	g_OnRender.RemoveListener(this, std::bind(&DebugBox::renderShape, this, std::placeholders::_1, std::placeholders::_2));
 }
 
-void DebugBox::SetUpDebugBox()
+DebugBox* DebugBox::SetUpDebugBox()
 {
 	m_RectangleSize = _GameObject->GetComponent<BoxCollider>()->GetBoxSize();
 	m_RenderLayer = 4;
@@ -36,20 +34,46 @@ void DebugBox::SetUpDebugBox()
 
 	
 	g_OnRender.AddListener(this, std::bind(&DebugBox::renderShape, this, std::placeholders::_1, std::placeholders::_2));
+
+	return this;
 }
 
-void DebugBox::renderShape(sf::RenderWindow* window, int renderLayer)
+DebugBox* DebugBox::SetUpDebugBox(BoxCollider* boxCollider)
 {
-	//LLGP::Vector2f position = _GameObject->getTransform()->ReturnPosition();
-
-	LLGP::Vector2f position = _GameObject->GetComponent<BoxCollider>()->GetBoxPosition()/* + _GameObject->GetComponent<BoxCollider>()->GetOffset()*/;
-
-	m_RectangleSize = _GameObject->GetComponent<BoxCollider>()->GetBoxSize();
+	m_PositionIsHandled = true;
+	m_RectangleSize = boxCollider->GetBoxSize();
+	m_UnsafeBoxCollider = boxCollider;
+	m_RenderLayer = 4;
+	m_Shape.setFillColor(sf::Color::Transparent);
+	m_Shape.setOutlineColor(sf::Color::Red);
+	m_Shape.setOutlineThickness(1.f);
 
 	m_Shape.setSize(m_RectangleSize);
 	m_Shape.setOrigin(m_RectangleSize / 2);
 
+
+	g_OnRender.AddListener(this, std::bind(&DebugBox::renderShape, this, std::placeholders::_1, std::placeholders::_2));
+
+	return this;
+}
+
+void DebugBox::renderShape(sf::RenderWindow* window, int renderLayer)
+{
+	LLGP::Vector2f position;
+	if (!m_PositionIsHandled) 
+	{ 
+		position = _GameObject->GetComponent<BoxCollider>()->GetBoxPosition() + m_Offset; 
+	}
+	else
+	{
+		position = m_UnsafeBoxCollider->GetBoxPosition();
+	}
+	
 	m_Shape.setPosition(position);
+
+	m_Shape.setSize(m_RectangleSize);
+	m_Shape.setOrigin(m_RectangleSize / 2);
+
 
 	if (renderLayer == m_RenderLayer)
 	{

@@ -19,11 +19,12 @@ Cursor::Cursor(GameObject* owner) : Component(owner)
 	m_RenderWindow = WindowManager::GetActiveWindow();
 	m_RenderWindow->sf::Window::setMouseCursorVisible(false);
 
-	m_SpriteRenderer = _GameObject->AddComponent<SpriteRenderer>()->setUV(LLGP::Vector2i(13, 2), LLGP::Vector2i(64, 64))->setRenderLayer(3);
+	m_SpriteRenderer = _GameObject->AddComponent<SpriteRenderer>()->setUV(LLGP::Vector2i(13, 2), LLGP::Vector2i(64, 64))->setRenderLayer(0);
 
 	m_BoxCollider = _GameObject->AddComponent<BoxCollider>()->SetUpCollider(LLGP::Vector2f(16, 16), LLGP::Vector2f(48, 48));
-	m_BoxCollider->SetCollisionMask(0b10000000)->SetCollisionLayer(0b01000000);
+	m_BoxCollider->SetCollisionMask(0b10000000)->SetCollisionLayer(0b01000000)->SetIsTrigger(true);
 	
+	m_DebugBoxCollider = _GameObject->AddComponent<DebugBox>()->SetUpDebugBox(m_BoxCollider);
 
 	g_OnPollInputs.AddListener(this, std::bind(&Cursor::PollInput, this, std::placeholders::_1));
 }
@@ -79,9 +80,10 @@ void Cursor::PollInput(sf::Event event)
 void Cursor::SetCursorPosition(LLGP::Vector2f location)
 {
 	auto CursorPosition = m_CursorPos - m_PlayerPos;
-
 	auto test = FixCursorPosition(m_CursorPos - m_PlayerPos);
 
+	m_DebugBoxCollider->SetOffset(test);
+	m_BoxCollider->SetOffset(test);
 	m_SpriteRenderer->setOffSet(test);
 }
 

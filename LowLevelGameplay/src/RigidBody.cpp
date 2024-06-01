@@ -44,12 +44,6 @@ void RigidBody::FixedUpdate(float deltaTime)
 	{
 		m_Velocity.y = GetMaxSpeed() * velSignY;
 	}
-	
-	//Check if player is over max speed. DEPRECATED, Made flapping hard to implement
-	/*if (GetVelocity().GetMagnitude() > GetMaxSpeed())
-	{
-		SetVelocity(GetVelocity().Normalise() * GetMaxSpeed());
-	}*/
 
 	//Fix jitter
 	if (GetVelocity().x < 1 && GetVelocity().x > -1)
@@ -67,18 +61,20 @@ void RigidBody::FixedUpdate(float deltaTime)
 
 	newPosition = (GetVelocity()* deltaTime) + (_GameObject->GetTransform()->ReturnPosition());
 
+	//std::cout << newPosition.x << ", " << newPosition.y << std::endl;
+
 	LLGP::Vector2f distance = newPosition - oldPos;
 
 	setDistanceTravelled(distance.GetMagnitude());
 
-	_GameObject->GetTransform()->setPosition(newPosition);
+	_GameObject->GetTransform()->SetPosition(newPosition);
 }
 
 void RigidBody::OnCollisionEnter(CollisionInfo* col)
 {
 	if (!_GameObject->GetActive()) { return; }
 
-	if (col->otherCollider->GetIsTrigger()) { return; }
+	if (col->collider->GetIsTrigger() || col->otherCollider->GetIsTrigger()) { return; }
 
 	if (col->Normal.x != 0)
 	{
@@ -163,9 +159,6 @@ float RigidBody::CalculateOpposingForce(float deltaTime, float velocityToOppose,
 	// F = V/dT * M
 	float velocityForce = ((velocityToOppose / deltaTime) * GetMass());
 
-	//std::cout << GetNetForce().x << ", " << GetNetForce().y << std::endl;
-	//std::cout << velocityForce << std::endl;
-
 	//Make sure the friction force is in the correct direction
 	if (velocityForce > 0)
 	{
@@ -218,5 +211,5 @@ void RigidBody::AddPosition(LLGP::Vector2f posToAdd)
 {
 	Transform2D* transform = _GameObject->GetTransform();
 
-	transform->setPosition(LLGP::Vector2f((transform->ReturnPosition().x), (transform->ReturnPosition().y)) + posToAdd);
+	transform->SetPosition(LLGP::Vector2f((transform->ReturnPosition().x), (transform->ReturnPosition().y)) + posToAdd);
 }

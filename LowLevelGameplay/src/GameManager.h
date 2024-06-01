@@ -14,7 +14,7 @@ class GameManager
 public:
 	GameManager();
 
-	~GameManager() {};
+	~GameManager();
 
 	template<class T> requires isComponent<T>
 	std::vector<T*> getAllComponentsOfType()

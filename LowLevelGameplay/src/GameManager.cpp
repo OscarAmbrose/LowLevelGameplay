@@ -10,8 +10,13 @@
 GameManager::GameManager()
 {
 	StartLevelOne();
-	static_cast<Projectile*>(getGameObjectByName("Projectile"))->EnableProjectile(LLGP::Vector2f(0.5f, -0.5f), 50.f, 1);
+	static_cast<Projectile*>(getGameObjectByName("Projectile"))->EnableProjectile(LLGP::Vector2f(-1.f, 0.f), LLGP::Vector2f(500.f, 00.f), 100.f, 3);
 }
+
+GameManager::~GameManager()
+{
+}
+
 
 GameObject* GameManager::getGameObjectByName(std::string objectTag)
 {
@@ -30,14 +35,11 @@ void GameManager::StartLevelOne()
 {
 	//Create player.
 
-
 	std::shared_ptr<PlayerCharacter> newPlayerTest = std::make_unique<PlayerCharacter>(0);
 	newPlayerTest->SetActive(true);
 	m_GameObjects.push_back(std::move(newPlayerTest));
 
 	std::shared_ptr<Projectile> newProjectileTest = std::make_unique<Projectile>();
-	newProjectileTest->GetTransform()->setPosition(LLGP::Vector2f(50, 450));
-	newProjectileTest->EnableProjectile(LLGP::Vector2f(0.5f, -0.5f), 50.f, 1);
 	newProjectileTest->SetTag("Projectile");
 	newProjectileTest->SetName("Projectile");
 	m_GameObjects.push_back(std::move(newProjectileTest));

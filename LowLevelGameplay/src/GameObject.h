@@ -98,7 +98,7 @@ public:
 #pragma endregion
 
 protected:
-	bool m_Active = true;
+	bool m_Active = false;
 private:
 	std::string m_Name;
 	std::string m_Tag;

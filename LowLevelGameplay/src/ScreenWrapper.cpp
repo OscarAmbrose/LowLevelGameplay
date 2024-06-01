@@ -42,6 +42,6 @@ void ScreenWrapper::FixedUpdate(float deltaTime)
 
 	if (newPositionX != PositionX)
 	{
-		_GameObject->GetTransform()->setPosition(LLGP::Vector2f(newPositionX, _GameObject->GetTransform()->ReturnPosition().y));
+		_GameObject->GetTransform()->SetPosition(LLGP::Vector2f(newPositionX, _GameObject->GetTransform()->ReturnPosition().y));
 	}
 }

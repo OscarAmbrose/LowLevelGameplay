@@ -16,7 +16,7 @@ public:
 
 	~Transform2D() {};
 
-	inline void setPosition(LLGP::Vector2<float> newPosition) { m_Position = newPosition; }
+	inline void SetPosition(LLGP::Vector2<float> newPosition) { m_Position = newPosition; }
 	inline void setScale(LLGP::Vector2<float> newScale) { m_Scale = newScale; };
 	inline void setRotation(float newRotation)
 	{

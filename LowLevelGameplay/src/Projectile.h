@@ -14,7 +14,7 @@ public:
 
 	void ProjectileCollision(CollisionInfo* col);
 
-	void EnableProjectile(LLGP::Vector2f projectileDir, float velocity, int bounceAmount);
+	void EnableProjectile(LLGP::Vector2f projectileDir, LLGP::Vector2f projectileLocation, float velocity, int bounceAmount);
 
 	void DisableProjectile();
 

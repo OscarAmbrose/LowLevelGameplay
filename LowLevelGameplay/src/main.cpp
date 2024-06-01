@@ -75,11 +75,11 @@ int main()
 			g_OnPollInputs(event);
 		}
 
-		if (paused)
-		{
-			deltaTime = 0.f;
-			continue;
-		}
+		//if (paused)
+		//{
+		//	deltaTime = 0.f;
+		//	continue;
+		//}
 
 		g_OnStart(0);
 #pragma endregion
