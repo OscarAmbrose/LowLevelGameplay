@@ -20,20 +20,20 @@ void PlayerController::PollInput(sf::Event event)
 	switch (event.type)
 	{
 		case sf::Event::KeyPressed:
-			std::cout << "Key code: " << event.key.code << std::endl;
+			//std::cout << "Key code: " << event.key.code << std::endl;
 			switch (event.key.code)
 			{
 
 			case sf::Keyboard::A:
-				std::cout << "A pressed" << std::endl;
+				//std::cout << "A pressed" << std::endl;
 				break;
 
 			case sf::Keyboard::B:
-				std::cout << "B pressed" << std::endl;
+				//std::cout << "B pressed" << std::endl;
 				break;
 
 			default:
-				std::cout << "Other key pressed" << std::endl;
+				//std::cout << "Other key pressed" << std::endl;
 				break;
 			}
 			break;
@@ -43,11 +43,11 @@ void PlayerController::PollInput(sf::Event event)
 			{
 
 			case sf::Keyboard::A:
-				std::cout << "A released" << std::endl;
+				//std::cout << "A released" << std::endl;
 				break;
 
 			case sf::Keyboard::B:
-				std::cout << "B released" << std::endl;
+				//std::cout << "B released" << std::endl;
 				break;
 
 			default:

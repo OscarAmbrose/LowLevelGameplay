@@ -9,17 +9,13 @@ public:
 	DebugBox(GameObject* owner);
 	~DebugBox();
 
-	//void Update(float deltaTime);
-
-	//void Start(float deltaTime);
-
 	void SetUpDebugBox();
 
 	void renderShape(sf::RenderWindow* window, int renderLayer);
 
 protected:
-	sf::RectangleShape shape;
-	LLGP::Vector2<float> rectangleSize = LLGP::Vector2f(0, 0);
-	LLGP::Vector2f offset = LLGP::Vector2f(0, 0);
+	sf::RectangleShape m_Shape;
+	LLGP::Vector2<float> m_RectangleSize = LLGP::Vector2f(0, 0);
+	LLGP::Vector2f m_Offset = LLGP::Vector2f(0, 0);
 	int m_RenderLayer;
 };

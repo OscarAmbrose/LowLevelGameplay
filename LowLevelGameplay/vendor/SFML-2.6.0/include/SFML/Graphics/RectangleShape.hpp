@@ -35,7 +35,7 @@
 namespace sf
 {
 ////////////////////////////////////////////////////////////
-/// \brief Specialized shape representing a rectangle
+/// \brief Specialized m_Shape representing a rectangle
 ///
 ////////////////////////////////////////////////////////////
 class SFML_GRAPHICS_API RectangleShape : public Shape
@@ -71,9 +71,9 @@ public:
     const Vector2f& getSize() const;
 
     ////////////////////////////////////////////////////////////
-    /// \brief Get the number of points defining the shape
+    /// \brief Get the number of points defining the m_Shape
     ///
-    /// \return Number of points of the shape. For rectangle
+    /// \return Number of points of the m_Shape. For rectangle
     ///         shapes, this number is always 4.
     ///
     ////////////////////////////////////////////////////////////
@@ -83,13 +83,13 @@ public:
     /// \brief Get a point of the rectangle
     ///
     /// The returned point is in local coordinates, that is,
-    /// the shape's transforms (position, rotation, scale) are
+    /// the m_Shape's transforms (position, rotation, scale) are
     /// not taken into account.
     /// The result is undefined if \a index is out of the valid range.
     ///
     /// \param index Index of the point to get, in range [0 .. 3]
     ///
-    /// \return index-th point of the shape
+    /// \return index-th point of the m_Shape
     ///
     ////////////////////////////////////////////////////////////
     virtual Vector2f getPoint(std::size_t index) const;

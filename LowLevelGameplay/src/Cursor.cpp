@@ -27,6 +27,7 @@ Cursor::Cursor(GameObject* owner) : Component(owner)
 
 Cursor::~Cursor()
 {
+	g_OnPollInputs.RemoveListener(this, std::bind(&Cursor::PollInput, this, std::placeholders::_1));
 }
 
 void Cursor::PollInput(sf::Event event)
@@ -52,7 +53,7 @@ void Cursor::PollInput(sf::Event event)
 		}
 
 		m_JoystickDir = LLGP::Vector2f(axisZ, axisR);
-		std::cout << m_JoystickDir.x << ", " << m_JoystickDir.y << std::endl;
+		//std::cout << m_JoystickDir.x << ", " << m_JoystickDir.y << std::endl;
 	}
 	break;
 	case sf::Event::JoystickDisconnected:
@@ -108,15 +109,14 @@ LLGP::Vector2f Cursor::FixCursorPosition(LLGP::Vector2f position)
 	return position;
 }
 
-void Cursor::FixedUpdate(float deltaTime)
+void Cursor::Update(float deltaTime)
 {
+	Component::Update(deltaTime);
+
 	m_PlayerPos = _GameObject->GetTransform()->ReturnPosition();
 
 	m_CursorPos += m_JoystickDir * m_CursorMoveSpeed * deltaTime;
 	SetCursorPosition(m_CursorPos);
 }
 
-void Cursor::Update(float deltaTime)
-{
 
-}

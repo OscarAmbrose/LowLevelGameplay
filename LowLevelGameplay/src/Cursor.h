@@ -20,7 +20,6 @@ public:
 
 	LLGP::Vector2f FixCursorPosition(LLGP::Vector2f position);
 
-	void FixedUpdate(float deltaTime);
 	void Update(float deltaTime);
 
 	Cursor* SetControllerNumber(int newNum) { m_ControllerNumber = newNum; return this; }
@@ -39,7 +38,7 @@ protected:
 
 	int m_ControllerNumber;
 
-	float m_JoystickDeadzone = 0.12f;
+	float m_JoystickDeadzone = 0.2f;
 
 	float m_CursorMoveSpeed = 700.f;
 };

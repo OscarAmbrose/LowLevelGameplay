@@ -17,7 +17,7 @@ protected:
 	//This should be equal to the controller number.
 	int m_PlayerNumber = 0;
 
-	LLGP::Vector2f m_JoystickDir;
+	LLGP::Vector2f m_JoystickDir = LLGP::Vector2f::zero;
 
 	float m_JoystickDeadzone = 0.2f;
 };

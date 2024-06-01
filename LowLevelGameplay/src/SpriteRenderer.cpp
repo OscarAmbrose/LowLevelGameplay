@@ -6,35 +6,35 @@
 
 SpriteRenderer* SpriteRenderer::setUV(LLGP::Vector2i selectedSprite)
 {
-	rectangleSize = LLGP::Vector2<float>(32, 64);
+	m_RectangleSize = LLGP::Vector2<float>(32, 64);
 	sf::IntRect rectTexUV((rectTexSize.x / spritesInTexture.x) * selectedSprite.x, (rectTexSize.y / spritesInTexture.y) * selectedSprite.y, rectTexSize.x / spritesInTexture.x, rectTexSize.y / spritesInTexture.y);
-	shape.setTextureRect(rectTexUV);
-	shape.setSize(rectangleSize);
-	shape.setOrigin(rectangleSize / 2);
+	m_Shape.setTextureRect(rectTexUV);
+	m_Shape.setSize(m_RectangleSize);
+	m_Shape.setOrigin(m_RectangleSize / 2);
 
 	return this;
 }
 
 SpriteRenderer* SpriteRenderer::setUV(LLGP::Vector2i selectedSprite, LLGP::Vector2i spriteSize)
 {
-	rectangleSize = LLGP::Vector2<float>(spriteSize.x, spriteSize.y);
+	m_RectangleSize = LLGP::Vector2<float>(spriteSize.x, spriteSize.y);
 	sf::IntRect rectTexUV((rectTexSize.x / spritesInTexture.x) * selectedSprite.x, (rectTexSize.y / spritesInTexture.y) * selectedSprite.y, spriteSize.x, spriteSize.y);
-	shape.setTextureRect(rectTexUV);
-	shape.setSize(rectangleSize);
-	shape.setOrigin(rectangleSize / 2);
+	m_Shape.setTextureRect(rectTexUV);
+	m_Shape.setSize(m_RectangleSize);
+	m_Shape.setOrigin(m_RectangleSize / 2);
 
 	return this;
 }
 
 sf::RectangleShape SpriteRenderer::returnShape()
 {
-	shape.setRotation(_GameObject->GetTransform()->returnRotation());
+	m_Shape.setRotation(_GameObject->GetTransform()->returnRotation());
 
 	LLGP::Vector2f position = _GameObject->GetTransform()->ReturnPosition() + offset;
 
-	shape.setPosition(position);
+	m_Shape.setPosition(position);
 
-	return shape;
+	return m_Shape;
 }
 
 void SpriteRenderer::setFlipped(bool newFlipped)
@@ -45,11 +45,11 @@ void SpriteRenderer::setFlipped(bool newFlipped)
 	float y = _GameObject->GetTransform()->returnScale().y;
 	if (newFlipped)
 	{
-		shape.setScale(-x, x);
+		m_Shape.setScale(-x, x);
 	}
 	else
 	{
-		shape.setScale(x, x);
+		m_Shape.setScale(x, x);
 	}
 
 }

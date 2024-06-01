@@ -86,7 +86,6 @@ int main()
 
 		//Input Handling
 		numberOfUpdates++;
-		g_OnUpdate(deltaTime);
 		
 
 		#pragma region Physics
@@ -108,6 +107,7 @@ int main()
 		#pragma endregion
 		//Update
 
+		g_OnUpdate(deltaTime);
 		#pragma region Render
 		window.clear();
 

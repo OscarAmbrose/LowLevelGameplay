@@ -298,7 +298,7 @@ private:
 ///
 ///    // Draw stuff to the texture
 ///    texture.draw(sprite);  // sprite is a sf::Sprite
-///    texture.draw(shape);   // shape is a sf::Shape
+///    texture.draw(m_Shape);   // m_Shape is a sf::Shape
 ///    texture.draw(text);    // text is a sf::Text
 ///
 ///    // We're done drawing to the texture

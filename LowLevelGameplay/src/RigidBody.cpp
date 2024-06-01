@@ -50,16 +50,14 @@ void RigidBody::FixedUpdate(float deltaTime)
 	}*/
 
 	//Fix jitter
-	if (GetVelocity().x < 0.5 && GetVelocity().x > -0.5)
+	if (GetVelocity().x < 1 && GetVelocity().x > -1)
 	{
 		SetVelocity(LLGP::Vector2f(0, GetVelocity().y));
 	}
-	if (GetVelocity().y < 0.5 && GetVelocity().y > -0.5)
+	if (GetVelocity().y < 1 && GetVelocity().y > -1)
 	{
 		SetVelocity(LLGP::Vector2f(GetVelocity().x, 0));
 	}
-
-	//std::cout << GetVelocity().x << std::endl;
 
 	LLGP::Vector2f oldPos = _GameObject->GetTransform()->ReturnPosition();
 
@@ -164,14 +162,8 @@ LLGP::Vector2f RigidBody::SolveForces(float deltaTime)
 	{
 		m_NetForce += CalculateDragForce(deltaTime);
 	}
-
-	//std::cout << std::endl << "Delta Time: " << deltaTime << std::endl;
-
-	//std::cout << "m_NetForce = " << m_NetForce.x << ", " << m_NetForce.y << std::endl;
 	
 	velocityToAdd = (m_NetForce / GetMass()) * deltaTime;
-
-	//std::cout << "velocityToAdd = " << velocityToAdd.x << ", " << velocityToAdd.y << std::endl;
 
 	m_NetForce = LLGP::Vector2f::zero;
 
@@ -203,6 +195,8 @@ float RigidBody::CalculateOpposingForce(float deltaTime, float velocityToOppose,
 	// F = V/dT * M
 	float velocityForce = ((velocityToOppose / deltaTime) * GetMass());
 
+	//std::cout << GetNetForce().x << ", " << GetNetForce().y << std::endl;
+	//std::cout << velocityForce << std::endl;
 
 	//Make sure the friction force is in the correct direction
 	if (velocityForce > 0)
@@ -214,19 +208,18 @@ float RigidBody::CalculateOpposingForce(float deltaTime, float velocityToOppose,
 		attemptedForce = opposingForceStrength;
 	}
 
-	//Check that the friction force isn't greater than the velocities force.
-	//if ((attemptedForce > 0 && velocityForce < attemptedForce && velocityForce > 0) || (attemptedForce < 0 && velocityForce > attemptedForce && velocityForce < 0))
-	//{
-	//	returnForce = -velocityForce;
-	//}
-
-	if ((velocityForce > 0 && velocityForce - attemptedForce < 0) || (velocityForce < 0 && velocityForce - attemptedForce > 0))
+	if ((velocityForce > 0 && velocityForce - attemptedForce < 0) || (velocityForce < 0 && velocityForce + attemptedForce > 0))
 	{
 		returnForce = -velocityForce;
 	}
 	else
 	{
 		returnForce = attemptedForce;
+	}
+
+	if (returnForce == 1000) 
+	{ 
+		int i = 0;
 	}
 
 	return returnForce;
@@ -249,6 +242,8 @@ LLGP::Vector2f RigidBody::CalculateDragForce(float deltaTime)
 	DragForce *= (test * test);
 
 	DragForce = LLGP::Vector2f(returnForceX, returnForceY);
+
+	std::cout << "Drag Force: " << DragForce.x << ", " << DragForce.y << "\n";
 
 	return DragForce;
 }

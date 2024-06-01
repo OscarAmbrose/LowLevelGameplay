@@ -61,5 +61,4 @@ void BoxCollider::Update(float deltaTime)
 {	
 	Component::Update(deltaTime);
 	SetBoxPosition(_GameObject->GetTransform()->ReturnPosition() + GetOffset());
-	
 }

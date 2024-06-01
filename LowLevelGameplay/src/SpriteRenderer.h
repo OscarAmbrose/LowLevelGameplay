@@ -17,9 +17,9 @@ public:
 	{ 
 		m_RenderLayer = 5;
 
-		shape.setTexture(renderTexture);
+		m_Shape.setTexture(renderTexture);
 
-		rectTexSize = LLGP::Vector2i(shape.getTexture()->getSize());
+		rectTexSize = LLGP::Vector2i(m_Shape.getTexture()->getSize());
 
 		//Vector2i selectedSprite = Vector2i(10, 15);
 		LLGP::Vector2i selectedSprite = LLGP::Vector2i(0, 0);
@@ -54,15 +54,15 @@ public:
 	SpriteRenderer* setOffSet(LLGP::Vector2f newOffset);
 	inline LLGP::Vector2f getOffset() { return offset; }
 
-	inline LLGP::Vector2<float> GetRectangleSize() { return rectangleSize; }
+	inline LLGP::Vector2<float> GetRectangleSize() { return m_RectangleSize; }
 
 	SpriteRenderer* setRenderLayer(int newRenderLayer);
 	inline int getRenderLayer() { return m_RenderLayer; }
 
 private:
-	sf::RectangleShape shape;
+	sf::RectangleShape m_Shape;
 
-	LLGP::Vector2<float> rectangleSize;
+	LLGP::Vector2<float> m_RectangleSize;
 
 	LLGP::Vector2f offset = LLGP::Vector2f(0, 0);
 
