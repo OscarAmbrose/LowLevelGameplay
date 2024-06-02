@@ -6,6 +6,7 @@
 #include <Cursor.h>
 #include <GradExPlayer.h>
 #include <Projectile.h>
+#include <DebugBox.h>
 
 GameManager::GameManager()
 {
@@ -36,6 +37,7 @@ void GameManager::StartLevelOne()
 	//Create player.
 
 	std::shared_ptr<PlayerCharacter> newPlayerTest = std::make_unique<PlayerCharacter>(0);
+	newPlayerTest->GetTransform()->SetPosition(LLGP::Vector2f(50.f, 100.f));
 	newPlayerTest->SetActive(true);
 	m_GameObjects.push_back(std::move(newPlayerTest));
 
@@ -43,6 +45,11 @@ void GameManager::StartLevelOne()
 	newProjectileTest->SetTag("Projectile");
 	newProjectileTest->SetName("Projectile");
 	m_GameObjects.push_back(std::move(newProjectileTest));
+
+	m_GameObjects.push_back(Platform::CreateCeiling());
+	auto floor = Platform::CreateCeiling();
+	floor->GetTransform()->SetPosition(LLGP::Vector2f(960.f, 1070.f));
+	m_GameObjects.push_back(floor);
 #pragma region CreateAllPlatforms
 
 

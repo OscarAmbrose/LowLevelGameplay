@@ -7,6 +7,7 @@
 #include <GlobalEvents.h>
 #include <ScreenWrapper.h>
 #include <Physics.h>
+#include <ObjectPool.h>
 
 Projectile::Projectile()
 {
@@ -62,7 +63,9 @@ void Projectile::EnableProjectile(LLGP::Vector2f projectileDir, LLGP::Vector2f p
 
 void Projectile::DisableProjectile()
 {
+	ObjectPooler::DeactivateObject(this);
 	GetComponent<RigidBody>()->SetVelocity(LLGP::Vector2f::zero);
+	transform->SetPosition(LLGP::Vector2f(0, -1000));
 	SetActive(false);
 }
 

@@ -12,11 +12,29 @@
 #include <AnimationManager.h>
 #include <Physics.h>
 #include <WindowManager.h>
+#include <ObjectPool.h>
+#include <Projectile.h>
+#include <cstdlib>
+#include <ctime>
 
 #define FIXEDFRAMERATE (1.f/60.f)
 
 int main()
 {
+	sf::RenderWindow window(sf::VideoMode(1920, 1080), "GradEx 2024 ~ Oscar Ambrose", sf::Style::Fullscreen);
+
+	WindowManager::SetNewWindow(&window);
+
+	std::unique_ptr<GlobalTexture> globalTextureTest = std::make_unique<GlobalTexture>();
+	
+	std::unique_ptr <GameManager> gameManager = std::make_unique <GameManager>();
+
+	ObjectPooler::InitialisePool();
+	std::cout << ObjectPooler::GetRemainingObjects() << std::endl;
+	std::cout << ObjectPooler::GetRemainingObjects() << std::endl;
+
+	srand(static_cast<unsigned int>(time(0)));
+
 	//Update Stuff
 	std::chrono::steady_clock::time_point lastTime = std::chrono::steady_clock::now();
 	float deltaTime = 0.f;
@@ -25,16 +43,11 @@ int main()
 	int numberOfUpdates = 0;
 	//Update Stuff
 	bool paused = false;
-
+	
 
 	//Creates the window
-	sf::RenderWindow window(sf::VideoMode(1920, 1080), "GradEx 2024 ~ Oscar Ambrose", sf::Style::Fullscreen);
 	
-	WindowManager::SetNewWindow(&window);
-
-	std::unique_ptr<GlobalTexture> globalTextureTest = std::make_unique<GlobalTexture>();
 	
-	std::unique_ptr <GameManager> gameManager = std::make_unique <GameManager>();
 	
 	while (window.isOpen())
 	{
@@ -70,6 +83,23 @@ int main()
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 			{
 				window.close();
+			}
+
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+			{
+				for (int i = 0; i < 20; i++)
+				{
+					float DirectionX = -1 + 2 * ((float)rand() / RAND_MAX);
+					float DirectionY = -1 + 2 * ((float)rand() / RAND_MAX);
+					LLGP::Vector2f direction = LLGP::Vector2f(DirectionX, DirectionY).Normalised();
+					ObjectPooler::FindRemainingObject()->EnableProjectile(direction, LLGP::Vector2f(450, 450), 200.f, 0);
+					std::cout << ObjectPooler::GetRemainingObjects() << std::endl;
+				}
+			}
+
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::V))
+			{
+				ObjectPooler::DebugDisableAllPoolObjects();
 			}
 			
 			g_OnPollInputs(event);
