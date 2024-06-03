@@ -7,6 +7,7 @@
 #include <Cursor.h>
 #include <Transform.h>
 #include <GradExPlayerController.h>
+#include <Weapon.h>
 
 PlayerCharacter::PlayerCharacter() : GameObject()
 {
@@ -29,6 +30,7 @@ PlayerCharacter* PlayerCharacter::InitialiseCharacter()
 	AddComponent<Cursor>()->SetControllerNumber(m_PlayerNumber);
 	AddComponent<PlayerController>();
 	SetTag("Player");
+	AddComponent<Weapon>();
 
 	return this;
 }

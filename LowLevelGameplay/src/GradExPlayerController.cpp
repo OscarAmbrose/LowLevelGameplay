@@ -4,6 +4,7 @@
 #include <Transform.h>
 #include <RigidBody.h>
 #include <GradExPlayer.h>
+#include <Weapon.h>
 
 PlayerController::PlayerController(GameObject* owner) : Component(owner)
 {
@@ -44,6 +45,18 @@ void PlayerController::PollInput(sf::Event event)
 			m_JoystickDir = LLGP::Vector2f(axisX, axisY);
 
 			break;
+		}
+		case sf::Event::JoystickButtonPressed:
+		{
+			if (event.joystickButton.button == 5)
+			{
+				Weapon* playerWeapon;
+				if (playerWeapon = _GameObject->GetComponent<Weapon>())
+				{
+					//player weapon sfx can go here
+					playerWeapon->Fire();
+				}
+			}
 		}
 
 		//If the event isnt being looked for, do nothing.
