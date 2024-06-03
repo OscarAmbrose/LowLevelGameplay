@@ -74,21 +74,36 @@ void RigidBody::OnCollisionEnter(CollisionInfo* col)
 {
 	if (!_GameObject->GetActive()) { return; }
 
-	if (col->collider->GetIsTrigger() || col->otherCollider->GetIsTrigger()) { return; }
+	if (col->otherCollider->GetIsTrigger()) { return; }
 
-	if (col->Normal.x != 0)
+	if (GetDoesBounce())
 	{
-		float impulseVel = abs(GetVelocity().x) * col->Normal.x * 1;
-		SetVelocity(LLGP::Vector2f(impulseVel, GetVelocity().y));
+		if (col->Normal.x != 0)
+		{
+			float impulseVel = abs(GetVelocity().x) * col->Normal.x * 1;
+			SetVelocity(LLGP::Vector2f(impulseVel, GetVelocity().y));
+		}
+
+		if (col->Normal.y != 0)
+		{
+			float impulseVel = abs(GetVelocity().y) * col->Normal.y * 1;
+			SetVelocity(LLGP::Vector2f(GetVelocity().x, impulseVel));
+		}
+	}
+	else
+	{
+		if (col->Normal.x != 0)
+		{
+			SetVelocity(LLGP::Vector2f(0, GetVelocity().y));
+		}
+		if (col->Normal.y != 0)
+		{
+			SetVelocity(LLGP::Vector2f(GetVelocity().x, 0));
+		}
+		OverrideNetForce(LLGP::Vector2f::zero);
 	}
 
-	if (col->Normal.y != 0)
-	{
-		float impulseVel = abs(GetVelocity().y) * col->Normal.y * 1;
-		SetVelocity(LLGP::Vector2f(GetVelocity().x, impulseVel));
-	}
-
-	AddPosition(((col->Normal * std::round(col->Overlap)) + col->Normal));
+	AddPosition(col->Normal * std::round(col->Overlap) + col->Normal /*+ col->Normal*/);
 }
 
 void RigidBody::OnCollisionExit(CollisionInfo* col)

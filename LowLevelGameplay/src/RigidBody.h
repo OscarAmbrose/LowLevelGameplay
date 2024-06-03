@@ -34,7 +34,7 @@ public:
 	inline void SetFriction(float newFriction) { m_FrictionForce = newFriction; }
 
 	inline float GetDrag() const { return m_DragForce; }
-	inline void SetDrag(float newDrag) { m_DragForce = newDrag; }
+	RigidBody* SetDrag(float newDrag) { m_DragForce = newDrag; return this; }
 
 	inline float GetMass() const { return m_Mass; }
 	RigidBody* SetMass(float newMass) { m_Mass = newMass; return this; }
@@ -66,6 +66,9 @@ public:
 	inline bool GravityIsEnabled() { return m_HasGravity; }
 	RigidBody* setGravityEnabled(bool newGrav) { m_HasGravity = newGrav; return this; }
 
+	inline bool GetDoesBounce() { return m_DoesBounce; }
+	RigidBody* setDoesBounce(bool newBounce) { m_DoesBounce = newBounce; return this; }
+
 	inline bool GetOpposingMovement() { return m_OpposingMovement; }
 	inline void setOpposingMovement(bool newOpposingMovement) { m_OpposingMovement = newOpposingMovement; }
 
@@ -92,6 +95,7 @@ private:
 	bool m_HasGravity = false;
 	float m_distanceTravelled = 0;
 	bool m_OpposingMovement = false;
+	bool m_DoesBounce = false;
 
 	void AddPosition(LLGP::Vector2f posToAdd);
 };

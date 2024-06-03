@@ -8,14 +8,16 @@
 #include <ScreenWrapper.h>
 #include <Physics.h>
 #include <ObjectPool.h>
+#include <Timer.h>
 
 Projectile::Projectile()
 {
 	onCollisionEnter.RemoveListener(this, std::bind(&Projectile::ProjectileCollision, this, std::placeholders::_1));
 	g_OnFixedUpdate.RemoveListener(this, std::bind(&Projectile::FixedUpdate, this, std::placeholders::_1));
+	m_CurrentTimer->TimerFinished.AddListener(this, std::bind(&Projectile::LifeTimeEnded, this, std::placeholders::_1));
 
 	SetActive(false);
-	AddComponent<RigidBody>()->setGravityEnabled(false)->SetMaxSpeed(1500.f)->SetDrag(0.f);
+	AddComponent<RigidBody>()->setGravityEnabled(false)->SetMaxSpeed(1500.f)->SetDrag(0.f)->setDoesBounce(true);
 	AddComponent<SpriteRenderer>()->setUV(LLGP::Vector2i(10, 2))->setRenderLayer(0);
 
 	AddComponent<ScreenWrapper>();
@@ -23,6 +25,8 @@ Projectile::Projectile()
 	AddComponent<BoxCollider>()->SetUpCollider(LLGP::Vector2f(8, 8), LLGP::Vector2f(0, 0))->SetIsTrigger(true)->SetCollisionMask(0b00010111)->SetCollisionLayer(0b00001000);
 	AddComponent<DebugBox>()->SetUpDebugBox();
 	GetTransform()->SetPosition(LLGP::Vector2f(0, -1000));
+
+	SetTag("Projectile");
 }
 
 Projectile::~Projectile()
@@ -69,13 +73,20 @@ void Projectile::DisableProjectile()
 	SetActive(false);
 }
 
-
+void Projectile::LifeTimeEnded(int Successful)
+{
+	if (Successful == true)
+	{
+		DisableProjectile();
+	}
+}
 
 void Projectile::SetActive(bool newActive)
 {
 	m_Active = newActive;
 	if (m_Active)
 	{
+		m_CurrentTimer->StartTimer(2.f);
 		onCollisionEnter.AddListener(this, std::bind(&Projectile::ProjectileCollision, this, std::placeholders::_1));
 		g_OnFixedUpdate.AddListener(this, std::bind(&Projectile::FixedUpdate, this, std::placeholders::_1));
 	}
@@ -83,5 +94,6 @@ void Projectile::SetActive(bool newActive)
 	{
 		g_OnFixedUpdate.RemoveListener(this, std::bind(&Projectile::FixedUpdate, this, std::placeholders::_1));
 		onCollisionEnter.RemoveListener(this, std::bind(&Projectile::ProjectileCollision, this, std::placeholders::_1));
+		m_CurrentTimer->ClearAndInvalidateTimer();
 	}
 }

@@ -11,7 +11,6 @@
 GameManager::GameManager()
 {
 	StartLevelOne();
-	static_cast<Projectile*>(getGameObjectByName("Projectile"))->EnableProjectile(LLGP::Vector2f(-1.f, 0.f), LLGP::Vector2f(500.f, 00.f), 100.f, 3);
 }
 
 GameManager::~GameManager()
@@ -40,11 +39,6 @@ void GameManager::StartLevelOne()
 	newPlayerTest->GetTransform()->SetPosition(LLGP::Vector2f(50.f, 100.f));
 	newPlayerTest->SetActive(true);
 	m_GameObjects.push_back(std::move(newPlayerTest));
-
-	std::shared_ptr<Projectile> newProjectileTest = std::make_unique<Projectile>();
-	newProjectileTest->SetTag("Projectile");
-	newProjectileTest->SetName("Projectile");
-	m_GameObjects.push_back(std::move(newProjectileTest));
 
 	m_GameObjects.push_back(Platform::CreateCeiling());
 	auto floor = Platform::CreateCeiling();

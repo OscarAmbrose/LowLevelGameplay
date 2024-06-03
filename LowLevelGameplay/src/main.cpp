@@ -30,8 +30,8 @@ int main()
 	std::unique_ptr <GameManager> gameManager = std::make_unique <GameManager>();
 
 	ObjectPooler::InitialisePool();
-	std::cout << ObjectPooler::GetRemainingObjects() << std::endl;
-	std::cout << ObjectPooler::GetRemainingObjects() << std::endl;
+	//std::cout << ObjectPooler::GetRemainingObjects() << std::endl;
+	//std::cout << ObjectPooler::GetRemainingObjects() << std::endl;
 
 	srand(static_cast<unsigned int>(time(0)));
 
@@ -83,18 +83,20 @@ int main()
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 			{
 				window.close();
+				continue;
 			}
 
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && (numberOfFixedUpdates > 10))
 			{
-				for (int i = 0; i < 20; i++)
+				for (int i = 0; i < 10; i++)
 				{
 					float DirectionX = -1 + 2 * ((float)rand() / RAND_MAX);
 					float DirectionY = -1 + 2 * ((float)rand() / RAND_MAX);
 					LLGP::Vector2f direction = LLGP::Vector2f(DirectionX, DirectionY).Normalised();
-					ObjectPooler::FindRemainingObject()->EnableProjectile(direction, LLGP::Vector2f(450, 450), 200.f, 0);
+					ObjectPooler::FindRemainingObject()->EnableProjectile(direction, LLGP::Vector2f(450, 450), 750.f, 2);
 					std::cout << ObjectPooler::GetRemainingObjects() << std::endl;
 				}
+				numberOfFixedUpdates = 0;
 			}
 
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::V))
@@ -105,11 +107,11 @@ int main()
 			g_OnPollInputs(event);
 		}
 
-		//if (paused)
-		//{
-		//	deltaTime = 0.f;
-		//	continue;
-		//}
+		if (paused)
+		{
+			deltaTime = 0.f;
+			continue;
+		}
 
 		g_OnStart(0);
 #pragma endregion
@@ -129,8 +131,8 @@ int main()
 
 			Physics::CollectCollisions();
 			
-			Physics::DispatchCollisions();
 			//dispatch collisions
+			Physics::DispatchCollisions();
 			numberOfFixedUpdates++;
 			timeSincePhysicsStep -= FIXEDFRAMERATE;
 		}

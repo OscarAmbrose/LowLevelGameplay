@@ -62,7 +62,7 @@ void DebugBox::renderShape(sf::RenderWindow* window, int renderLayer)
 	LLGP::Vector2f position;
 	if (!m_PositionIsHandled) 
 	{ 
-		position = _GameObject->GetComponent<BoxCollider>()->GetBoxPosition() + m_Offset; 
+		position = _GameObject->GetComponent<BoxCollider>()->GetBoxPosition() + m_Offset;
 	}
 	else
 	{
@@ -77,6 +77,9 @@ void DebugBox::renderShape(sf::RenderWindow* window, int renderLayer)
 
 	if (renderLayer == m_RenderLayer)
 	{
+		//if (_GameObject->CompareTag("Player")) { std::cout << "DrawDebugBox\n"; }
+		
+
 		window->draw(m_Shape);
 	}
 }

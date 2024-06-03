@@ -6,6 +6,7 @@
 #pragma message("-------------------------Inlcuding GameObject in " __FILE__)
 #include <BoxCollider.h>
 #pragma message("-------------------------Inlcuding BoxCollider in " __FILE__)
+#include <Transform.h>
 
 std::vector<CollisionInfo*> Physics::_collisions;
 std::vector<CollisionInfo*> Physics::_reversedCollisions;
@@ -187,6 +188,9 @@ float Physics::CalculateImpulse(RigidBody* rb1)
 
 CollisionInfo* Physics::Collision_AABBAABB(BoxCollider* lhs, BoxCollider* rhs)
 {
+	lhs->SetBoxPosition(lhs->GetGameObject()->GetTransform()->ReturnPosition());
+	rhs->SetBoxPosition(rhs->GetGameObject()->GetTransform()->ReturnPosition());
+
 	if ((lhs->GetBoxPosition().x + lhs->GetBoxHalfExtents().x < rhs->GetBoxPosition().x - rhs->GetBoxHalfExtents().x) ||
 		(lhs->GetBoxPosition().y + lhs->GetBoxHalfExtents().y < rhs->GetBoxPosition().y - rhs->GetBoxHalfExtents().y) ||
 		(lhs->GetBoxPosition().x - lhs->GetBoxHalfExtents().x > rhs->GetBoxPosition().x + rhs->GetBoxHalfExtents().x) || 

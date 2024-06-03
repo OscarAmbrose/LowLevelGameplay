@@ -31,7 +31,7 @@ public:
 
 	LLGP::Vector2f GetBoxHalfExtents() { return (GetBoxSize() / 2); }
 
-	void Update(float deltaTime);
+	void FixedUpdate(float deltaTime);
 	
 protected:
 	LLGP::Vector2f m_BoxSize = LLGP::Vector2f(100,100);

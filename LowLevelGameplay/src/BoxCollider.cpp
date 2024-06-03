@@ -57,8 +57,10 @@ CollisionInfo* BoxCollider::IsCollidingWith(BoxCollider* other)
 	return Physics::Collision_AABBAABB(this, other);
 }
 
-void BoxCollider::Update(float deltaTime)
+void BoxCollider::FixedUpdate(float deltaTime)
 {	
-	Component::Update(deltaTime);
+	//Component::Update(deltaTime);
 	SetBoxPosition(_GameObject->GetTransform()->ReturnPosition() + GetOffset());
+
 }
+
