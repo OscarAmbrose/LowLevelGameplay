@@ -30,8 +30,6 @@ int main()
 	std::unique_ptr <GameManager> gameManager = std::make_unique <GameManager>();
 
 	ObjectPooler::InitialisePool();
-	//std::cout << ObjectPooler::GetRemainingObjects() << std::endl;
-	//std::cout << ObjectPooler::GetRemainingObjects() << std::endl;
 
 	srand(static_cast<unsigned int>(time(0)));
 
@@ -88,7 +86,7 @@ int main()
 
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && (numberOfFixedUpdates > 10))
 			{
-				for (int i = 0; i < 10; i++)
+				for (int i = 0; i < 15; i++)
 				{
 					float DirectionX = -1 + 2 * ((float)rand() / RAND_MAX);
 					float DirectionY = -1 + 2 * ((float)rand() / RAND_MAX);

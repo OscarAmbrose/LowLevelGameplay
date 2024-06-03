@@ -23,10 +23,11 @@ Projectile::Projectile()
 	AddComponent<ScreenWrapper>();
 
 	AddComponent<BoxCollider>()->SetUpCollider(LLGP::Vector2f(8, 8), LLGP::Vector2f(0, 0))->SetIsTrigger(true)->SetCollisionMask(0b00010111)->SetCollisionLayer(0b00001000);
-	AddComponent<DebugBox>()->SetUpDebugBox();
+	//AddComponent<DebugBox>()->SetUpDebugBox();
 	GetTransform()->SetPosition(LLGP::Vector2f(0, -1000));
 
 	SetTag("Projectile");
+	SetName("Projectile");
 }
 
 Projectile::~Projectile()

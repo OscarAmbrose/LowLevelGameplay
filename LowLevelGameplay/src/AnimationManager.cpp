@@ -4,7 +4,7 @@
 bool AnimationManager::findSpriteRenderer()
 {
 	spriteRenderer = nullptr;
-	if (spriteRenderer = _GameObject->GetComponent<SpriteRenderer>())
+	if (spriteRenderer = m_GameObject->GetComponent<SpriteRenderer>())
 	{
 		return true;
 	}

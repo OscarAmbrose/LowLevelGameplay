@@ -23,7 +23,7 @@ DebugBox::~DebugBox()
 
 DebugBox* DebugBox::SetUpDebugBox()
 {
-	m_RectangleSize = _GameObject->GetComponent<BoxCollider>()->GetBoxSize();
+	m_RectangleSize = m_GameObject->GetComponent<BoxCollider>()->GetBoxSize();
 	m_RenderLayer = 4;
 	m_Shape.setFillColor(sf::Color::Transparent);
 	m_Shape.setOutlineColor(sf::Color::Red);
@@ -62,7 +62,7 @@ void DebugBox::renderShape(sf::RenderWindow* window, int renderLayer)
 	LLGP::Vector2f position;
 	if (!m_PositionIsHandled) 
 	{ 
-		position = _GameObject->GetComponent<BoxCollider>()->GetBoxPosition() + m_Offset;
+		position = m_GameObject->GetComponent<BoxCollider>()->GetBoxPosition() + m_Offset;
 	}
 	else
 	{

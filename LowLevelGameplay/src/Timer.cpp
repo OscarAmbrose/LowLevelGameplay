@@ -3,7 +3,6 @@
 
 Timer::Timer(float Timer)
 {
-	_TimerEndedNorm = true;
 	_TimerEnded = true;
 	_ElapsedTime = 0;
 	_MaxTimer = Timer;
@@ -31,6 +30,7 @@ void Timer::StartTimer(float deltaTime)
 {
 	g_OnUpdate.AddListener(this, std::bind(&Timer::Update, this, std::placeholders::_1));
 	_ElapsedTime = 0.f;
+	_MaxTimer = deltaTime;
 	_TimerEnded = false;
 }
 

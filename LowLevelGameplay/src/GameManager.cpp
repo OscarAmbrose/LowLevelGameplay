@@ -42,7 +42,7 @@ void GameManager::StartLevelOne()
 
 	m_GameObjects.push_back(Platform::CreateCeiling());
 	auto floor = Platform::CreateCeiling();
-	floor->GetTransform()->SetPosition(LLGP::Vector2f(960.f, 1070.f));
+	floor->GetTransform()->SetPosition(LLGP::Vector2f(960.f, 1100.f));
 	m_GameObjects.push_back(floor);
 #pragma region CreateAllPlatforms
 

@@ -5,7 +5,7 @@
 
 ScreenWrapper::ScreenWrapper(GameObject* owner) : Component (owner)
 {
-	if (boxCollider = _GameObject->GetComponent<BoxCollider>())
+	if (boxCollider = m_GameObject->GetComponent<BoxCollider>())
 	{
 		minimumScreenBounds -= boxCollider->GetBoxHalfExtents().x;
 		maximumScreenBounds += boxCollider->GetBoxHalfExtents().x;
@@ -23,7 +23,7 @@ ScreenWrapper::~ScreenWrapper()
 
 void ScreenWrapper::FixedUpdate(float deltaTime)
 {
-	float PositionX = _GameObject->GetTransform()->ReturnPosition().x;
+	float PositionX = m_GameObject->GetTransform()->ReturnPosition().x;
 
 	float newPositionX = 0;
 
@@ -42,6 +42,6 @@ void ScreenWrapper::FixedUpdate(float deltaTime)
 
 	if (newPositionX != PositionX)
 	{
-		_GameObject->GetTransform()->SetPosition(LLGP::Vector2f(newPositionX, _GameObject->GetTransform()->ReturnPosition().y));
+		m_GameObject->GetTransform()->SetPosition(LLGP::Vector2f(newPositionX, m_GameObject->GetTransform()->ReturnPosition().y));
 	}
 }

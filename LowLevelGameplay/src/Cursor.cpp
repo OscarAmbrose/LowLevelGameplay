@@ -10,21 +10,21 @@
 
 Cursor::Cursor(GameObject* owner) : Component(owner)
 {
-	m_ControllerNumber = static_cast<PlayerCharacter*>(_GameObject)->GetPlayerNumber();
+	m_ControllerNumber = static_cast<PlayerCharacter*>(m_GameObject)->GetPlayerNumber();
 	m_JoystickDir = LLGP::Vector2f::zero;
 
-	m_PlayerPos = _GameObject->GetTransform()->ReturnPosition();
-	m_CursorPos = _GameObject->GetTransform()->ReturnPosition();
+	m_PlayerPos = m_GameObject->GetTransform()->ReturnPosition();
+	m_CursorPos = m_GameObject->GetTransform()->ReturnPosition();
 
 	m_RenderWindow = WindowManager::GetActiveWindow();
 	m_RenderWindow->sf::Window::setMouseCursorVisible(false);
 
-	m_SpriteRenderer = _GameObject->AddComponent<SpriteRenderer>()->setUV(LLGP::Vector2i(13, 2), LLGP::Vector2i(64, 64))->setRenderLayer(0);
+	m_SpriteRenderer = m_GameObject->AddComponent<SpriteRenderer>()->setUV(LLGP::Vector2i(13, 2), LLGP::Vector2i(64, 64))->setRenderLayer(0);
 
-	m_BoxCollider = _GameObject->AddComponent<BoxCollider>()->SetUpCollider(LLGP::Vector2f(16, 16), LLGP::Vector2f(48, 48));
+	m_BoxCollider = m_GameObject->AddComponent<BoxCollider>()->SetUpCollider(LLGP::Vector2f(16, 16), LLGP::Vector2f(48, 48));
 	m_BoxCollider->SetCollisionMask(0b10000000)->SetCollisionLayer(0b01000000)->SetIsTrigger(true);
 	
-	m_DebugBoxCollider = _GameObject->AddComponent<DebugBox>()->SetUpDebugBox(m_BoxCollider);
+	//m_DebugBoxCollider = m_GameObject->AddComponent<DebugBox>()->SetUpDebugBox(m_BoxCollider);
 
 	g_OnPollInputs.AddListener(this, std::bind(&Cursor::PollInput, this, std::placeholders::_1));
 }
@@ -82,7 +82,10 @@ void Cursor::SetCursorPosition(LLGP::Vector2f location)
 	auto CursorPosition = m_CursorPos - m_PlayerPos;
 	auto test = FixCursorPosition(m_CursorPos - m_PlayerPos);
 
-	m_DebugBoxCollider->SetOffset(test);
+	if (m_DebugBoxCollider)
+	{
+		m_DebugBoxCollider->SetOffset(test);
+	}
 	m_BoxCollider->SetOffset(test);
 	m_SpriteRenderer->setOffSet(test);
 }
@@ -118,7 +121,7 @@ void Cursor::Update(float deltaTime)
 {
 	Component::Update(deltaTime);
 
-	m_PlayerPos = _GameObject->GetTransform()->ReturnPosition();
+	m_PlayerPos = m_GameObject->GetTransform()->ReturnPosition();
 
 	m_CursorPos += m_JoystickDir * m_CursorMoveSpeed * deltaTime;
 	SetCursorPosition(m_CursorPos);
@@ -126,7 +129,7 @@ void Cursor::Update(float deltaTime)
 
 LLGP::Vector2f Cursor::GetLookAtCursorDirection()
 {
-	return LLGP::Vector2f((m_PlayerPos - m_CursorPos).Normalised());
+	return LLGP::Vector2f((m_CursorPos - m_PlayerPos).Normalised());
 }
 
 

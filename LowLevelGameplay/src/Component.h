@@ -10,8 +10,8 @@ struct CollisionInfo;
 class Component : public Object
 {
 protected:
-	GameObject* _GameObject;
-	bool Started = false;
+	GameObject* m_GameObject;
+	bool m_Started = false;
 public:
 	Component(GameObject* owner);
 	virtual ~Component();
@@ -20,7 +20,7 @@ public:
 	virtual void Update(float deltaTime);
 	virtual void FixedUpdate(float deltaTime);
 
-	GameObject* GetGameObject() { return _GameObject; }
+	GameObject* GetGameObject() { return m_GameObject; }
 	virtual void OwnerActiveChange(bool newActive) {}
 	
 protected:

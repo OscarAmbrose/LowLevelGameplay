@@ -13,20 +13,7 @@ class SpriteRenderer : public Component
 {
 public:
 
-	SpriteRenderer(GameObject* owner) : Component(owner) 
-	{ 
-		m_RenderLayer = 5;
-
-		m_Shape.setTexture(renderTexture);
-
-		rectTexSize = LLGP::Vector2i(m_Shape.getTexture()->getSize());
-
-		//Vector2i selectedSprite = Vector2i(10, 15);
-		LLGP::Vector2i selectedSprite = LLGP::Vector2i(0, 0);
-		setUV(selectedSprite);
-
-		g_OnRender.AddListener(this, std::bind(&SpriteRenderer::renderShape, this, std::placeholders::_1, std::placeholders::_2));
-	}
+	SpriteRenderer(GameObject* owner);
 
 	~SpriteRenderer()
 	{

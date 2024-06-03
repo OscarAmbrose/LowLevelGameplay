@@ -8,7 +8,7 @@
 
 PlayerController::PlayerController(GameObject* owner) : Component(owner)
 {
-	m_PlayerNumber = static_cast<PlayerCharacter*>(_GameObject)->GetPlayerNumber();
+	m_PlayerNumber = static_cast<PlayerCharacter*>(m_GameObject)->GetPlayerNumber();
 	m_JoystickDir = LLGP::Vector2f::zero;
 	g_OnPollInputs.AddListener(this, std::bind(&PlayerController::PollInput, this, std::placeholders::_1));
 }
@@ -48,15 +48,37 @@ void PlayerController::PollInput(sf::Event event)
 		}
 		case sf::Event::JoystickButtonPressed:
 		{
+			if (event.joystickButton.button == 2)
+			{
+				Weapon* playerWeapon;
+				if (playerWeapon = m_GameObject->GetComponent<Weapon>())
+				{
+					playerWeapon->Reload();
+				}
+			}
 			if (event.joystickButton.button == 5)
 			{
 				Weapon* playerWeapon;
-				if (playerWeapon = _GameObject->GetComponent<Weapon>())
+				if (playerWeapon = m_GameObject->GetComponent<Weapon>())
 				{
 					//player weapon sfx can go here
-					playerWeapon->Fire();
+					playerWeapon->SetFiring(true);
 				}
 			}
+			break;
+		}
+		case sf::Event::JoystickButtonReleased:
+		{
+			if (event.joystickButton.button == 5)
+			{
+				Weapon* playerWeapon;
+				if (playerWeapon = m_GameObject->GetComponent<Weapon>())
+				{
+					//player weapon sfx can go here
+					playerWeapon->SetFiring(false);
+				}
+			}
+			break;
 		}
 
 		//If the event isnt being looked for, do nothing.
@@ -76,5 +98,5 @@ void PlayerController::FixedUpdate(float deltaTime)
 	}
 
 	//Add a large force in the direction of movement (designed to make movement snappy, not floaty)
-	_GameObject->GetComponent<RigidBody>()->addForce(m_JoystickDir * 100000.f);
+	m_GameObject->GetComponent<RigidBody>()->addForce(m_JoystickDir * 100000.f);
 }

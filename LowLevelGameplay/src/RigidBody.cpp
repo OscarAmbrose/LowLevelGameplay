@@ -8,27 +8,31 @@
 
 RigidBody::RigidBody(GameObject* owner) : Component(owner)
 {
-	_GameObject->onCollisionEnter.AddListener(this, std::bind(&RigidBody::OnCollisionEnter, this, std::placeholders::_1));
-	_GameObject->onCollisionExit.AddListener(this, std::bind(&RigidBody::OnCollisionExit, this, std::placeholders::_1));
-	_GameObject->onCollisionStay.AddListener(this, std::bind(&RigidBody::OnCollisionEnter, this, std::placeholders::_1));
+	m_GameObject->onCollisionEnter.AddListener(this, std::bind(&RigidBody::OnCollisionEnter, this, std::placeholders::_1));
+	m_GameObject->onCollisionExit.AddListener(this, std::bind(&RigidBody::OnCollisionExit, this, std::placeholders::_1));
+	m_GameObject->onCollisionStay.AddListener(this, std::bind(&RigidBody::OnCollisionEnter, this, std::placeholders::_1));
 
 	g_OnPhysicsUpdate.AddListener(this, std::bind(&RigidBody::FixedUpdate, this, std::placeholders::_1));
 	Physics::RegisterRigidBody(this);
+
+	g_OnFixedUpdate.RemoveListener(this, std::bind(&RigidBody::FixedUpdate, this, std::placeholders::_1));
+	g_OnUpdate.RemoveListener(this, std::bind(&Component::Update, this, std::placeholders::_1));
+	g_OnStart.RemoveListener(this, std::bind(&Component::Start, this, std::placeholders::_1));
 }
 
 RigidBody::~RigidBody()
 {
 	Physics::DeregisterRigidBody(this);
-	_GameObject->onCollisionStay.RemoveListener(this, std::bind(&RigidBody::OnCollisionEnter, this, std::placeholders::_1));
-	_GameObject->onCollisionEnter.RemoveListener(this, std::bind(&RigidBody::OnCollisionEnter, this, std::placeholders::_1));
-	_GameObject->onCollisionExit.RemoveListener(this, std::bind(&RigidBody::OnCollisionExit, this, std::placeholders::_1));
+	m_GameObject->onCollisionStay.RemoveListener(this, std::bind(&RigidBody::OnCollisionEnter, this, std::placeholders::_1));
+	m_GameObject->onCollisionEnter.RemoveListener(this, std::bind(&RigidBody::OnCollisionEnter, this, std::placeholders::_1));
+	m_GameObject->onCollisionExit.RemoveListener(this, std::bind(&RigidBody::OnCollisionExit, this, std::placeholders::_1));
 	g_OnPhysicsUpdate.RemoveListener(this, std::bind(&RigidBody::FixedUpdate, this, std::placeholders::_1));
 }
 ;
 
 void RigidBody::FixedUpdate(float deltaTime)
 {
-	if (!_GameObject->GetActive()) { return; }
+	if (!m_GameObject->GetActive()) { return; }
 
 	LLGP::Vector2f solvedForce = SolveForces(deltaTime);
 	AddVelocity(solvedForce);
@@ -55,11 +59,11 @@ void RigidBody::FixedUpdate(float deltaTime)
 		SetVelocity(LLGP::Vector2f(GetVelocity().x, 0));
 	}
 
-	LLGP::Vector2f oldPos = _GameObject->GetTransform()->ReturnPosition();
+	LLGP::Vector2f oldPos = m_GameObject->GetTransform()->ReturnPosition();
 
 	LLGP::Vector2f newPosition;
 
-	newPosition = (GetVelocity()* deltaTime) + (_GameObject->GetTransform()->ReturnPosition());
+	newPosition = (GetVelocity()* deltaTime) + (m_GameObject->GetTransform()->ReturnPosition());
 
 	//std::cout << newPosition.x << ", " << newPosition.y << std::endl;
 
@@ -67,12 +71,12 @@ void RigidBody::FixedUpdate(float deltaTime)
 
 	setDistanceTravelled(distance.GetMagnitude());
 
-	_GameObject->GetTransform()->SetPosition(newPosition);
+	m_GameObject->GetTransform()->SetPosition(newPosition);
 }
 
 void RigidBody::OnCollisionEnter(CollisionInfo* col)
 {
-	if (!_GameObject->GetActive()) { return; }
+	if (!m_GameObject->GetActive()) { return; }
 
 	if (col->otherCollider->GetIsTrigger()) { return; }
 
@@ -113,7 +117,7 @@ void RigidBody::OnCollisionExit(CollisionInfo* col)
 
 void RigidBody::addForce(LLGP::Vector2f force)
 {
-	if (!_GameObject->GetActive()) { return; }
+	if (!m_GameObject->GetActive()) { return; }
 	AddNetForce(force);
 }
 
@@ -224,7 +228,7 @@ LLGP::Vector2f RigidBody::CalculateDragForce(float deltaTime)
 
 void RigidBody::AddPosition(LLGP::Vector2f posToAdd)
 {
-	Transform2D* transform = _GameObject->GetTransform();
+	Transform2D* transform = m_GameObject->GetTransform();
 
 	transform->SetPosition(LLGP::Vector2f((transform->ReturnPosition().x), (transform->ReturnPosition().y)) + posToAdd);
 }

@@ -23,6 +23,5 @@ public:
 private:
 	float _ElapsedTime;
 	float _MaxTimer;
-	bool _TimerEndedNorm = false;
 	bool _TimerEnded = false;
 };

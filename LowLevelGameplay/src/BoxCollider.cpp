@@ -21,7 +21,7 @@ void BoxCollider::Start(float deltaTime)
 {
 	if (m_DebugEnabled)
 	{
-		_GameObject->AddComponent<DebugBox>()->SetUpDebugBox();
+		m_GameObject->AddComponent<DebugBox>()->SetUpDebugBox();
 	}
 }
 
@@ -29,16 +29,16 @@ void BoxCollider::Start(float deltaTime)
 BoxCollider* BoxCollider::SetUpCollider(LLGP::Vector2f boxSize, LLGP::Vector2f boxOffset)
 {
 	m_Offset = boxOffset;
-	m_BoxPosition = _GameObject->GetTransform()->ReturnPosition() + GetOffset();
+	m_BoxPosition = m_GameObject->GetTransform()->ReturnPosition() + GetOffset();
 	m_BoxSize = boxSize;
-	m_HalfBoxExtents = LLGP::Vector2f(GetBoxSize().x/2, GetBoxSize().y/2) * _GameObject->GetTransform()->returnScale();
+	m_HalfBoxExtents = LLGP::Vector2f(GetBoxSize().x/2, GetBoxSize().y/2) * m_GameObject->GetTransform()->returnScale();
 	return this;
 }
 
 void BoxCollider::SetBoxSize(LLGP::Vector2f newBoxSize)
 {
 	m_BoxSize = newBoxSize;
-	m_HalfBoxExtents = LLGP::Vector2f(GetBoxSize().x / 2, GetBoxSize().y / 2) * _GameObject->GetTransform()->returnScale();
+	m_HalfBoxExtents = LLGP::Vector2f(GetBoxSize().x / 2, GetBoxSize().y / 2) * m_GameObject->GetTransform()->returnScale();
 }
 
 BoxCollider* BoxCollider::SetDebugEnabled(bool newDebug)
@@ -60,7 +60,7 @@ CollisionInfo* BoxCollider::IsCollidingWith(BoxCollider* other)
 void BoxCollider::FixedUpdate(float deltaTime)
 {	
 	//Component::Update(deltaTime);
-	SetBoxPosition(_GameObject->GetTransform()->ReturnPosition() + GetOffset());
+	SetBoxPosition(m_GameObject->GetTransform()->ReturnPosition() + GetOffset());
 
 }
 

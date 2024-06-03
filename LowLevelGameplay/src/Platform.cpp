@@ -36,7 +36,7 @@ std::shared_ptr<Platform> Platform::CreateCeiling()
 {
 	std::shared_ptr<Platform> platform = std::make_shared<Platform>();
 	(platform.get())->AddComponent<BoxCollider>()->SetUpCollider(LLGP::Vector2f(1920, 40), LLGP::Vector2f(0, 0))->SetCollisionLayer(0b00000001);
-	(platform.get())->GetTransform()->SetPosition(LLGP::Vector2f(960, 10));
+	(platform.get())->GetTransform()->SetPosition(LLGP::Vector2f(960, -20));
 	(platform.get())->GetComponent<SpriteRenderer>()->setUV(LLGP::Vector2i(13, 13));
 	platform->AddComponent<DebugBox>()->SetUpDebugBox();
 	platform->SetActive(true);
