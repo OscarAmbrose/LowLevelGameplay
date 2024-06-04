@@ -40,6 +40,11 @@ void GameManager::StartLevelOne()
 	newPlayerTest->SetActive(true);
 	m_GameObjects.push_back(std::move(newPlayerTest));
 
+	std::shared_ptr<PlayerCharacter> newPlayerTest2 = std::make_unique<PlayerCharacter>(1);
+	newPlayerTest2->GetTransform()->SetPosition(LLGP::Vector2f(50.f, 100.f));
+	newPlayerTest2->SetActive(true);
+	m_GameObjects.push_back(std::move(newPlayerTest2));
+
 	m_GameObjects.push_back(Platform::CreateCeiling());
 	auto floor = Platform::CreateCeiling();
 	floor->GetTransform()->SetPosition(LLGP::Vector2f(960.f, 1100.f));

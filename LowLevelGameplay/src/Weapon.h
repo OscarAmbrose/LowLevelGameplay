@@ -15,14 +15,14 @@ public:
 		//Weapon 1 = Pistol, Weapon 2 = SMG, Weapon 3 = Shotgun, Weapon 4 = Sniper, Weapon 5 = GoldenGun
 		void SetWeapon(int weaponType);
 
-		std::string _WeaponName = "DefaultWeapon";
-		LLGP::Vector2i _RenderUV = LLGP::Vector2i(2, 5);
-		float _FireRate = 10.f;
-		float _ProjectileSpeed = 800.f;
-		int _ProjectileBounceAmount = 0;
-		float _ReloadTime = 1.2f;
-		int _MaxAmmo = 15;
-		float _Damage = 34.f;
+		std::string s_WeaponName = "DefaultWeapon";
+		LLGP::Vector2i s_RenderUV = LLGP::Vector2i(2, 5);
+		float s_FireRate = 10.f;
+		float s_ProjectileSpeed = 800.f;
+		int s_ProjectileBounceAmount = 0;
+		float s_ReloadTime = 1.2f;
+		int s_MaxAmmo = 15;
+		float s_Damage = 34.f;
 
 		bool operator==(CurrentWeaponInfo* other);
 	};

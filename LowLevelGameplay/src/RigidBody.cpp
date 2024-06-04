@@ -78,7 +78,7 @@ void RigidBody::OnCollisionEnter(CollisionInfo* col)
 {
 	if (!m_GameObject->GetActive()) { return; }
 
-	if (col->otherCollider->GetIsTrigger()) { return; }
+	if (col->otherCollider->GetIsTrigger() || col->collider->GetIsTrigger()) { return; }
 
 	if (GetDoesBounce())
 	{

@@ -6,6 +6,7 @@
 #include <BoxCollider.h>
 #include <DebugBox.h>
 #include <GradExPlayer.h>
+#include <Physics.h>
 
 
 Cursor::Cursor(GameObject* owner) : Component(owner)
@@ -21,17 +22,22 @@ Cursor::Cursor(GameObject* owner) : Component(owner)
 
 	m_SpriteRenderer = m_GameObject->AddComponent<SpriteRenderer>()->setUV(LLGP::Vector2i(13, 2), LLGP::Vector2i(64, 64))->setRenderLayer(0);
 
-	m_BoxCollider = m_GameObject->AddComponent<BoxCollider>()->SetUpCollider(LLGP::Vector2f(16, 16), LLGP::Vector2f(48, 48));
-	m_BoxCollider->SetCollisionMask(0b10000000)->SetCollisionLayer(0b01000000)->SetIsTrigger(true);
+	m_BoxCollider = m_GameObject->AddComponent<BoxCollider>()->SetUpCollider(LLGP::Vector2f(64, 64), LLGP::Vector2f(48, 48));
+	m_BoxCollider->SetCollisionMask(0b10000010)->SetCollisionLayer(0b01000000)->SetIsTrigger(true);
 	
-	//m_DebugBoxCollider = m_GameObject->AddComponent<DebugBox>()->SetUpDebugBox(m_BoxCollider);
+	m_DebugBoxCollider = m_GameObject->AddComponent<DebugBox>()->SetUpDebugBox(m_BoxCollider);
 
 	g_OnPollInputs.AddListener(this, std::bind(&Cursor::PollInput, this, std::placeholders::_1));
+
+	m_GameObject->onCollisionEnter.AddListener(this, std::bind(&Cursor::OnCollisionEnter, this, std::placeholders::_1));
+	m_GameObject->onCollisionExit.AddListener(this, std::bind(&Cursor::OnCollisionExit, this, std::placeholders::_1));
 }
 
 Cursor::~Cursor()
 {
-	g_OnPollInputs.RemoveListener(this, std::bind(&Cursor::PollInput, this, std::placeholders::_1));
+	g_OnPollInputs.RemoveListener(this, std::bind(&Cursor::PollInput, this, std::placeholders::_1));	
+	m_GameObject->onCollisionEnter.RemoveListener(this, std::bind(&Cursor::OnCollisionEnter, this, std::placeholders::_1));
+	m_GameObject->onCollisionExit.RemoveListener(this, std::bind(&Cursor::OnCollisionExit, this, std::placeholders::_1));
 }
 
 void Cursor::PollInput(sf::Event event)
@@ -130,6 +136,22 @@ void Cursor::Update(float deltaTime)
 LLGP::Vector2f Cursor::GetLookAtCursorDirection()
 {
 	return LLGP::Vector2f((m_CursorPos - m_PlayerPos).Normalised());
+}
+
+void Cursor::OnCollisionEnter(CollisionInfo* col)
+{
+	if (col->collider != m_BoxCollider && col->otherCollider != m_BoxCollider) { return; }
+
+	m_CursorMoveSpeed = m_BaseCursorMoveSpeed * 0.5f;
+	std::cout << m_CursorMoveSpeed << std::endl;
+}
+
+void Cursor::OnCollisionExit(CollisionInfo* col)
+{
+	if (col->collider != m_BoxCollider && col->otherCollider != m_BoxCollider) { return; }
+
+	m_CursorMoveSpeed = m_BaseCursorMoveSpeed;
+	std::cout << m_CursorMoveSpeed << std::endl;
 }
 
 

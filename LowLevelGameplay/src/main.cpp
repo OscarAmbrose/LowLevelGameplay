@@ -84,9 +84,9 @@ int main()
 				continue;
 			}
 
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && (numberOfFixedUpdates > 10))
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && (numberOfFixedUpdates > 5))
 			{
-				for (int i = 0; i < 15; i++)
+				for (int i = 0; i < 50; i++)
 				{
 					float DirectionX = -1 + 2 * ((float)rand() / RAND_MAX);
 					float DirectionY = -1 + 2 * ((float)rand() / RAND_MAX);

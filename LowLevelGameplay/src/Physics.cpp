@@ -77,14 +77,17 @@ void Physics::CollectCollisions()
 
 					CollisionInfo* test = new CollisionInfo(); test->collider = rbCol; test->otherCollider = worldCol;
 
+					auto bits = ((test->otherCollider->GetCollisionMask() & test->collider->GetCollisionLayer()));
+					auto bits2 = ((test->collider->GetCollisionMask() & test->otherCollider->GetCollisionLayer()));
+
 					//I added bitwise collision masking :)
-					if (((test->collider->GetCollisionMask() & test->otherCollider->GetCollisionLayer())) == 0) 
-					{ 
+					if (((test->collider->GetCollisionMask() & test->otherCollider->GetCollisionLayer())) == 0 && ((test->otherCollider->GetCollisionMask() & test->collider->GetCollisionLayer())) == 0)
+					{
 						//ALMOST LET A MEMORY LEAK IN 23/05/24!
 						delete test;
 						continue;
 					}
-					//End of bitwise collision masking :(
+					//End of bitwise collision masking :(	
 
 					if (std::find_if(_collisions.begin(), _collisions.end(), [&test](CollisionInfo* check) {return *test == check; }) != _collisions.end())
 					{
@@ -188,8 +191,8 @@ float Physics::CalculateImpulse(RigidBody* rb1)
 
 CollisionInfo* Physics::Collision_AABBAABB(BoxCollider* lhs, BoxCollider* rhs)
 {
-	lhs->SetBoxPosition(lhs->GetGameObject()->GetTransform()->ReturnPosition());
-	rhs->SetBoxPosition(rhs->GetGameObject()->GetTransform()->ReturnPosition());
+	if(!lhs->GetIsTrigger()) {lhs->SetBoxPosition(lhs->GetGameObject()->GetTransform()->ReturnPosition());}
+	if(!rhs->GetIsTrigger()) { rhs->SetBoxPosition(rhs->GetGameObject()->GetTransform()->ReturnPosition());}
 
 	if ((lhs->GetBoxPosition().x + lhs->GetBoxHalfExtents().x < rhs->GetBoxPosition().x - rhs->GetBoxHalfExtents().x) ||
 		(lhs->GetBoxPosition().y + lhs->GetBoxHalfExtents().y < rhs->GetBoxPosition().y - rhs->GetBoxHalfExtents().y) ||
@@ -199,7 +202,6 @@ CollisionInfo* Physics::Collision_AABBAABB(BoxCollider* lhs, BoxCollider* rhs)
 		return nullptr;
 	}
 
-	//MEMORYLEAK: REMEMBER TO FIX ~ I think it's not a memory leak actually, as it should be handled later when we delete the values from "Old collision or NewCollisions"
 	CollisionInfo* newCollisionInfo = new CollisionInfo();
 
 	float penDepthX = 0;

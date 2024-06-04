@@ -23,8 +23,8 @@ public:
 	GameObject* GetGameObject() { return m_GameObject; }
 	virtual void OwnerActiveChange(bool newActive) {}
 	
-protected:
-	virtual void OnCollisionEnter(CollisionInfo* col) {  }
-	virtual void OnCollisionStay(CollisionInfo* col) {  }
-	virtual void OnCollisionExit(CollisionInfo* col) {  }
+public:
+	virtual void OnCollisionEnter(CollisionInfo* col) {}
+	virtual void OnCollisionStay(CollisionInfo* col) {}
+	virtual void OnCollisionExit(CollisionInfo* col) {}
 };

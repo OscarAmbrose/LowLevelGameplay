@@ -48,6 +48,7 @@ void PlayerController::PollInput(sf::Event event)
 		}
 		case sf::Event::JoystickButtonPressed:
 		{
+			if (event.joystickButton.joystickId != m_PlayerNumber) { return; }
 			if (event.joystickButton.button == 2)
 			{
 				Weapon* playerWeapon;
@@ -69,6 +70,7 @@ void PlayerController::PollInput(sf::Event event)
 		}
 		case sf::Event::JoystickButtonReleased:
 		{
+			if (!sf::Joystick::isConnected(m_PlayerNumber)) { return; }
 			if (event.joystickButton.button == 5)
 			{
 				Weapon* playerWeapon;

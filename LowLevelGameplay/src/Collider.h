@@ -33,8 +33,8 @@ public:
 	Collider* SetCollisionMask(uint8_t bitLayer) { m_CollisionMask = bitLayer; return this; }
 
 protected:
-	uint8_t m_CollisionLayer = 0x00;
-	uint8_t m_CollisionMask = 0x00;
+	uint8_t m_CollisionLayer = 0b00000000;
+	uint8_t m_CollisionMask = 0b00000000;
 
 	bool m_IsTrigger = false;
 };

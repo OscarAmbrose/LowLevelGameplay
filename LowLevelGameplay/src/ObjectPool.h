@@ -22,9 +22,11 @@ public:
 	static Projectile* FindRemainingObject();
 	static Projectile* AddNewObject();
 
+
+
 private:
 	static std::vector<Projectile*> _UnusedObjects;
 	static std::vector<Projectile*> _UsedObjects;
 
-	static size_t const _DefaultPoolSize = 100;
+	static size_t const _DefaultPoolSize = 150;
 };

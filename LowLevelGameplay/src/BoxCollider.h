@@ -21,7 +21,7 @@ public:
 
 	BoxCollider* SetDebugEnabled(bool newDebug);
 
-
+	BoxCollider* SetCollisionBoundToPlayer(bool newTied) { m_CollisionIsTiedToPlayer = newTied; this; }
 
 	inline LLGP::Vector2f GetOffset() { return m_Offset; }
 	inline void SetOffset(LLGP::Vector2f newOffset) { m_Offset = newOffset; }
@@ -39,4 +39,5 @@ protected:
 	LLGP::Vector2f m_Offset = LLGP::Vector2f(0.f, 0.f);
 	LLGP::Vector2f m_HalfBoxExtents = LLGP::Vector2f(100.f, 100.f);
 	bool m_DebugEnabled = false;
+	bool m_CollisionIsTiedToPlayer = true;
 };

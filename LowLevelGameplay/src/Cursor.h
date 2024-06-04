@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <Vector2.h>
 
+struct CollisionInfo;
 class SpriteRenderer;
 class BoxCollider;
 class DebugBox;
@@ -27,6 +28,9 @@ public:
 
 	LLGP::Vector2f GetLookAtCursorDirection();
 
+	void OnCollisionEnter(CollisionInfo* col) override;
+	void OnCollisionExit(CollisionInfo* col) override;
+
 protected:
 	sf::Window* m_RenderWindow = nullptr;
 
@@ -44,7 +48,8 @@ protected:
 
 	float m_JoystickDeadzone = 0.2f;
 
-	float m_CursorMoveSpeed = 1000.f;
+	float m_BaseCursorMoveSpeed = 100.f;
+	float m_CursorMoveSpeed = m_BaseCursorMoveSpeed;
 
 	
 };
