@@ -5,13 +5,11 @@
 #include <memory>
 #include <Projectile.h>
 
+//TO DO: Convert to templated object pooler class
 class ObjectPooler
 {
 public:
 	ObjectPooler() = delete;
-
-	//template <class T> requires isGameObject<T> 
-	//Somehow static templates have defeated me
 
 	static void InitialisePool();
 
@@ -21,8 +19,6 @@ public:
 	static size_t GetRemainingObjects();
 	static Projectile* FindRemainingObject();
 	static Projectile* AddNewObject();
-
-
 
 private:
 	static std::vector<Projectile*> _UnusedObjects;

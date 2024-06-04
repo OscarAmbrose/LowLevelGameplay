@@ -2,20 +2,26 @@
 #include <vector>
 #include <memory>
 #include <GameObject.h>
-#include <isComponenet.h>
-#include <SpriteRenderer.h>
-#include <AnimationManager.h>
-#include <Vector2.h>
-#include <RigidBody.h>
-#include <BoxCollider.h>
+#include <isComponent.h>
+#include <isGameObject.h>
+
 
 class GameManager
 {
 public:
+	/// <summary>
+	/// Singleton pattern game manager.
+	/// </summary>
+
 	GameManager();
 
 	~GameManager();
 
+	/// <summary>
+	/// Returns all components visible to the game manager of type T. 
+	/// </summary>
+	/// <typeparam name="T">Component Type</typeparam>
+	/// <returns></returns>
 	template<class T> requires isComponent<T>
 	std::vector<T*> getAllComponentsOfType()
 	{
@@ -35,17 +41,66 @@ public:
 		return gatheredList;
 	}
 
-	GameObject* getGameObjectByName(std::string objectTag);
+	/// <summary>
+	/// Used to add a component to the game object. 
+	/// <para>Use this when you want the game manager to remove objects when loading a new level.</para>
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
+	/// <returns></returns>
+	template<class T> requires isGameObject<T>
+	T* AddGameObject()
+	{
+		m_GameObjects.push_back(std::make_shared<T>());
+		return static_cast<T*>(m_GameObjects[m_GameObjects.size() - 1].get());
+	}	
+	
 
-	void StartLevelOne();
+	template<class T> requires isGameObject<T>
+	std::vector<T*> getAllObjectsOfType()
+	{
+		std::vector<T*> gatheredObjects;
+		for (std::shared_ptr<GameObject> object : m_GameObjects)
+		{
+			if (T* foundObject = dynamic_cast<T*>(object.get()))
+			{
+				gatheredObjects.push_back(foundObject);
+			}
+		}
+		return gatheredObjects;
+	}
 
-private:
-	int m_LevelNumber = 0;
+	/// <summary>
+	/// Used to add a game object that needs extra initialisation, you can create it where you need and add it to game managers vector using this function.
+	/// <para>The game object requires to be named using the "GetName()" function, otherwise this function will return an error.</para>
+	/// See Also: <seealso cref="T* GameManager::AddGameObject"/>
+	/// </summary>
+	/// <param name="gameObject">: the shared_ptr GameObject that you are adding. This can be any class that inherits from game object.</param>
+	/// <returns></returns>
+	GameObject* AddGameObject(std::shared_ptr<GameObject> gameObject);
 
-public:
+	/// <summary>
+	/// Returns an unsafe pointer to the game object with the matching name.
+	/// <para> . </para>
+	/// <para>If no GameObject is found, returns nullptr.</para>
+	/// </summary>
+	/// <param name="objectName">A string value equal to search for the game object.</param>
+	/// <returns></returns>
+	GameObject* GetGameObjectByName(std::string objectTag);
+
+	/// <summary>
+	/// Starts the game.
+	/// </summary>
+	virtual void Start() {}
+
+	void ClearGameObjects();
+
+protected:
+	/// <summary>
+	/// A list of all game objects visible to the Game Manager.
+	/// </summary>
 	std::vector<std::shared_ptr<GameObject>> m_GameObjects;
 
-	LLGP::Vector2f TestInputDirection = LLGP::Vector2f(0.f,0.f);
-	//SpriteRenderer* srTesting;
-	//SpriteRenderer* srTesting2;
+public:
+	static GameManager* instance;
+
 };

@@ -31,10 +31,10 @@ public:
 	void OnCollisionEnter(CollisionInfo* col) override;
 	void OnCollisionExit(CollisionInfo* col) override;
 
+	SpriteRenderer* m_SpriteRenderer = nullptr;
 protected:
 	sf::Window* m_RenderWindow = nullptr;
 
-	SpriteRenderer* m_SpriteRenderer = nullptr;
 
 	LLGP::Vector2f m_JoystickDir;
 
@@ -48,7 +48,7 @@ protected:
 
 	float m_JoystickDeadzone = 0.2f;
 
-	float m_BaseCursorMoveSpeed = 100.f;
+	float m_BaseCursorMoveSpeed = 900.f;
 	float m_CursorMoveSpeed = m_BaseCursorMoveSpeed;
 
 	

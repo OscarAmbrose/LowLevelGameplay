@@ -1,28 +1,40 @@
 #include <GameManager.h>
-#include <BoxCollider.h>
-#include <Collider.h>
 #include <Transform.h>
-#include <Platform.h>
-#include <Cursor.h>
-#include <GradExPlayer.h>
-#include <Projectile.h>
-#include <DebugBox.h>
+
+GameManager* GameManager::instance;
+
 
 GameManager::GameManager()
 {
-	StartLevelOne();
+	if (GameManager::instance != nullptr)
+	{
+		delete this;
+		return;
+	}
+	GameManager::instance = this;
 }
 
 GameManager::~GameManager()
 {
 }
 
+GameObject* GameManager::AddGameObject(std::shared_ptr<GameObject> gameObject)
+{
+	if (gameObject.get()->GetName() == "")
+	{
+		throw std::invalid_argument("Game Object was not given a name");
+		return nullptr;
+	}
 
-GameObject* GameManager::getGameObjectByName(std::string objectTag)
+	m_GameObjects.push_back(std::move(gameObject));
+	return dynamic_cast<GameObject*>(m_GameObjects[m_GameObjects.size() - 1].get());
+}
+
+GameObject* GameManager::GetGameObjectByName(std::string objectName)
 {
 	for (int i = 0; i < m_GameObjects.size(); i++)
 	{
-		if (m_GameObjects[i]->GetName() == objectTag)
+		if (m_GameObjects[i]->GetName() == objectName)
 		{
 			return m_GameObjects[i].get();
 			break;
@@ -31,26 +43,7 @@ GameObject* GameManager::getGameObjectByName(std::string objectTag)
 	return nullptr;
 }
 
-void GameManager::StartLevelOne()
+void GameManager::ClearGameObjects()
 {
-	//Create player.
-
-	std::shared_ptr<PlayerCharacter> newPlayerTest = std::make_unique<PlayerCharacter>(0);
-	newPlayerTest->GetTransform()->SetPosition(LLGP::Vector2f(50.f, 100.f));
-	newPlayerTest->SetActive(true);
-	m_GameObjects.push_back(std::move(newPlayerTest));
-
-	std::shared_ptr<PlayerCharacter> newPlayerTest2 = std::make_unique<PlayerCharacter>(1);
-	newPlayerTest2->GetTransform()->SetPosition(LLGP::Vector2f(50.f, 100.f));
-	newPlayerTest2->SetActive(true);
-	m_GameObjects.push_back(std::move(newPlayerTest2));
-
-	m_GameObjects.push_back(Platform::CreateCeiling());
-	auto floor = Platform::CreateCeiling();
-	floor->GetTransform()->SetPosition(LLGP::Vector2f(960.f, 1100.f));
-	m_GameObjects.push_back(floor);
-#pragma region CreateAllPlatforms
-
-
-#pragma endregion
+	m_GameObjects.clear();
 }

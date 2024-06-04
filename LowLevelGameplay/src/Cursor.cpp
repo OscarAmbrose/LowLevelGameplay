@@ -8,7 +8,6 @@
 #include <GradExPlayer.h>
 #include <Physics.h>
 
-
 Cursor::Cursor(GameObject* owner) : Component(owner)
 {
 	m_ControllerNumber = static_cast<PlayerCharacter*>(m_GameObject)->GetPlayerNumber();
@@ -25,7 +24,7 @@ Cursor::Cursor(GameObject* owner) : Component(owner)
 	m_BoxCollider = m_GameObject->AddComponent<BoxCollider>()->SetUpCollider(LLGP::Vector2f(64, 64), LLGP::Vector2f(48, 48));
 	m_BoxCollider->SetCollisionMask(0b10000010)->SetCollisionLayer(0b01000000)->SetIsTrigger(true);
 	
-	m_DebugBoxCollider = m_GameObject->AddComponent<DebugBox>()->SetUpDebugBox(m_BoxCollider);
+	//m_DebugBoxCollider = m_GameObject->AddComponent<DebugBox>()->SetUpDebugBox(m_BoxCollider);
 
 	g_OnPollInputs.AddListener(this, std::bind(&Cursor::PollInput, this, std::placeholders::_1));
 

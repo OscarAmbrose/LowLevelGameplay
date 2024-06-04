@@ -20,6 +20,7 @@ PlayerController::~PlayerController()
 
 void PlayerController::PollInput(sf::Event event)
 {
+	if (!m_GameObject->GetActive()) { ChangePlayerWeaponActive(false); return; }
 	switch (event.type)
 	{
 		case sf::Event::JoystickMoved:
@@ -59,12 +60,7 @@ void PlayerController::PollInput(sf::Event event)
 			}
 			if (event.joystickButton.button == 5)
 			{
-				Weapon* playerWeapon;
-				if (playerWeapon = m_GameObject->GetComponent<Weapon>())
-				{
-					//player weapon sfx can go here
-					playerWeapon->SetFiring(true);
-				}
+				ChangePlayerWeaponActive(true);
 			}
 			break;
 		}
@@ -73,12 +69,7 @@ void PlayerController::PollInput(sf::Event event)
 			if (!sf::Joystick::isConnected(m_PlayerNumber)) { return; }
 			if (event.joystickButton.button == 5)
 			{
-				Weapon* playerWeapon;
-				if (playerWeapon = m_GameObject->GetComponent<Weapon>())
-				{
-					//player weapon sfx can go here
-					playerWeapon->SetFiring(false);
-				}
+				ChangePlayerWeaponActive(false);
 			}
 			break;
 		}
@@ -101,4 +92,14 @@ void PlayerController::FixedUpdate(float deltaTime)
 
 	//Add a large force in the direction of movement (designed to make movement snappy, not floaty)
 	m_GameObject->GetComponent<RigidBody>()->addForce(m_JoystickDir * 100000.f);
+}
+
+void PlayerController::ChangePlayerWeaponActive(bool newActive)
+{
+	Weapon* playerWeapon;
+	if (playerWeapon = m_GameObject->GetComponent<Weapon>())
+	{
+		//player weapon sfx can go here
+		playerWeapon->SetFiring(newActive);
+	}
 }

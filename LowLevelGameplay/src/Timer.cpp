@@ -1,7 +1,7 @@
 #include <Timer.h>
 #include <GlobalEvents.h>
 
-Timer::Timer(float Timer)
+Timer::Timer(float Timer) : Object()
 {
 	_TimerEnded = true;
 	_ElapsedTime = 0;
@@ -43,5 +43,5 @@ void Timer::EndTimer(bool norm)
 {
 	_TimerEnded = true;
 	_ElapsedTime = 0.f;
-	TimerFinished.Invoke(norm);
+	TimerFinished.Invoke(this, norm);
 }

@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 #include <memory>
-#include <isComponenet.h>
+#include <isComponent.h>
 //#include <Transform.h>
 #include <iostream>
 #include <Event.h>
@@ -18,6 +18,8 @@ public:
 	GameObject();
 	GameObject(const GameObject&) = default;
 
+	~GameObject() {}
+
 	LLGP::Event<CollisionInfo*> onCollisionEnter;
 	LLGP::Event<CollisionInfo*> onCollisionStay;
 	LLGP::Event<CollisionInfo*> onCollisionExit;
@@ -25,14 +27,13 @@ public:
 	inline void SetName(std::string newName) { m_Name = newName; }
 	inline std::string GetName() { return m_Name; }
 
-	void SetActive(bool newActive) { m_Active = newActive; }
+	virtual void SetActive(bool newActive) { m_Active = newActive; }
 	inline bool GetActive() { return m_Active; }
 
 	inline void SetTag(std::string newTag) { m_Tag = newTag; }
 	inline bool CompareTag(std::string comp) { return m_Tag == comp; }
 
 	Transform2D* GetTransform() { return transform.get(); }
-
 
 #pragma region ComponentManagement
 	template<class T> requires isComponent<T>
@@ -95,6 +96,7 @@ public:
 		}
 		return returnBool;
 	};
+
 #pragma endregion
 
 protected:

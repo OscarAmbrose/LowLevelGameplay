@@ -9,12 +9,13 @@
 #include <Physics.h>
 #include <ObjectPool.h>
 #include <Timer.h>
+#include <HealthComponent.h>
 
 Projectile::Projectile()
 {
 	onCollisionEnter.RemoveListener(this, std::bind(&Projectile::ProjectileCollision, this, std::placeholders::_1));
 	g_OnFixedUpdate.RemoveListener(this, std::bind(&Projectile::FixedUpdate, this, std::placeholders::_1));
-	m_CurrentTimer->TimerFinished.AddListener(this, std::bind(&Projectile::LifeTimeEnded, this, std::placeholders::_1));
+	m_CurrentTimer->TimerFinished.AddListener(this, std::bind(&Projectile::LifeTimeEnded, this, std::placeholders::_1, std::placeholders::_2));
 
 	SetActive(false);
 	AddComponent<RigidBody>()->setGravityEnabled(false)->SetMaxSpeed(1500.f)->SetDrag(0.f)->setDoesBounce(true);
@@ -28,6 +29,8 @@ Projectile::Projectile()
 
 	SetTag("Projectile");
 	SetName("Projectile");
+	onCollisionEnter.AddListener(this, std::bind(&Projectile::ProjectileCollision, this, std::placeholders::_1));
+	g_OnFixedUpdate.AddListener(this, std::bind(&Projectile::FixedUpdate, this, std::placeholders::_1));
 }
 
 Projectile::~Projectile()
@@ -45,11 +48,11 @@ void Projectile::ProjectileCollision(CollisionInfo* col)
 {
 	if (!col->otherCollider->GetGameObject()->GetActive() || !GetActive() || col->otherCollider->GetIsTrigger()) { return; }
 
-	if (col->otherCollider->GetGameObject()->CompareTag("Player")) 
-	{ 
+	if (auto healthComponent = col->otherCollider->GetGameObject()->GetComponent<HealthComponent>())
+	{
+		healthComponent->TakeDamage(m_Damage);
+		//std::cout << "Take Damage: " << m_Damage <<  "\n";
 		DisableProjectile();
-		m_BounceAmount = 0;
-		return;
 	}
 
 	//Damage other collider (If they have the take damage function)
@@ -57,12 +60,13 @@ void Projectile::ProjectileCollision(CollisionInfo* col)
 	if (m_BounceAmount < 0) { DisableProjectile(); }
 }
 
-void Projectile::EnableProjectile(LLGP::Vector2f projectileDir, LLGP::Vector2f projectileLocation, float velocity, int bounceAmount)
+void Projectile::EnableProjectile(LLGP::Vector2f projectileDir, LLGP::Vector2f projectileLocation, float velocity, int bounceAmount, float damage)
 {
 	GetTransform()->SetPosition(projectileLocation);
 	GetComponent<BoxCollider>()->SetBoxPosition(projectileLocation);
 	GetComponent<RigidBody>()->SetVelocity(projectileDir * velocity);
 	m_BounceAmount = bounceAmount;
+	m_Damage = damage;
 	SetActive(true);
 }
 
@@ -74,7 +78,7 @@ void Projectile::DisableProjectile()
 	SetActive(false);
 }
 
-void Projectile::LifeTimeEnded(int Successful)
+void Projectile::LifeTimeEnded(Timer* timer, int Successful)
 {
 	if (Successful == true)
 	{
@@ -87,14 +91,11 @@ void Projectile::SetActive(bool newActive)
 	m_Active = newActive;
 	if (m_Active)
 	{
-		m_CurrentTimer->StartTimer(2.f);
-		onCollisionEnter.AddListener(this, std::bind(&Projectile::ProjectileCollision, this, std::placeholders::_1));
-		g_OnFixedUpdate.AddListener(this, std::bind(&Projectile::FixedUpdate, this, std::placeholders::_1));
+		m_CurrentTimer->StartTimer(m_ProjectileLifetime);
 	}
 	else
 	{
-		g_OnFixedUpdate.RemoveListener(this, std::bind(&Projectile::FixedUpdate, this, std::placeholders::_1));
-		onCollisionEnter.RemoveListener(this, std::bind(&Projectile::ProjectileCollision, this, std::placeholders::_1));
+		
 		m_CurrentTimer->ClearAndInvalidateTimer();
 	}
 }

@@ -12,7 +12,7 @@ public:
 	PlayerCharacter* InitialiseCharacter();
 
 	int GetPlayerNumber() const { return m_PlayerNumber; }
-	void SetPlayerNumber(int newPlayerNum) { m_PlayerNumber = newPlayerNum; }
+	PlayerCharacter* SetPlayerNumber(int newPlayerNum) { m_PlayerNumber = newPlayerNum; return this; }
 
 protected:
 

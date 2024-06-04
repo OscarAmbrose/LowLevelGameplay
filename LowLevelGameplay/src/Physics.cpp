@@ -72,13 +72,13 @@ void Physics::CollectCollisions()
 				//If I AM that collider, continue.
 				if (*rbCol == *worldCol || *rbCol->GetGameObject() == *worldCol->GetGameObject()) { continue; }
 
+				//or if the either object isnt active, continue.
+				if (!rbCol->GetGameObject()->GetActive() || !worldCol->GetGameObject()->GetActive()) { continue; }
+
 				//If the collision info already exists, continue. Or, if the collision masks don't match, continue. 
 				{
 
 					CollisionInfo* test = new CollisionInfo(); test->collider = rbCol; test->otherCollider = worldCol;
-
-					auto bits = ((test->otherCollider->GetCollisionMask() & test->collider->GetCollisionLayer()));
-					auto bits2 = ((test->collider->GetCollisionMask() & test->otherCollider->GetCollisionLayer()));
 
 					//I added bitwise collision masking :)
 					if (((test->collider->GetCollisionMask() & test->otherCollider->GetCollisionLayer())) == 0 && ((test->otherCollider->GetCollisionMask() & test->collider->GetCollisionLayer())) == 0)

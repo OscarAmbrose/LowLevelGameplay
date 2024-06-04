@@ -13,6 +13,8 @@ public:
 
 	void FixedUpdate(float deltaTime);
 
+	void ChangePlayerWeaponActive(bool newActive);
+
 protected:
 	//This should be equal to the controller number.
 	int m_PlayerNumber;

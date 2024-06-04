@@ -15,7 +15,7 @@ Weapon::Weapon(GameObject* owner) : Component(owner)
 	m_FireDelayTimer->TimerFinished.AddListener(this, std::bind(&Weapon::SetCanFire, this, std::placeholders::_1));
 	m_ReloadTimer->TimerFinished.AddListener(this, std::bind(&Weapon::RefillAmmo, this, std::placeholders::_1));
 	g_OnStart.RemoveListener(this, std::bind(&Component::Start, this, std::placeholders::_1));
-	currentWeapon->SetWeapon(2);
+	currentWeapon->SetWeapon(1);
 }
 
 Weapon::~Weapon()
@@ -41,7 +41,7 @@ bool Weapon::Fire()
 	//Firing Logic (spawn bullet with direction and velocity.)
 	LLGP::Vector2f fireLocation = m_GameObject->GetTransform()->ReturnPosition() + (m_AimDirection * m_AimOffset);
 
-	ObjectPooler::FindRemainingObject()->EnableProjectile(m_AimDirection, fireLocation, currentWeapon->s_ProjectileSpeed, currentWeapon->s_ProjectileBounceAmount);
+	ObjectPooler::FindRemainingObject()->EnableProjectile(m_AimDirection, fireLocation, currentWeapon->s_ProjectileSpeed, currentWeapon->s_ProjectileBounceAmount, currentWeapon->s_Damage);
 
 	SetAmmoCount(m_CurrentAmmoCount - 1);
 
@@ -97,6 +97,8 @@ void Weapon::SetAmmoCount(int newAmmoCount)
 
 void Weapon::CurrentWeaponInfo::SetWeapon(int weaponType)
 {
+	s_WeaponIndex = weaponType;
+
 	switch (weaponType)
 	{
 	case 1:

@@ -1,5 +1,6 @@
 #include "AnimationManager.h"
 #include "GameObject.h"
+#include <Transform.h>
 
 bool AnimationManager::findSpriteRenderer()
 {

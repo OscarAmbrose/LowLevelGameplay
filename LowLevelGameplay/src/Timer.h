@@ -1,7 +1,8 @@
 #pragma once
 #include <Event.h>
+#include<Object.h>
 
-class Timer
+class Timer : public Object
 {
 public:
 	Timer(float Timer);
@@ -18,7 +19,7 @@ public:
 	void EndTimer(bool norm);
 
 public:
-	LLGP::Event<int> TimerFinished;
+	LLGP::Event<Timer*, int> TimerFinished;
 
 private:
 	float _ElapsedTime;

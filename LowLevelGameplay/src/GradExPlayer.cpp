@@ -9,18 +9,17 @@
 #include <GradExPlayerController.h>
 #include <Weapon.h>
 #include <ScreenWrapper.h>
+#include <HealthComponent.h>
+#include<GradExPlayerHealth.h>
 
 PlayerCharacter::PlayerCharacter() : GameObject()
 {
 	SetName("Player");
-	m_PlayerNumber = 0;
-	InitialiseCharacter();
 }
 
 PlayerCharacter::PlayerCharacter(int playerNumber) : GameObject()
 {
 	m_PlayerNumber = playerNumber;
-	InitialiseCharacter();
 }
 
 PlayerCharacter* PlayerCharacter::InitialiseCharacter()
@@ -34,6 +33,9 @@ PlayerCharacter* PlayerCharacter::InitialiseCharacter()
 	AddComponent<ScreenWrapper>();
 	SetTag("Player");
 	AddComponent<Weapon>();
+	AddComponent<HealthComponent>();
+	AddComponent<GradExPlayerHealth>();
+	SetActive(true);
 
 	return this;
 }

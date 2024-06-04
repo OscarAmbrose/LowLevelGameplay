@@ -23,6 +23,7 @@ public:
 		float s_ReloadTime = 1.2f;
 		int s_MaxAmmo = 15;
 		float s_Damage = 34.f;
+		int s_WeaponIndex = 1;
 
 		bool operator==(CurrentWeaponInfo* other);
 	};
@@ -43,6 +44,9 @@ public:
 	void Reload();
 
 	void RefillAmmo(bool DoesFill);
+
+	void SetWeaponType(int newType) { currentWeapon->SetWeapon(newType); RefillAmmo(true); }
+	int GetWeaponType() { return currentWeapon->s_WeaponIndex; }
 
 	bool HasAmmo();
 

@@ -1,6 +1,7 @@
 #include "ObjectPool.h"
 #include <GameObject.h>
 #include <Projectile.h>
+#include <Transform.h>
 
 std::vector<Projectile*> ObjectPooler::_UnusedObjects;
 std::vector<Projectile*> ObjectPooler::_UsedObjects;

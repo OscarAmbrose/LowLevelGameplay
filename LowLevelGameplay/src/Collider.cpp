@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "Physics.h"
 #include "BoxCollider.h"
+#include <Transform.h>
 
 Collider::Collider(GameObject* owner) : Component(owner)
 {

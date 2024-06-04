@@ -8,7 +8,7 @@
 #include <iostream>
 #include <GameObject.h>
 #include <GlobalEvents.h>
-#include <GameManager.h>
+#include <GradExGameManager.h>
 #include <AnimationManager.h>
 #include <Physics.h>
 #include <WindowManager.h>
@@ -16,6 +16,9 @@
 #include <Projectile.h>
 #include <cstdlib>
 #include <ctime>
+
+#include <GradExPlayer.h>
+#include <Weapon.h>
 
 #define FIXEDFRAMERATE (1.f/60.f)
 
@@ -27,7 +30,7 @@ int main()
 
 	std::unique_ptr<GlobalTexture> globalTextureTest = std::make_unique<GlobalTexture>();
 	
-	std::unique_ptr <GameManager> gameManager = std::make_unique <GameManager>();
+	std::unique_ptr <GradExGameManager> gameManager = std::make_unique <GradExGameManager>();
 
 	ObjectPooler::InitialisePool();
 
@@ -45,7 +48,7 @@ int main()
 
 	//Creates the window
 	
-	
+	GameManager::instance->Start();
 	
 	while (window.isOpen())
 	{
@@ -84,16 +87,28 @@ int main()
 				continue;
 			}
 
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && (numberOfFixedUpdates > 5))
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && (numberOfFixedUpdates > 20))
 			{
-				for (int i = 0; i < 50; i++)
+				//for (int i = 0; i < 20; i++)
+				//{
+				//	float DirectionX = -1 + 2 * ((float)rand() / RAND_MAX);
+				//	float DirectionY = -1 + 2 * ((float)rand() / RAND_MAX);
+				//	LLGP::Vector2f direction = LLGP::Vector2f(DirectionX, DirectionY).Normalised();
+				//	ObjectPooler::FindRemainingObject()->EnableProjectile(direction, LLGP::Vector2f(450, 450), 750.f, 2, 10.f);
+				//	std::cout << ObjectPooler::GetRemainingObjects() << std::endl;
+				//}
+
+				auto gameManager = static_cast<GradExGameManager*>(GameManager::instance);
+				gameManager->RespawnPlayer(0);
+				gameManager->RespawnPlayer(1);
+
+				for (PlayerCharacter* player : gameManager->getAllObjectsOfType<PlayerCharacter>())
 				{
-					float DirectionX = -1 + 2 * ((float)rand() / RAND_MAX);
-					float DirectionY = -1 + 2 * ((float)rand() / RAND_MAX);
-					LLGP::Vector2f direction = LLGP::Vector2f(DirectionX, DirectionY).Normalised();
-					ObjectPooler::FindRemainingObject()->EnableProjectile(direction, LLGP::Vector2f(450, 450), 750.f, 2);
-					std::cout << ObjectPooler::GetRemainingObjects() << std::endl;
+					auto weapon = player->GetComponent<Weapon>();
+					weapon->SetWeaponType(2);
 				}
+
+
 				numberOfFixedUpdates = 0;
 			}
 
