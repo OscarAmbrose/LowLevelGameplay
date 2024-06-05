@@ -5,7 +5,7 @@ project "LowLevelGameplay"
     staticruntime "Off"
 
     targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
-    objdir ("%{wks.location}/bin-int/" .. outputdir .. "/ %{prj.name}")
+    objdir ("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")
 
     files
     {
@@ -19,7 +19,7 @@ project "LowLevelGameplay"
         ["Sources/*"] = {"src/**.c", "src/**.cpp"},
     }
 
-    defines { "SFML_STATIC", "_CONSOLE"}
+    defines { "SFML_STATIC", "_CONSOLE" }
 
     includedirs
     {
@@ -50,7 +50,7 @@ project "LowLevelGameplay"
         systemversion "latest"
 
     filter "configurations:Debug"
-        defines { "_Debug" }
+        defines { "_DEBUG" }
         symbols "On"
 
         links
@@ -63,7 +63,7 @@ project "LowLevelGameplay"
         }
 
     filter "configurations:Release"
-        defines{ "NDEBUG" }
+        defines { "NDEBUG" }
         optimize "On"
 
         links

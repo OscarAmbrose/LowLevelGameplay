@@ -10,9 +10,14 @@ public:
 	HeartUI();
 	~HeartUI();
 
+
+
 	HeartUI* SetMaxLives(int newLives, bool isFilling);
 	HeartUI* SetMaxLives(int newLives);
 	inline int GetMaxLives() { return MaxLives; }
+
+	void SetCurrentLives(int currentLives) { CurrentLives = currentLives; SetFilledHearts(); }
+	void SetFilledHearts();
 
 	void SetHeartOffsets();
 
@@ -20,7 +25,8 @@ private:
 	int MaxLives = 3;
 	int CurrentLives = 3;
 	
-	LLGP::Vector2i fullHeartLocation = LLGP::Vector2i(0, 12);
+	LLGP::Vector2i fullHeartLocation = LLGP::Vector2i(6, 12);
+	LLGP::Vector2i emptyHeartLocation = LLGP::Vector2i(7, 12);
 
 	float StepDistance = 0.f;
 

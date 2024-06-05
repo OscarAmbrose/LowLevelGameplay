@@ -19,6 +19,7 @@
 
 #include <GradExPlayer.h>
 #include <Weapon.h>
+#include <RespawnManager.h>
 
 #define FIXEDFRAMERATE (1.f/60.f)
 
@@ -104,6 +105,7 @@ int main()
 
 				for (PlayerCharacter* player : gameManager->getAllObjectsOfType<PlayerCharacter>())
 				{
+					RespawnManager::PlayerDied(player);
 					auto weapon = player->GetComponent<Weapon>();
 					weapon->SetWeaponType(2);
 				}
@@ -114,7 +116,8 @@ int main()
 
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::V))
 			{
-				ObjectPooler::DebugDisableAllPoolObjects();
+				std::cout << "Dead\n";
+				
 			}
 			
 			g_OnPollInputs(event);
@@ -152,6 +155,7 @@ int main()
 			if (numberOfFixedUpdates >= 30)
 			{
 				g_OnCollectGarbage(0.f);
+				numberOfFixedUpdates = 0;
 			}
 		}
 		#pragma endregion

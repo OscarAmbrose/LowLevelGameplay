@@ -2,6 +2,7 @@
 #include <GradExPlayer.h>
 #include <GradExGameManager.h>
 #include <Transform.h>
+#include <HeartUI.h>
 
 std::vector<HealthComponent*> HealthComponents;
 
@@ -12,6 +13,7 @@ void RespawnManager::PlayerDied(GameObject* player)
 	if (!(_Player = dynamic_cast<PlayerCharacter*>(player))) { return; }
 
 	float respawnTime = _Player->GetComponent<HealthComponent>()->GetRespawnTimer();
+	_GM->PlayerDied(_Player->GetPlayerNumber());
 
 	switch (_Player->GetPlayerNumber())
 	{

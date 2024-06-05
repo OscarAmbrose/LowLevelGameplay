@@ -13,8 +13,6 @@
 
 Projectile::Projectile()
 {
-	onCollisionEnter.RemoveListener(this, std::bind(&Projectile::ProjectileCollision, this, std::placeholders::_1));
-	g_OnFixedUpdate.RemoveListener(this, std::bind(&Projectile::FixedUpdate, this, std::placeholders::_1));
 	m_CurrentTimer->TimerFinished.AddListener(this, std::bind(&Projectile::LifeTimeEnded, this, std::placeholders::_1, std::placeholders::_2));
 
 	SetActive(false);

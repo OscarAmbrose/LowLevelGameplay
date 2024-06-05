@@ -36,6 +36,7 @@ GameObject* GameManager::GetGameObjectByName(std::string objectName)
 	{
 		if (m_GameObjects[i]->GetName() == objectName)
 		{
+			if (m_GameObjects[i]->m_IsGarbage == true) { std::cerr << "Warning: Be careful with getting object by name when garbage objects still exist." << std::endl; continue; }
 			return m_GameObjects[i].get();
 			break;
 		}
@@ -45,5 +46,19 @@ GameObject* GameManager::GetGameObjectByName(std::string objectName)
 
 void GameManager::ClearGameObjects()
 {
-	m_GameObjects.clear();
+	m_ShouldBinObjects = true;
+	for (std::shared_ptr<GameObject> obj : m_GameObjects)
+	{
+		obj->SetActive(false);
+		obj->m_IsGarbage = true;
+	}
+}
+
+void GameManager::CollectGarbage(float deltaTime)
+{
+	if (m_ShouldBinObjects)
+	{
+		m_ShouldBinObjects = false;
+		m_GameObjects.erase(std::remove_if(m_GameObjects.begin(), m_GameObjects.end(), [](const std::shared_ptr<GameObject>& obj) {return obj->m_IsGarbage; }), m_GameObjects.end());
+	}
 }

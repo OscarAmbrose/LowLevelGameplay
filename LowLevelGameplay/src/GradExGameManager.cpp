@@ -32,13 +32,15 @@ void GradExGameManager::RespawnPlayer(int playerIndex)
 
 void GradExGameManager::StartLevel(int levelNumber)
 {
-	//AddGameObject<HeartUI>()->SetName("HeartUI")->SetActive(true);
-	//GetGameObjectByName("HeartUI")->GetTransform()->SetPosition(LLGP::Vector2f(450.f, 450.f));
+	AddGameObject<HeartUI>()->SetName("HeartUI0")->SetActive(true);
+	GetGameObjectByName("HeartUI0")->GetTransform()->SetPosition(LLGP::Vector2f(64.f, 32.f));
 
+	AddGameObject<HeartUI>()->SetName("HeartUI1")->SetActive(true);
+	GetGameObjectByName("HeartUI1")->GetTransform()->SetPosition(LLGP::Vector2f(1856.f, 32.f));
 
 	//Create player.
-	//AddGameObject<PlayerCharacter>()->SetPlayerNumber(0)->InitialiseCharacter()->SetName("Player0");
-	//GetGameObjectByName("Player0")->GetTransform()->SetPosition(LLGP::Vector2f(100.f, 450.f));
+	AddGameObject<PlayerCharacter>()->SetPlayerNumber(0)->InitialiseCharacter()->SetName("Player0");
+	GetGameObjectByName("Player0")->GetTransform()->SetPosition(LLGP::Vector2f(100.f, 450.f));
 
 	//Create second player.
 	AddGameObject<PlayerCharacter>()->SetPlayerNumber(1)->InitialiseCharacter()->SetName("Player1");
@@ -74,6 +76,74 @@ void GradExGameManager::EndTimer(Timer* finishedTimer)
 	m_DestroyableTimers.push_back(finishedTimer);
 }
 
+void GradExGameManager::PlayerDied(int playerNumber)
+{
+	switch (playerNumber)
+	{
+	case 0:
+		m_Player0Lives--;
+		UpdateHeartUI(playerNumber, m_Player0Lives);
+		break;
+	case 1:
+		m_Player1Lives--;
+		UpdateHeartUI(playerNumber, m_Player1Lives);
+		break;
+	default:
+		break;
+	}
+
+	if (!LivesRemain())
+	{
+		LevelOver();
+	}
+
+	
+}
+
+void GradExGameManager::UpdateHeartUI(int playerNumber, int newLives)
+{
+ 	std::string HeartUIName = "HeartUI" + std::to_string(playerNumber);
+	{
+		if (HeartUI* heartUI = static_cast<HeartUI*>(GetGameObjectByName(HeartUIName)))
+		{
+			heartUI->SetCurrentLives(newLives);
+		}
+	}
+}
+
+int GradExGameManager::GetPlayerLives(int playerNumber)
+{
+	switch (playerNumber)
+	{
+	case 0:
+		return m_Player0Lives;
+		break;
+	case 1:
+		return m_Player1Lives;
+		break;
+	default:
+		break;
+	}
+}
+
+bool GradExGameManager::LivesRemain()
+{
+	if (m_Player0Lives <= 0 || m_Player1Lives <= 0) { return false; }
+	return true;
+}
+
+void GradExGameManager::LevelOver()
+{
+	std::cout << "level end\n";
+	ClearGameObjects();
+
+
+
+	//Create player.
+	AddGameObject<PlayerCharacter>()->SetPlayerNumber(0)->InitialiseCharacter()->SetName("Player0");
+	GetGameObjectByName("Player0")->GetTransform()->SetPosition(LLGP::Vector2f(100.f, 450.f));
+}
+
 void GradExGameManager::CollectGarbage(float deltaTime)
 {
 	for (Timer* timer : m_DestroyableTimers)
@@ -94,6 +164,7 @@ void GradExGameManager::CollectGarbage(float deltaTime)
 		if (!timerFound) { throw std::invalid_argument("Timer was not found, memory leak detected."); }
 	}
 	m_DestroyableTimers.erase(m_DestroyableTimers.begin(), m_DestroyableTimers.end());
+	GameManager::CollectGarbage(deltaTime);
 }
 
 void GradExGameManager::Start()

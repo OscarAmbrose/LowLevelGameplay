@@ -107,4 +107,5 @@ private:
 
 public:
 	std::unique_ptr<Transform2D> transform = std::make_unique<Transform2D>();
+	bool m_IsGarbage = false;
 };

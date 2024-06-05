@@ -24,22 +24,24 @@ public:
 
 	Timer* StartTimer(float timerLength, std::function<void(Timer*, int)> inFunc);
 
-	void EndTimer(Timer* finishedTimer);
+	void PlayerDied(int playerNumber);
+
+	void UpdateHeartUI(int playerNumber, int newLives);
+
+	int GetPlayerLives(int playerNumber);
+
+	void CollectGarbage(float deltaTime) override;
 
 	void RespawnPlayerZero(Timer* timer, int required)
 	{
 		RespawnPlayer(0);
 		EndTimer(timer);
 	}
-
 	void RespawnPlayerOne(Timer* timer, int required) 
 	{
 		RespawnPlayer(1);
 		EndTimer(timer);
 	}
-
-	void CollectGarbage(float deltaTime);
-
 	/// <summary>
 	/// See: <seealso cref="GameManager::Start"/> for details
 	/// </summary>
@@ -50,4 +52,13 @@ public:
 private:
 	std::vector<Timer*> m_ActiveTimers;
 	std::vector<Timer*> m_DestroyableTimers;
+	int m_Player0Lives = 3;
+	int m_Player1Lives = 3;
+
+private:
+	bool LivesRemain();
+	void LevelOver();
+	void EndTimer(Timer* finishedTimer);
+
+
 };

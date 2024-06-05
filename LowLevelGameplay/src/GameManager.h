@@ -94,6 +94,8 @@ public:
 
 	void ClearGameObjects();
 
+	virtual void CollectGarbage(float deltaTime);
+
 protected:
 	/// <summary>
 	/// A list of all game objects visible to the Game Manager.
@@ -102,5 +104,6 @@ protected:
 
 public:
 	static GameManager* instance;
-
+private:
+	bool m_ShouldBinObjects = false;
 };

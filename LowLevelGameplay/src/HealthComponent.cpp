@@ -24,7 +24,6 @@ void HealthComponent::SetCurrentHealth(float newHealth)
 {
 	m_CurrentHealth = std::clamp(newHealth, 0.f, m_MaxHealth);
 	HealthChanged.Invoke(m_CurrentHealth);
-	std::cout << "CurrentHealth: " << m_CurrentHealth << std::endl;
 
 	if (CheckIfDead())
 	{
@@ -40,13 +39,11 @@ void HealthComponent::TakeDamage(float damage)
 void HealthComponent::Death()
 {
 	AliveStateChanged.Invoke(0);
-	std::cout << "Dead" << std::endl;
 }
 
 void HealthComponent::Respawn()
 {
 	AliveStateChanged.Invoke(1);
 	SetCurrentHealth(m_MaxHealth);
-	std::cout << "Respawn" << std::endl;
 }
 

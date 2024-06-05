@@ -13,6 +13,7 @@ HeartUI::~HeartUI()
 
 }
 
+
 HeartUI* HeartUI::SetMaxLives(int newLives, bool isFilling)
 {
 	for (int renderIndex = renderers.size()-1; renderIndex > newLives; renderIndex--)
@@ -28,6 +29,7 @@ HeartUI* HeartUI::SetMaxLives(int newLives, bool isFilling)
 	{
 		AddComponent<SpriteRenderer>()->setUV(fullHeartLocation, LLGP::Vector2i(89, 34))->setRenderLayer(3);
 	}
+	SetFilledHearts();
 	return this;
 }
 
@@ -44,9 +46,25 @@ HeartUI* HeartUI::SetMaxLives(int newLives)
 	
 	for (int spriteNum = 0; spriteNum < MaxLives; spriteNum++)
 	{
-		AddComponent<SpriteRenderer>()->setUV(fullHeartLocation, LLGP::Vector2i(89, 34))->setRenderLayer(3);
+		AddComponent<SpriteRenderer>()->setUV(fullHeartLocation)->setRenderLayer(3);
 	}
+	SetFilledHearts();
 	return this;
+}
+
+void HeartUI::SetFilledHearts()
+{
+	for (int heartIndex = renderers.size() - 1; heartIndex >= 0; heartIndex--)
+	{
+		if ((heartIndex + 1) > CurrentLives)
+		{
+			renderers[heartIndex]->setUV(emptyHeartLocation);
+		}
+		else
+		{
+			renderers[heartIndex]->setUV(fullHeartLocation);
+		}
+	}
 }
 
 void HeartUI::SetHeartOffsets()
