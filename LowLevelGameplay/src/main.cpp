@@ -148,6 +148,11 @@ int main()
 			Physics::DispatchCollisions();
 			numberOfFixedUpdates++;
 			timeSincePhysicsStep -= FIXEDFRAMERATE;
+
+			if (numberOfFixedUpdates >= 30)
+			{
+				g_OnCollectGarbage(0.f);
+			}
 		}
 		#pragma endregion
 		//Update

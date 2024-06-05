@@ -39,7 +39,7 @@ public:
 	void SetFiring(bool isFiring) { m_Firing = isFiring; }
 
 	inline bool GetCanFire() const { return m_CanFire; }
-	inline void SetCanFire(bool newCanFire) { m_CanFire = newCanFire; }
+	inline void SetCanFire(Timer* timer, bool newCanFire) { m_CanFire = newCanFire; }
 
 	void Reload();
 

@@ -18,6 +18,12 @@ public:
 
 	void Death();
 
+	inline float GetRespawnTimer() const { return m_RespawnTime; }
+	HealthComponent* SetRespawnTimer(float newTime) { m_RespawnTime = newTime; return this; }
+
+	inline bool DoesRespawn() const { return m_Respawns; }
+	HealthComponent* SetDoesRespawn(bool newRespawns) { m_Respawns = newRespawns; return this; }
+
 	void Respawn();
 
 	LLGP::Event<float> HealthChanged;
@@ -26,4 +32,6 @@ private:
 	float m_MaxHealth = 100;
 	float m_CurrentHealth = m_MaxHealth;
 	bool m_IsDead = false;
+	bool m_Respawns = false;
+	float m_RespawnTime = 5.f;
 };

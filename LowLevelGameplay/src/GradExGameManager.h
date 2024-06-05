@@ -24,13 +24,21 @@ public:
 
 	Timer* StartTimer(float timerLength, std::function<void(Timer*, int)> inFunc);
 
-	void EndTimer(Timer* finishedTimer, int required);
+	void EndTimer(Timer* finishedTimer);
 
-	void RespawnPlayerZero(Timer* timer, int required) { RespawnPlayer(0); }
+	void RespawnPlayerZero(Timer* timer, int required)
+	{
+		RespawnPlayer(0);
+		EndTimer(timer);
+	}
+
 	void RespawnPlayerOne(Timer* timer, int required) 
 	{
 		RespawnPlayer(1);
+		EndTimer(timer);
 	}
+
+	void CollectGarbage(float deltaTime);
 
 	/// <summary>
 	/// See: <seealso cref="GameManager::Start"/> for details
@@ -41,4 +49,5 @@ public:
 	LLGP::Event<int> m_RespawnPlayer;
 private:
 	std::vector<Timer*> m_ActiveTimers;
+	std::vector<Timer*> m_DestroyableTimers;
 };

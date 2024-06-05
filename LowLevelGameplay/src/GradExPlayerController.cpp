@@ -22,7 +22,24 @@ void PlayerController::PollInput(sf::Event event)
 {
 	if (!m_GameObject->GetActive()) { ChangePlayerWeaponActive(false); return; }
 	switch (event.type)
-	{
+	{		
+		case sf::Event::JoystickButtonPressed:
+		{
+			if (event.joystickButton.joystickId != m_PlayerNumber) { return; }
+			if (event.joystickButton.button == 2)
+			{
+				Weapon* playerWeapon;
+				if (playerWeapon = m_GameObject->GetComponent<Weapon>())
+				{
+					playerWeapon->Reload();
+				}
+			}
+			if (event.joystickButton.button == 5)
+			{
+				ChangePlayerWeaponActive(true);
+			}
+			break;
+		}
 		case sf::Event::JoystickMoved:
 		{
 			//If the input is from the incorrect controller, return.
@@ -47,23 +64,6 @@ void PlayerController::PollInput(sf::Event event)
 
 			break;
 		}
-		case sf::Event::JoystickButtonPressed:
-		{
-			if (event.joystickButton.joystickId != m_PlayerNumber) { return; }
-			if (event.joystickButton.button == 2)
-			{
-				Weapon* playerWeapon;
-				if (playerWeapon = m_GameObject->GetComponent<Weapon>())
-				{
-					playerWeapon->Reload();
-				}
-			}
-			if (event.joystickButton.button == 5)
-			{
-				ChangePlayerWeaponActive(true);
-			}
-			break;
-		}
 		case sf::Event::JoystickButtonReleased:
 		{
 			if (!sf::Joystick::isConnected(m_PlayerNumber)) { return; }
@@ -73,6 +73,8 @@ void PlayerController::PollInput(sf::Event event)
 			}
 			break;
 		}
+
+
 
 		//If the event isnt being looked for, do nothing.
 		default:

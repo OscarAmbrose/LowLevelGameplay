@@ -15,12 +15,12 @@
 
 GradExGameManager::GradExGameManager() : GameManager()
 {
-	StartTimer(1.f, std::bind(&GradExGameManager::RespawnPlayerOne, this, std::placeholders::_1, std::placeholders::_2));
+	g_OnCollectGarbage.AddListener(this, std::bind(&GradExGameManager::CollectGarbage, this, std::placeholders::_1));
 }
 
 GradExGameManager::~GradExGameManager()
 {
-
+	g_OnCollectGarbage.RemoveListener(this, std::bind(&GradExGameManager::CollectGarbage, this, std::placeholders::_1));
 }
 
 void GradExGameManager::RespawnPlayer(int playerIndex)
@@ -61,23 +61,36 @@ Timer* GradExGameManager::StartTimer(float timerLength, std::function<void(Timer
 {
 	Timer* newTimer = new Timer(timerLength);
 	newTimer->TimerFinished.AddListener(this, inFunc);
-	newTimer->TimerFinished.AddListener(this, std::bind(&GradExGameManager::EndTimer, this, std::placeholders::_1, std::placeholders::_2));
+	newTimer->StartTimer(timerLength);
 	m_ActiveTimers.push_back(std::move(newTimer));
 	return (m_ActiveTimers[m_ActiveTimers.size() - 1]);
 }
 
-void GradExGameManager::EndTimer(Timer* finishedTimer, int required)
+void GradExGameManager::EndTimer(Timer* finishedTimer)
 {
-	for (int timerIndex = 0; timerIndex < m_ActiveTimers.size(); timerIndex++)
+	m_DestroyableTimers.push_back(finishedTimer);
+}
+
+void GradExGameManager::CollectGarbage(float deltaTime)
+{
+	for (Timer* timer : m_DestroyableTimers)
 	{
-		if (m_ActiveTimers[timerIndex] == finishedTimer)
+		bool timerFound = false;
+		for (int timerIndex = 0; timerIndex < m_ActiveTimers.size(); timerIndex++)
 		{
-			delete m_ActiveTimers[timerIndex];
-			m_ActiveTimers.erase(m_ActiveTimers.begin() + timerIndex);
-			return;
+			if (m_ActiveTimers[timerIndex] == timer)
+			{
+				g_OnUpdate.RemoveListener(m_ActiveTimers[timerIndex], std::bind(&Timer::Update, m_ActiveTimers[timerIndex], std::placeholders::_1));
+				m_ActiveTimers[timerIndex]->TimerFinished.Empty();
+				delete m_ActiveTimers[timerIndex];
+				m_ActiveTimers.erase(m_ActiveTimers.begin() + timerIndex);
+				timerFound = true;
+				break;
+			}
 		}
+		if (!timerFound) { throw std::invalid_argument("Timer was not found, memory leak detected."); }
 	}
-	throw std::invalid_argument("Timer was not found, memory leak detected.");
+	m_DestroyableTimers.erase(m_DestroyableTimers.begin(), m_DestroyableTimers.end());
 }
 
 void GradExGameManager::Start()

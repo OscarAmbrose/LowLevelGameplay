@@ -12,7 +12,7 @@ Weapon::Weapon(GameObject* owner) : Component(owner)
 	m_CurrentAmmoCount = currentWeapon->s_MaxAmmo;
 	m_FireDelayTimer = std::make_unique<Timer>(1.f/ 1.f);
 	m_ReloadTimer = std::make_unique<Timer>(currentWeapon->s_ReloadTime);
-	m_FireDelayTimer->TimerFinished.AddListener(this, std::bind(&Weapon::SetCanFire, this, std::placeholders::_1));
+	m_FireDelayTimer->TimerFinished.AddListener(this, std::bind(&Weapon::SetCanFire, this, std::placeholders::_1, std::placeholders::_2));
 	m_ReloadTimer->TimerFinished.AddListener(this, std::bind(&Weapon::RefillAmmo, this, std::placeholders::_1));
 	g_OnStart.RemoveListener(this, std::bind(&Component::Start, this, std::placeholders::_1));
 	currentWeapon->SetWeapon(1);
@@ -50,7 +50,7 @@ bool Weapon::Fire()
 
 void Weapon::Reload()
 {
-	if (m_CurrentAmmoCount == currentWeapon->s_MaxAmmo) { return; }
+	if (m_CurrentAmmoCount == currentWeapon->s_MaxAmmo || m_Reloading) { return; }
 	m_FireDelayTimer->ClearAndInvalidateTimer();
 	m_ReloadTimer->StartTimer(currentWeapon->s_ReloadTime);
 	m_Reloading = true;
@@ -95,6 +95,10 @@ void Weapon::SetAmmoCount(int newAmmoCount)
 	else { m_CurrentAmmoCount = newAmmoCount; }
 }
 
+/// <summary>
+/// This will be remade to a function which gets data from a static function and sets the instanced versions data. 
+/// </summary>
+/// <param name="weaponType">: 1 = Pistol, 2 = SMG, 3 = Shotgun, 4 = Sniper, 5 = Golden Gun. Fallthrough = Pistol. </param>
 void Weapon::CurrentWeaponInfo::SetWeapon(int weaponType)
 {
 	s_WeaponIndex = weaponType;
@@ -136,7 +140,7 @@ void Weapon::CurrentWeaponInfo::SetWeapon(int weaponType)
 		s_WeaponName = "Sniper";
 		s_RenderUV = LLGP::Vector2i(2, 5);
 		s_FireRate = 0.7f;
-		s_ProjectileSpeed = 1000.f;
+		s_ProjectileSpeed = 1200.f;
 		s_ProjectileBounceAmount = 0;
 		s_ReloadTime = 1.1f;
 		s_MaxAmmo = 5;

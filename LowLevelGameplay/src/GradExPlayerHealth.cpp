@@ -3,6 +3,7 @@
 #include <Transform.h>
 #include <HealthComponent.h>
 #include <GradExGameManager.h>
+#include <RespawnManager.h>
 
 GradExPlayerHealth::GradExPlayerHealth(GameObject* owner) : Component(owner)
 {
@@ -21,10 +22,12 @@ void GradExPlayerHealth::OnAliveStateChanged(int state)
 {
 	if (state == 0) 
 	{ 
-		m_GameObject->SetActive(false); 
+		m_GameObject->SetActive(false);
+		RespawnManager::PlayerDied(m_GameObject);
 	}
 	else 
 	{ 
 		m_GameObject->SetActive(true);
 	}
 }
+

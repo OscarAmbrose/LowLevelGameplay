@@ -5,7 +5,9 @@
 extern LLGP::Event<float> g_OnUpdate;
 extern LLGP::Event<float> g_OnStart;
 extern LLGP::Event<float> g_OnFixedUpdate;
-extern LLGP::Event<float> g_OnFixedUpdate2;
+
+extern LLGP::Event<float> g_OnCollectGarbage;
+
 extern LLGP::Event<float> g_OnPhysicsUpdate;
 
 extern LLGP::Event<sf::Event> g_OnPollInputs;
