@@ -12,6 +12,7 @@
 #include <string>
 #include <functional>
 #include <memory>
+#include <HeartUI.h>
 
 GradExGameManager::GradExGameManager() : GameManager()
 {
@@ -31,17 +32,19 @@ void GradExGameManager::RespawnPlayer(int playerIndex)
 
 void GradExGameManager::StartLevel(int levelNumber)
 {
+	//AddGameObject<HeartUI>()->SetName("HeartUI")->SetActive(true);
+	//GetGameObjectByName("HeartUI")->GetTransform()->SetPosition(LLGP::Vector2f(450.f, 450.f));
+
+
 	//Create player.
-	AddGameObject<PlayerCharacter>()->SetPlayerNumber(0)->InitialiseCharacter()->SetName("Player0");
-	GetGameObjectByName("Player0")->GetTransform()->SetPosition(LLGP::Vector2f(100.f, 450.f));
+	//AddGameObject<PlayerCharacter>()->SetPlayerNumber(0)->InitialiseCharacter()->SetName("Player0");
+	//GetGameObjectByName("Player0")->GetTransform()->SetPosition(LLGP::Vector2f(100.f, 450.f));
 
 	//Create second player.
 	AddGameObject<PlayerCharacter>()->SetPlayerNumber(1)->InitialiseCharacter()->SetName("Player1");
 	GetGameObjectByName("Player1")->GetTransform()->SetPosition(LLGP::Vector2f(1700.f, 450.f));
 	GetGameObjectByName("Player1")->GetComponent<SpriteRenderer>()->setUV(LLGP::Vector2i(3, 3));
 	GetGameObjectByName("Player1")->GetComponent<Cursor>()->m_SpriteRenderer->setUV(LLGP::Vector2i(11, 2));
-
-	StartTimer(1.f, std::bind(&GradExGameManager::RespawnPlayerOne, this, std::placeholders::_1, std::placeholders::_2));
 
 #pragma region CreateMapBounds
 	//Create floor and ceiling objs

@@ -19,7 +19,7 @@ Cursor::Cursor(GameObject* owner) : Component(owner)
 	m_RenderWindow = WindowManager::GetActiveWindow();
 	m_RenderWindow->sf::Window::setMouseCursorVisible(false);
 
-	m_SpriteRenderer = m_GameObject->AddComponent<SpriteRenderer>()->setUV(LLGP::Vector2i(13, 2), LLGP::Vector2i(64, 64))->setRenderLayer(0);
+	m_SpriteRenderer = m_GameObject->AddComponent<SpriteRenderer>()->setUV(LLGP::Vector2i(13, 2), LLGP::Vector2i(64, 64))->setRenderLayer(4);
 
 	m_BoxCollider = m_GameObject->AddComponent<BoxCollider>()->SetUpCollider(LLGP::Vector2f(64, 64), LLGP::Vector2f(48, 48));
 	m_BoxCollider->SetCollisionMask(0b10000010)->SetCollisionLayer(0b01000000)->SetIsTrigger(true);
@@ -125,6 +125,7 @@ LLGP::Vector2f Cursor::FixCursorPosition(LLGP::Vector2f position)
 void Cursor::Update(float deltaTime)
 {
 	Component::Update(deltaTime);
+	if (!m_GameObject->GetActive()) { return; }
 
 	m_PlayerPos = m_GameObject->GetTransform()->ReturnPosition();
 

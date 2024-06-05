@@ -161,7 +161,7 @@ int main()
 		#pragma region Render
 		window.clear();
 
-		//I should change this to a Bit shift and bit compare version, I think that'd be more efficient?
+		//I should change this to a static rendering manager class with bitmasking etc.
 		for (int i = 0; i < 5; i++)
 		{
 			g_OnRender(&window, i);

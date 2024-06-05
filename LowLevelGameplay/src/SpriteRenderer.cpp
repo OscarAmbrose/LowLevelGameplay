@@ -17,7 +17,6 @@ SpriteRenderer::SpriteRenderer(GameObject* owner) : Component(owner)
 	setUV(selectedSprite);
 
 	g_OnRender.AddListener(this, std::bind(&SpriteRenderer::renderShape, this, std::placeholders::_1, std::placeholders::_2));
-	g_OnUpdate.RemoveListener(this, std::bind(&Component::Update, this, std::placeholders::_1));
 	g_OnStart.RemoveListener(this, std::bind(&Component::Start, this, std::placeholders::_1));
 	g_OnFixedUpdate.RemoveListener(this, std::bind(&Component::FixedUpdate, this, std::placeholders::_1));
 }

@@ -24,7 +24,7 @@ public:
 	LLGP::Event<CollisionInfo*> onCollisionStay;
 	LLGP::Event<CollisionInfo*> onCollisionExit;
 	
-	inline void SetName(std::string newName) { m_Name = newName; }
+	GameObject* SetName(std::string newName) { m_Name = newName; return this; }
 	inline std::string GetName() { return m_Name; }
 
 	virtual void SetActive(bool newActive) { m_Active = newActive; }
@@ -89,7 +89,6 @@ public:
 			{
 				returnBool = true;
 				m_Components.erase(m_Components.begin() + i);
-				//m_Components.erase(dynamic_cast<T*>(m_Components[i].get()));
 				break;
 			}
 			returnBool = false;
