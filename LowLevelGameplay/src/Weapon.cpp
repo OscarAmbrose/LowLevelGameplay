@@ -133,7 +133,8 @@ void Weapon::CurrentWeaponInfo::SetWeapon(int weaponType)
 		s_ProjectileBounceAmount = 4;
 		s_ReloadTime = 1.4f;
 		s_MaxAmmo = 6;
-		s_Damage = 14.f;
+		//s_Damage = 14.f;
+		s_Damage = 100.f;
 		break;
 
 	case 4:

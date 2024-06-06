@@ -25,7 +25,7 @@ std::shared_ptr<GameObject> MapObject::NewMapObject(LLGP::Vector2f loc, LLGP::Ve
 	newMapObjPtr->SetName("MapObject"+std::to_string(MapObject::objectCounter));
 	newMapObjPtr->GetTransform()->SetPosition(loc);
 	newMapObjPtr->SetPersistent(true);
-	//newMapObjPtr->AddComponent<DebugBox>()->SetUpDebugBox();
+	newMapObjPtr->AddComponent<DebugBox>()->SetUpDebugBox();
 	newMapObjPtr->SetActive(true);
 	return newMapObjPtr;
 }

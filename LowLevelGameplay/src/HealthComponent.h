@@ -33,5 +33,5 @@ private:
 	float m_CurrentHealth = m_MaxHealth;
 	bool m_IsDead = false;
 	bool m_Respawns = false;
-	float m_RespawnTime = 5.f;
+	float m_RespawnTime = 2.f;
 };

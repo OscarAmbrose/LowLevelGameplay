@@ -36,14 +36,14 @@ public:
 
 	void RespawnPlayerZero(Timer* timer, int required)
 	{
-		RespawnPlayer(0);
 		EndTimer(timer);
+		RespawnPlayer(0);
 		TogglePlayerMovement(true);
 	}
 	void RespawnPlayerOne(Timer* timer, int required) 
 	{
-		RespawnPlayer(1);
 		EndTimer(timer);
+		RespawnPlayer(1);
 		TogglePlayerMovement(true);
 	}
 	/// <summary>
@@ -64,9 +64,15 @@ private:
 
 	bool m_WaitingForNextLevel = false;
 
-	int m_CurrentLevel = 0;
+	int m_CurrentLevel = 1;
+
+	int m_Player0Wins = 0;
+	int m_Player1Wins = 0;
+
+	bool m_GameOver = false;
 
 private:
+	void initialiseGame();
 	bool LivesRemain();
 	void LevelOver();
 	void EndTimer(Timer* finishedTimer);
@@ -74,5 +80,6 @@ private:
 	void ResetPlayerPositions();
 	void TogglePlayerMovement(bool newEnabled);
 	void NextLevelStarted(Timer* timer, int required);
+	void ResetGame(Timer* timer, int required);
 	GameObject* m_WinTextContainer;
 };

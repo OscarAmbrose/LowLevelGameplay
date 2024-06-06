@@ -91,7 +91,7 @@ public:
 		bool returnBool = false;
 		T* returnComp = nullptr;
 
-		for (int i = 0; i < m_Components.size(); i++)
+		for (int i = m_Components.size()-1; i >= 0; i--)
 		{
 			returnComp = dynamic_cast<T*>(m_Components[i].get());
 			if (returnComp != nullptr)

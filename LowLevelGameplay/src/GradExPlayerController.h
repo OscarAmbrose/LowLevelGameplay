@@ -15,9 +15,11 @@ public:
 
 	void ChangePlayerWeaponActive(bool newActive);
 
+	bool m_ShouldDisableWeapon = false;
 protected:
 	//This should be equal to the controller number.
 	int m_PlayerNumber;
+
 
 	LLGP::Vector2f m_JoystickDir = LLGP::Vector2f::zero;
 
