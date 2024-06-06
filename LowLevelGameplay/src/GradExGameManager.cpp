@@ -135,6 +135,7 @@ void GradExGameManager::NextLevelStarted(Timer* timer, int required)
 	m_WaitingForNextLevel = false;
 	m_CurrentLevel++;
 	TogglePlayerMovement(true);
+	RefillPlayerWeapons();
 	ResetLevelState();
 	if (m_CurrentLevel <= 5)
 	{
@@ -147,6 +148,14 @@ void GradExGameManager::ResetGame(Timer* timer, int required)
 	EndTimer(timer);
 	m_GameOver = false;
 	NextLevelStarted(nullptr, 0);
+}
+
+void GradExGameManager::RefillPlayerWeapons()
+{
+	for (PlayerCharacter* pc : getAllObjectsOfType<PlayerCharacter>())
+	{
+		pc->GetComponent<Weapon>()->RefillAmmo(true);
+	}
 }
 
 void GradExGameManager::PlayerDied(int playerNumber)
@@ -270,7 +279,7 @@ void GradExGameManager::LevelOver()
 	sf::Color playerColour;
 	if (m_Player0Lives > m_Player1Lives)
 	{
-		playerWins = "Player 1 Wins" + std::to_string(m_CurrentLevel) + "!";
+		playerWins = "Player 1 Wins level " + std::to_string(m_CurrentLevel) + "!";
 		playerColour = sf::Color::Blue;
 		m_Player0Wins++;
 	}
@@ -286,11 +295,11 @@ void GradExGameManager::LevelOver()
 	if (m_Player1Wins >= 3 || m_Player0Wins >= 3)
 	{
  		m_GameOver = true;
-		playerWins = "Player " + std::to_string(m_Player1Wins > m_Player0Wins) + " Wins the game!\nCongratulations!\n\n\nThe Game will reset in 10 seconds";
+		playerWins = "Player " + std::to_string((m_Player1Wins > m_Player0Wins) + 1) + " Wins the game!\nCongratulations!\n\n\nThe Game will reset in 10 seconds";
 	}
 
 
-	if (m_GameOver) { stringSize = (("Player " + std::to_string(m_Player1Wins > m_Player0Wins) + " Wins the game!").size()); }
+	if (m_GameOver) { stringSize = (("Player " + std::to_string((m_Player1Wins > m_Player0Wins) + 1) + " Wins the game!").size()); }
 
 	//1/2 of text size
 	float offset = 20;
@@ -307,7 +316,7 @@ void GradExGameManager::LevelOver()
 		m_Player0Wins = 0;
 		m_Player1Wins = 0;
 		m_CurrentLevel = 0;
-		StartTimer(10.f, std::bind(&GradExGameManager::NextLevelStarted, this, std::placeholders::_1, std::placeholders::_2));
+		StartTimer(10.f, std::bind(&GradExGameManager::ResetGame, this, std::placeholders::_1, std::placeholders::_2));
 		return; 
 	}
 

@@ -24,6 +24,7 @@ public:
 		int s_MaxAmmo = 15;
 		float s_Damage = 34.f;
 		int s_WeaponIndex = 1;
+		int s_NumberOfProjectiles = 1;
 
 		bool operator==(CurrentWeaponInfo* other);
 	};
@@ -35,6 +36,7 @@ public:
 	void FixedUpdate(float deltaTime);
 
 	bool Fire();
+	bool FireShotgun();
 
 	void SetFiring(bool isFiring) { m_Firing = isFiring; }
 

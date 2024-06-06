@@ -82,4 +82,5 @@ private:
 	void NextLevelStarted(Timer* timer, int required);
 	void ResetGame(Timer* timer, int required);
 	GameObject* m_WinTextContainer;
+	void RefillPlayerWeapons();
 };

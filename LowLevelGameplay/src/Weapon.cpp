@@ -5,6 +5,9 @@
 #include <Timer.h>
 #include <ObjectPool.h>
 #include <Transform.h>
+#include <numbers>
+
+#define M_PI		3.14159265358979323846
 
 Weapon::Weapon(GameObject* owner) : Component(owner)
 {
@@ -35,6 +38,8 @@ bool Weapon::Fire()
 	if (!GetCanFire() || !HasAmmo()) { return false; }
 
 	m_CanFire = false;
+
+	if (currentWeapon->s_WeaponIndex == 3) { FireShotgun(); return true; }
 	//Fire rate timer (I want this to be a different thread)
 	m_FireDelayTimer->StartTimer((1 / (currentWeapon->s_FireRate)));
 
@@ -42,6 +47,29 @@ bool Weapon::Fire()
 	LLGP::Vector2f fireLocation = m_GameObject->GetTransform()->ReturnPosition() + (m_AimDirection * m_AimOffset);
 
 	ObjectPooler::FindRemainingObject()->EnableProjectile(m_AimDirection, fireLocation, currentWeapon->s_ProjectileSpeed, currentWeapon->s_ProjectileBounceAmount, currentWeapon->s_Damage);
+
+	SetAmmoCount(m_CurrentAmmoCount - 1);
+
+	return true;
+}
+
+bool Weapon::FireShotgun()
+{
+	//Fire rate timer (I want this to be a different thread)
+	m_FireDelayTimer->StartTimer((1 / (currentWeapon->s_FireRate)));
+
+	//Firing Logic (spawn bullet with direction and velocity.)
+	LLGP::Vector2f fireLocation = m_GameObject->GetTransform()->ReturnPosition() + (m_AimDirection * m_AimOffset);
+
+	LLGP::Vector2f newAimDirection;
+	float aimOffset = 1 * (std::numbers::pi/180);
+	for (int projectileCount = 0; projectileCount < currentWeapon->s_NumberOfProjectiles; projectileCount++)
+	{
+		int numberOfOffsets = projectileCount - (currentWeapon->s_NumberOfProjectiles / 2);
+		float angle = aimOffset * numberOfOffsets;
+		newAimDirection = RotateVector(m_AimDirection, angle).Normalised();
+		ObjectPooler::FindRemainingObject()->EnableProjectile(newAimDirection, fireLocation, currentWeapon->s_ProjectileSpeed, currentWeapon->s_ProjectileBounceAmount, currentWeapon->s_Damage);
+	}
 
 	SetAmmoCount(m_CurrentAmmoCount - 1);
 
@@ -114,6 +142,7 @@ void Weapon::CurrentWeaponInfo::SetWeapon(int weaponType)
 		s_ReloadTime = 0.7f;
 		s_MaxAmmo = 7;
 		s_Damage = 34.f;
+		s_NumberOfProjectiles = 1;
 		break;
 	case 2:
 		s_WeaponName = "SMG";
@@ -124,6 +153,8 @@ void Weapon::CurrentWeaponInfo::SetWeapon(int weaponType)
 		s_ReloadTime = 1.6f;
 		s_MaxAmmo = 20;
 		s_Damage = 15.f;
+		s_NumberOfProjectiles = 1;
+
 		break;
 	case 3:
 		s_WeaponName = "Shotgun";
@@ -133,8 +164,8 @@ void Weapon::CurrentWeaponInfo::SetWeapon(int weaponType)
 		s_ProjectileBounceAmount = 4;
 		s_ReloadTime = 1.4f;
 		s_MaxAmmo = 6;
-		//s_Damage = 14.f;
-		s_Damage = 100.f;
+		s_Damage = 14.f;
+		s_NumberOfProjectiles = 8;
 		break;
 
 	case 4:
@@ -145,6 +176,7 @@ void Weapon::CurrentWeaponInfo::SetWeapon(int weaponType)
 		s_ProjectileBounceAmount = 4;
 		s_ReloadTime = 1.1f;
 		s_MaxAmmo = 5;
+		s_NumberOfProjectiles = 1;
 		s_Damage = 100.f;
 		break;
 
@@ -156,6 +188,7 @@ void Weapon::CurrentWeaponInfo::SetWeapon(int weaponType)
 		s_ProjectileBounceAmount = 4;
 		s_ReloadTime = 1.3f;
 		s_MaxAmmo = 100;
+		s_NumberOfProjectiles = 1;
 		s_Damage = 9999.f;
 		break;
 
@@ -167,6 +200,7 @@ void Weapon::CurrentWeaponInfo::SetWeapon(int weaponType)
 		s_ProjectileBounceAmount = 4;
 		s_ReloadTime = 0.7f;
 		s_MaxAmmo = 7;
+		s_NumberOfProjectiles = 1;
 		s_Damage = 34.f;
 		break;
 	}

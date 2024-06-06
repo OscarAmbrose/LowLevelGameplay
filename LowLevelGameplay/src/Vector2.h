@@ -4,6 +4,8 @@
 
 namespace LLGP
 {
+
+
 	template<typename T> requires arithmetic<T>
 	struct Vector2 
 	{
@@ -32,6 +34,8 @@ namespace LLGP
 		float GetMagnitude() { return sqrt(GetSquareMagnitude()); }
 		Vector2<T>& Normalise() { *this /= GetMagnitude(); return *this; }
 		Vector2<T> Normalised() { return *this / GetMagnitude(); }
+
+		
 
 		static float Dot(const Vector2<T>& lhs, const Vector2<T>& rhs)
 			{ return (float)(lhs.x* rhs.x + lhs.y * rhs.y); }
@@ -128,4 +132,15 @@ namespace LLGP
 	typedef Vector2<unsigned int>	Vector2u;
 	typedef Vector2<double>			Vector2d;
 	typedef Vector2<float>			Vector2f;
+
+	template<typename T> requires arithmetic<T>
+	Vector2<T> RotateVector(const Vector2<T> vec, float angle)
+	{
+		float cosTheta = std::cos(angle);
+		float sinTheta = std::sin(angle);
+		return Vector2<T>(
+			vec.x * cosTheta - vec.y * sinTheta,
+			vec.x * sinTheta + vec.y * cosTheta
+		);
+	}
 }
