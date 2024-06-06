@@ -11,12 +11,13 @@ public:
 	~TextRenderer();
 
 public:
-	void SetTextFont(sf::Font newFont);
-	void SetPosition(LLGP::Vector2f position);
-	void SetOffset(LLGP::Vector2f position);
+	TextRenderer* SetTextFont(sf::Font newFont);
+	TextRenderer* SetPosition(LLGP::Vector2f position);
+	TextRenderer* SetOffset(LLGP::Vector2f position);
 	void RenderText(sf::RenderWindow* window, int renderLayer);
-	void SetColour(sf::Color newColour);
-	void SetText(std::string newText);
+	TextRenderer* SetColour(sf::Color newColour);
+	TextRenderer* SetText(std::string newText);
+	TextRenderer* SetTextSize(int newFontSize);
 
 protected:
 	sf::Text m_TextObject;

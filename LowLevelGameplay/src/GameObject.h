@@ -35,6 +35,15 @@ public:
 
 	Transform2D* GetTransform() { return transform.get(); }
 
+	void SetGarbage() 
+	{ 
+		if (m_IsPersistent) { return; } 
+		m_IsGarbage = true;
+	}
+
+	GameObject* SetPersistent(bool newPersistent) { m_IsPersistent = newPersistent; return this; }
+	bool GetPersistent() const { return m_IsPersistent; }
+
 #pragma region ComponentManagement
 	template<class T> requires isComponent<T>
 	T* GetComponent()
@@ -100,10 +109,11 @@ public:
 
 protected:
 	bool m_Active = false;
-private:
 	std::string m_Name;
 	std::string m_Tag;
 	std::vector<std::unique_ptr<Component>> m_Components;
+	bool m_IsPersistent = false;
+private:
 
 public:
 	std::unique_ptr<Transform2D> transform = std::make_unique<Transform2D>();

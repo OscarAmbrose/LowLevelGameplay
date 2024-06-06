@@ -1,8 +1,10 @@
 #pragma once
 #include <GameManager.h>
 #include <Event.h>
+#include <Vector2.h>
 
 class Timer;
+class TextRenderer;
 
 class GradExGameManager : public GameManager
 {
@@ -36,11 +38,13 @@ public:
 	{
 		RespawnPlayer(0);
 		EndTimer(timer);
+		TogglePlayerMovement(true);
 	}
 	void RespawnPlayerOne(Timer* timer, int required) 
 	{
 		RespawnPlayer(1);
 		EndTimer(timer);
+		TogglePlayerMovement(true);
 	}
 	/// <summary>
 	/// See: <seealso cref="GameManager::Start"/> for details
@@ -54,11 +58,21 @@ private:
 	std::vector<Timer*> m_DestroyableTimers;
 	int m_Player0Lives = 3;
 	int m_Player1Lives = 3;
+	
+	LLGP::Vector2f m_Player0StartLocation = LLGP::Vector2f(200, 540);
+	LLGP::Vector2f m_Player1StartLocation = LLGP::Vector2f(1720, 540);
+
+	bool m_WaitingForNextLevel = false;
+
+	int m_CurrentLevel = 0;
 
 private:
 	bool LivesRemain();
 	void LevelOver();
 	void EndTimer(Timer* finishedTimer);
-
-
+	void ResetLevelState();
+	void ResetPlayerPositions();
+	void TogglePlayerMovement(bool newEnabled);
+	void NextLevelStarted(Timer* timer, int required);
+	GameObject* m_WinTextContainer;
 };

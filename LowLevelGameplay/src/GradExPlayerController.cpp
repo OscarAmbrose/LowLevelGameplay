@@ -15,6 +15,10 @@ PlayerController::PlayerController(GameObject* owner) : Component(owner)
 
 PlayerController::~PlayerController()
 {
+	if (Weapon* weapon = m_GameObject->GetComponent<Weapon>())
+	{
+		weapon->SetFiring(false);
+	}
 	g_OnPollInputs.RemoveListener(this, std::bind(&PlayerController::PollInput, this, std::placeholders::_1));
 }
 

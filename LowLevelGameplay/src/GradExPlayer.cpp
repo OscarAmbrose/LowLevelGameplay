@@ -35,6 +35,7 @@ PlayerCharacter* PlayerCharacter::InitialiseCharacter()
 	AddComponent<Weapon>();
 	AddComponent<HealthComponent>();
 	AddComponent<GradExPlayerHealth>();
+	SetPersistent(true);
 	SetActive(true);
 
 	return this;

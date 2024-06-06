@@ -8,6 +8,7 @@ HeartUI::HeartUI() : GameObject()
 	SetMaxLives(3);
 	SetHeartOffsets();
 	AddComponent<TextRenderer>()->SetOffset(LLGP::Vector2f(-48.f, 34.f));
+	SetPersistent(true);
 }
 
 HeartUI::~HeartUI()

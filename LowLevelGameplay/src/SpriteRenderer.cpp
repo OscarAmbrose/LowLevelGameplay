@@ -80,6 +80,12 @@ void SpriteRenderer::renderShape(sf::RenderWindow* window, int renderLayer)
 	}
 }
 
+SpriteRenderer* SpriteRenderer::SetRenderTexture(sf::Texture* text)
+{
+	m_Shape.setTexture(text);
+	return this;
+}
+
 SpriteRenderer* SpriteRenderer::setOffSet(LLGP::Vector2f newOffset)
 {
 	offset = newOffset;

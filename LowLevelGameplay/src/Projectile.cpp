@@ -17,7 +17,7 @@ Projectile::Projectile()
 
 	SetActive(false);
 	AddComponent<RigidBody>()->setGravityEnabled(false)->SetMaxSpeed(1500.f)->SetDrag(0.f)->setDoesBounce(true);
-	AddComponent<SpriteRenderer>()->setUV(LLGP::Vector2i(10, 2))->setRenderLayer(0);
+	AddComponent<SpriteRenderer>()->setUV(LLGP::Vector2i(10, 2))->setRenderLayer(1);
 
 	AddComponent<ScreenWrapper>();
 
@@ -45,17 +45,19 @@ void Projectile::FixedUpdate(float deltaTime)
 void Projectile::ProjectileCollision(CollisionInfo* col)
 {
 	if (!col->otherCollider->GetGameObject()->GetActive() || !GetActive() || col->otherCollider->GetIsTrigger()) { return; }
-
-	if (auto healthComponent = col->otherCollider->GetGameObject()->GetComponent<HealthComponent>())
+	
+	//Damage other collider (If they have the take damage function)
+	if (HealthComponent* healthComponent = col->otherCollider->GetGameObject()->GetComponent<HealthComponent>())
 	{
 		healthComponent->TakeDamage(m_Damage);
 		//std::cout << "Take Damage: " << m_Damage <<  "\n";
 		DisableProjectile();
 	}
-
-	//Damage other collider (If they have the take damage function)
 	m_BounceAmount--;
-	if (m_BounceAmount < 0) { DisableProjectile(); }
+	if (m_BounceAmount < 0) 
+	{ 
+		DisableProjectile(); 
+	}
 }
 
 void Projectile::EnableProjectile(LLGP::Vector2f projectileDir, LLGP::Vector2f projectileLocation, float velocity, int bounceAmount, float damage)

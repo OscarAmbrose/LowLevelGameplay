@@ -14,17 +14,17 @@ public:
 	BoxCollider* SetUpCollider(LLGP::Vector2f boxSize, LLGP::Vector2f boxOffset);
 
 	inline LLGP::Vector2f GetBoxSize() { return m_BoxSize; }
-	void SetBoxSize(LLGP::Vector2f newBoxSize);
+	BoxCollider* SetBoxSize(LLGP::Vector2f newBoxSize);
 
 	inline LLGP::Vector2f GetBoxPosition() { return m_BoxPosition; }
-	inline void SetBoxPosition(LLGP::Vector2f newBoxPosition) { m_BoxPosition = newBoxPosition; }
+	BoxCollider* SetBoxPosition(LLGP::Vector2f newBoxPosition) { m_BoxPosition = newBoxPosition; return this; }
 
 	BoxCollider* SetDebugEnabled(bool newDebug);
 
-	BoxCollider* SetCollisionBoundToPlayer(bool newTied) { m_CollisionIsTiedToPlayer = newTied; this; }
+	BoxCollider* SetCollisionBoundToPlayer(bool newTied) { m_CollisionIsTiedToPlayer = newTied; return this; }
 
 	inline LLGP::Vector2f GetOffset() { return m_Offset; }
-	inline void SetOffset(LLGP::Vector2f newOffset) { m_Offset = newOffset; }
+	BoxCollider* SetOffset(LLGP::Vector2f newOffset) { m_Offset = newOffset; return this; }
 
 	CollisionInfo* IsCollidingWith(Collider* other) override;
 	CollisionInfo* IsCollidingWith(BoxCollider* other) override;

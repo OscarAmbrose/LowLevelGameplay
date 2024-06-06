@@ -48,8 +48,9 @@ void GameManager::ClearGameObjects()
 	m_ShouldBinObjects = true;
 	for (std::shared_ptr<GameObject> obj : m_GameObjects)
 	{
+		if (obj->GetPersistent()) { continue; }
 		obj->SetActive(false);
-		obj->m_IsGarbage = true;
+		obj->SetGarbage();
 	}
 }
 

@@ -109,8 +109,8 @@ void Weapon::CurrentWeaponInfo::SetWeapon(int weaponType)
 		s_WeaponName = "Pistol";
 		s_RenderUV = LLGP::Vector2i(3, 5);
 		s_FireRate = 5.f;
-		s_ProjectileSpeed = 700.f;
-		s_ProjectileBounceAmount = 0;
+		s_ProjectileSpeed = 1000.f;
+		s_ProjectileBounceAmount = 4;
 		s_ReloadTime = 0.7f;
 		s_MaxAmmo = 7;
 		s_Damage = 34.f;
@@ -119,8 +119,8 @@ void Weapon::CurrentWeaponInfo::SetWeapon(int weaponType)
 		s_WeaponName = "SMG";
 		s_RenderUV = LLGP::Vector2i(4, 5);
 		s_FireRate = 15.f;
-		s_ProjectileSpeed = 700.f;
-		s_ProjectileBounceAmount = 0;
+		s_ProjectileSpeed = 1000.f;
+		s_ProjectileBounceAmount = 4;
 		s_ReloadTime = 1.6f;
 		s_MaxAmmo = 20;
 		s_Damage = 15.f;
@@ -129,8 +129,8 @@ void Weapon::CurrentWeaponInfo::SetWeapon(int weaponType)
 		s_WeaponName = "Shotgun";
 		s_RenderUV = LLGP::Vector2i(5, 5);
 		s_FireRate = 0.7f;
-		s_ProjectileSpeed = 700.f;
-		s_ProjectileBounceAmount = 0;
+		s_ProjectileSpeed = 1000.f;
+		s_ProjectileBounceAmount = 4;
 		s_ReloadTime = 1.4f;
 		s_MaxAmmo = 6;
 		s_Damage = 14.f;
@@ -140,8 +140,8 @@ void Weapon::CurrentWeaponInfo::SetWeapon(int weaponType)
 		s_WeaponName = "Sniper";
 		s_RenderUV = LLGP::Vector2i(2, 5);
 		s_FireRate = 0.7f;
-		s_ProjectileSpeed = 1200.f;
-		s_ProjectileBounceAmount = 0;
+		s_ProjectileSpeed = 1400.f;
+		s_ProjectileBounceAmount = 4;
 		s_ReloadTime = 1.1f;
 		s_MaxAmmo = 5;
 		s_Damage = 100.f;
@@ -150,11 +150,11 @@ void Weapon::CurrentWeaponInfo::SetWeapon(int weaponType)
 	case 5:
 		s_WeaponName = "GoldenGun";
 		s_RenderUV = LLGP::Vector2i(1, 5);
-		s_FireRate = 1.f;
+		s_FireRate = 10.f;
 		s_ProjectileSpeed = 1000.f;
-		s_ProjectileBounceAmount = 0;
+		s_ProjectileBounceAmount = 4;
 		s_ReloadTime = 1.3f;
-		s_MaxAmmo = 1;
+		s_MaxAmmo = 100;
 		s_Damage = 9999.f;
 		break;
 
@@ -163,7 +163,7 @@ void Weapon::CurrentWeaponInfo::SetWeapon(int weaponType)
 		s_RenderUV = LLGP::Vector2i(3, 5);
 		s_FireRate = 3.5f;
 		s_ProjectileSpeed = 600.f;
-		s_ProjectileBounceAmount = 0;
+		s_ProjectileBounceAmount = 4;
 		s_ReloadTime = 0.7f;
 		s_MaxAmmo = 7;
 		s_Damage = 34.f;

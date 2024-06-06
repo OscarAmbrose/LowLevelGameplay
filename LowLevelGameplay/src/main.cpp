@@ -93,36 +93,12 @@ int main()
 
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && (numberOfFixedUpdates > 20))
 			{
-				//for (int i = 0; i < 20; i++)
-				//{
-				//	float DirectionX = -1 + 2 * ((float)rand() / RAND_MAX);
-				//	float DirectionY = -1 + 2 * ((float)rand() / RAND_MAX);
-				//	LLGP::Vector2f direction = LLGP::Vector2f(DirectionX, DirectionY).Normalised();
-				//	ObjectPooler::FindRemainingObject()->EnableProjectile(direction, LLGP::Vector2f(450, 450), 750.f, 2, 10.f);
-				//	std::cout << ObjectPooler::GetRemainingObjects() << std::endl;
-				//}
-
 				auto gameManager = static_cast<GradExGameManager*>(GameManager::instance);
-				gameManager->RespawnPlayer(0);
-				gameManager->RespawnPlayer(1);
 
-				for (PlayerCharacter* player : gameManager->getAllObjectsOfType<PlayerCharacter>())
-				{
-					RespawnManager::PlayerDied(player);
-					auto weapon = player->GetComponent<Weapon>();
-					weapon->SetWeaponType(2);
-				}
-
+				gameManager->PlayerDied(0);
 
 				numberOfFixedUpdates = 0;
 			}
-
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::V))
-			{
-				std::cout << "Dead\n";
-				
-			}
-			
 			g_OnPollInputs(event);
 		}
 

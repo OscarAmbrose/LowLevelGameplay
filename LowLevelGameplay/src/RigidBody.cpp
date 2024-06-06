@@ -78,10 +78,10 @@ void RigidBody::OnCollisionEnter(CollisionInfo* col)
 {
 	if (!m_GameObject->GetActive()) { return; }
 
-	if (col->otherCollider->GetIsTrigger() || col->collider->GetIsTrigger()) { return; }
 
 	if (GetDoesBounce())
 	{
+		if (col->otherCollider->GetIsTrigger()) { return; }
 		if (col->Normal.x != 0)
 		{
 			float impulseVel = abs(GetVelocity().x) * col->Normal.x * 1;
@@ -96,6 +96,7 @@ void RigidBody::OnCollisionEnter(CollisionInfo* col)
 	}
 	else
 	{
+		if (col->otherCollider->GetIsTrigger() || col->collider->GetIsTrigger()) { return; }
 		if (col->Normal.x != 0)
 		{
 			SetVelocity(LLGP::Vector2f(0, GetVelocity().y));

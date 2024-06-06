@@ -95,6 +95,7 @@ public:
 	void ClearGameObjects();
 
 	virtual void CollectGarbage(float deltaTime);
+	void SetShouldBin(bool newBin) { m_ShouldBinObjects = newBin; }
 
 protected:
 	/// <summary>

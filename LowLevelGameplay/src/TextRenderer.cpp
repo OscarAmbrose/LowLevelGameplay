@@ -22,27 +22,40 @@ TextRenderer::~TextRenderer()
 	//m_GameObject->GetTransform()->OnPositionUpdate.RemoveListener(this, std::bind(&TextRenderer::SetPosition, this, std::placeholders::_1));
 }
 
-void TextRenderer::SetTextFont(sf::Font newFont)
+TextRenderer* TextRenderer::SetTextFont(sf::Font newFont)
 {
 	m_TextObject.setFont(newFont);
+	return this;
 }
 
-void TextRenderer::SetPosition(LLGP::Vector2f position)
+TextRenderer* TextRenderer::SetPosition(LLGP::Vector2f position)
 {
 	m_Position = position;
 	m_TextObject.setPosition(position + m_Offset);
+	return this;
+
 }
 
-void TextRenderer::SetOffset(LLGP::Vector2f newOffset)
+TextRenderer* TextRenderer::SetOffset(LLGP::Vector2f newOffset)
 {
 	m_Offset = newOffset;
 	m_TextObject.setPosition(m_Position + newOffset);
+	return this;
+
 }
 
-void TextRenderer::SetText(std::string newText)
+TextRenderer* TextRenderer::SetText(std::string newText)
 {
 	m_Text = newText;
 	m_TextObject.setString(newText);
+	return this;
+}
+
+TextRenderer* TextRenderer::SetTextSize(int newFontSize)
+{
+	m_CharacterSize = newFontSize;
+	m_TextObject.setCharacterSize(newFontSize);
+	return this;
 }
 
 void TextRenderer::RenderText(sf::RenderWindow* window, int renderLayer)
@@ -54,8 +67,9 @@ void TextRenderer::RenderText(sf::RenderWindow* window, int renderLayer)
 	}
 }
 
-void TextRenderer::SetColour(sf::Color newColour)
+TextRenderer* TextRenderer::SetColour(sf::Color newColour)
 {
 	m_TextColour = newColour;
 	m_TextObject.setFillColor(newColour);
+	return this;
 }

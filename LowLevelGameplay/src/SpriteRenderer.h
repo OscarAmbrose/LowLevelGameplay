@@ -29,14 +29,14 @@ public:
 	inline bool getFlipped() { return isFlipped; }
 	void setFlipped(bool newFlipped);
 
-	//void renderShape(float renderNum);
 	void renderShape(sf::RenderWindow* window, int renderLayer);
 
-	//Testing overriding an update function (Working)
 	void Update(float deltaTime)
 	{
 		Component::Update(deltaTime);
 	}
+
+	SpriteRenderer* SetRenderTexture(sf::Texture* text);
 
 	SpriteRenderer* setOffSet(LLGP::Vector2f newOffset);
 	inline LLGP::Vector2f getOffset() { return offset; }
