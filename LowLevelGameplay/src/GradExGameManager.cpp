@@ -13,6 +13,7 @@
 #include <functional>
 #include <memory>
 #include <HeartUI.h>
+#include <TextRenderer.h>
 
 GradExGameManager::GradExGameManager() : GameManager()
 {
@@ -35,8 +36,13 @@ void GradExGameManager::StartLevel(int levelNumber)
 	AddGameObject<HeartUI>()->SetName("HeartUI0")->SetActive(true);
 	GetGameObjectByName("HeartUI0")->GetTransform()->SetPosition(LLGP::Vector2f(64.f, 32.f));
 
+
 	AddGameObject<HeartUI>()->SetName("HeartUI1")->SetActive(true);
 	GetGameObjectByName("HeartUI1")->GetTransform()->SetPosition(LLGP::Vector2f(1856.f, 32.f));
+
+	auto testing = GetGameObjectByName("HeartUI0");
+	auto testing2 = GetGameObjectByName("HeartUI1");
+	testing2->GetComponent<TextRenderer>()->SetText("Player 2");
 
 	//Create player.
 	AddGameObject<PlayerCharacter>()->SetPlayerNumber(0)->InitialiseCharacter()->SetName("Player0");

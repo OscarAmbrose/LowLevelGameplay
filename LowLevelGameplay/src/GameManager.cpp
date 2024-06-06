@@ -3,7 +3,6 @@
 
 GameManager* GameManager::instance;
 
-
 GameManager::GameManager()
 {
 	if (GameManager::instance != nullptr)

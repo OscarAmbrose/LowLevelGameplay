@@ -20,6 +20,7 @@
 #include <GradExPlayer.h>
 #include <Weapon.h>
 #include <RespawnManager.h>
+#include <TextRenderer.h>
 
 #define FIXEDFRAMERATE (1.f/60.f)
 
@@ -28,10 +29,12 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(1920, 1080), "GradEx 2024 ~ Oscar Ambrose", sf::Style::Fullscreen);
 
 	WindowManager::SetNewWindow(&window);
+	std::unique_ptr <FontValues> fontValues = std::make_unique<FontValues>();
 
 	std::unique_ptr<GlobalTexture> globalTextureTest = std::make_unique<GlobalTexture>();
 	
 	std::unique_ptr <GradExGameManager> gameManager = std::make_unique <GradExGameManager>();
+	
 
 	ObjectPooler::InitialisePool();
 
@@ -166,7 +169,7 @@ int main()
 		window.clear();
 
 		//I should change this to a static rendering manager class with bitmasking etc.
-		for (int i = 0; i < 5; i++)
+		for (int i = 0; i <= 5; i++)
 		{
 			g_OnRender(&window, i);
 		}

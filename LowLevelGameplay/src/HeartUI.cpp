@@ -1,18 +1,19 @@
 #include "HeartUI.h"
 #include <Transform.h>
 #include <SpriteRenderer.h>
+#include <TextRenderer.h>
 
 HeartUI::HeartUI() : GameObject()
 {
 	SetMaxLives(3);
 	SetHeartOffsets();
+	AddComponent<TextRenderer>()->SetOffset(LLGP::Vector2f(-48.f, 34.f));
 }
 
 HeartUI::~HeartUI()
 {
 
 }
-
 
 HeartUI* HeartUI::SetMaxLives(int newLives, bool isFilling)
 {
