@@ -91,14 +91,14 @@ int main()
 				continue;
 			}
 
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && (numberOfFixedUpdates > 20))
-			{
-				auto gameManager = static_cast<GradExGameManager*>(GameManager::instance);
+			//if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && (numberOfFixedUpdates > 20))
+			//{
+			//	auto gameManager = static_cast<GradExGameManager*>(GameManager::instance);
 
-				gameManager->PlayerDied(0);
+			//	gameManager->PlayerDied(0);
 
-				numberOfFixedUpdates = 0;
-			}
+			//	numberOfFixedUpdates = 0;
+			//}
 			g_OnPollInputs(event);
 		}
 
